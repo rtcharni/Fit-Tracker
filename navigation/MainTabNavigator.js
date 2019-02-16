@@ -53,6 +53,20 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+const WeightStack = createStackNavigator({
+  Weight: WeightScreen,
+});
+
+WeightStack.navigationOptions = {
+  tabBarLabel: 'Weight',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  ),
+}
+
 export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
