@@ -11,6 +11,8 @@ import {
   Button
 } from "react-native";
 import { WebBrowser } from "expo";
+import { SaveWeight, GetWeightArray, ClearAllWeights } from "../../utils/AsyncStorage";
+import WeightDataList from "./WeightDataList";
 
 export default class WeightScreen extends React.Component {
   static navigationOptions = {
@@ -47,12 +49,11 @@ export default class WeightScreen extends React.Component {
     this.setState({numberOK: true})
   }
 
-  handleOnSaveButton() {
-    const now = new Date().getTime();
+  async handleOnSaveButton() {
+    const time = new Date().getTime();
     const weight = parseFloat(this.state.enteredText);
-    console.log(weight);
+    const success = await SaveWeight({time, weight});
   }
-
 
   render() {
     return (
@@ -62,7 +63,7 @@ export default class WeightScreen extends React.Component {
           onChangeText={this.handleChangeText}
           maxLength={5}
           keyboardType="decimal-pad"
-          placeholder="Enter weight (kg) ..."
+          placeholder="Enter weight (kg)"
         />
         <Text>{this.state.enteredText}</Text>
         <Button
@@ -72,6 +73,12 @@ export default class WeightScreen extends React.Component {
           color="#841584"
         />
         <Text>{this.state.numberOK}</Text>
+
+        {/* FOR TESTING */}
+        <Button title="Clear data" onPress={ClearAllWeights}></Button> 
+        <Button title="Get Weights" onPress={ async () => console.log(await GetWeightArray())} ></Button>
+        {/* FOR TESTING */}
+        <WeightDataList/>
       </View>
     );
   }
