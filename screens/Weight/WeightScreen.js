@@ -28,7 +28,7 @@ export default class WeightScreen extends React.Component {
     this.state = {
       enteredText: "",
       numberOK: false,
-      weightData: [],
+      weightData: []
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleTextCheck = this.handleTextCheck.bind(this);
@@ -40,9 +40,12 @@ export default class WeightScreen extends React.Component {
     this.setState({ enteredText: value }, this.handleTextCheck);
   }
 
-  handleTextCheck() {
+  handleTextCheck() { // TODO regex would be better & cleaner
     const indexOfDot1 = this.state.enteredText.indexOf(".");
-    if (!this.state.enteredText.length) {
+    if (!this.state.enteredText.length || this.state.enteredText == 0) {
+      this.setState({ numberOK: false });
+      return;
+    } else if (this.state.enteredText.includes("-")) {
       this.setState({ numberOK: false });
       return;
     } else if (indexOfDot1 !== -1) {
@@ -59,11 +62,12 @@ export default class WeightScreen extends React.Component {
     const time = new Date().getTime();
     const weight = parseFloat(this.state.enteredText);
     const success = await SaveWeight({ time, weight });
+    this.setState({ enteredText: "", numberOK: false });
   }
 
   async handleGetWeightsButton() {
-    const weightData = await GetWeightArray();
-    this.setState({weightData});
+    const weightData = (await GetWeightArray()).reverse();
+    this.setState({ weightData });
     // console.log(this.state.weightData)
   }
 
@@ -77,6 +81,8 @@ export default class WeightScreen extends React.Component {
             maxLength={5}
             keyboardType="decimal-pad"
             placeholder="Enter weight (kg)"
+            value={this.state.enteredText}
+            caretHidden={true}
           />
           <Text>{this.state.enteredText}</Text>
           <Button
@@ -88,10 +94,7 @@ export default class WeightScreen extends React.Component {
           <Text>{this.state.numberOK}</Text>
           {/* FOR TESTING */}
           <Button title="Clear data" onPress={ClearAllWeights} />
-          <Button
-            title="Get Weights"
-            onPress={this.handleGetWeightsButton}
-          />
+          <Button title="Get Weights" onPress={this.handleGetWeightsButton} />
           {/* FOR TESTING */}
         </View>
 

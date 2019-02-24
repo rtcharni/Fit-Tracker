@@ -11,7 +11,8 @@ import {
   Button,
   SectionList,
   FlatList,
-  TouchableHighlight
+  TouchableHighlight,
+  Alert
 } from "react-native";
 import { WebBrowser } from "expo";
 import { TESTDATAWEIGHTS } from "./TESTDATA";
@@ -34,44 +35,52 @@ export default class WeightDataList extends React.Component {
   }
 
   onItemPress(item) {
-    // console.log(item);
+    console.log(item);
   }
 
-  constructListData() { // FIRST OPTION!
+  onItemLongPress(item) {
+    Alert.alert(
+      'Alert Title',
+      'My Alert Msg',
+      [
+        {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: true }
+    )
+  }
+
+  constructListData() {
     return this.state.weightData.map(x => {
       return {
         time: new Date(x.time).toLocaleDateString(),
         weight: x.weight,
-        key: x.time
+        key: x.time.toString()
       };
     });
   }
 
-  render() { // SECOND OPTION
-    const secondOption = this.state.weightData.map(x => {
-      return {
-        time: new Date(x.time).toLocaleDateString(),
-        weight: x.weight,
-        key: x.time
-      };
-    });
-
+  render() {
     return (
       <View>
         <FlatList
           ItemSeparatorComponent={({ highlighted }) => (
             <View style={[highlighted && { marginLeft: 0 }]} />
-            )}
-            data={this.constructListData()} // HERE {secondOption}
+          )}
+          // style={{flex: 1}}
+          scrollEnabled={true}
+          data={this.constructListData()}
           renderItem={({ item }) => (
             <TouchableHighlight
               onPress={() => this.onItemPress(item)}
+              onLongPress={() => this.onItemLongPress(item)}
               // onShowUnderlay={"red"}
               // onHideUnderlay={"blue"}
               underlayColor="lightgrey"
               activeOpacity={0.5}
             >
-              <View style={styles.row}>
+              <View>
                 <Text style={styles.rowItem}>{item.time}</Text>
                 <Text style={styles.rowItem}>{item.weight}kg</Text>
               </View>
