@@ -9,40 +9,74 @@ import {
   View,
   TextInput,
   Button,
-  SectionList
+  SectionList,
+  FlatList,
+  TouchableHighlight
 } from "react-native";
 import { WebBrowser } from "expo";
+import { TESTDATAWEIGHTS } from "./TESTDATA";
 
 export default class WeightDataList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      weightData: this.props.weightData
+    };
   }
 
-  render() {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.weightData !== prevState.weightData) {
+      return {
+        weightData: nextProps.weightData
+      };
+    }
+    return null;
+  }
+
+  onItemPress(item) {
+    // console.log(item);
+  }
+
+  constructListData() { // FIRST OPTION!
+    return this.state.weightData.map(x => {
+      return {
+        time: new Date(x.time).toLocaleDateString(),
+        weight: x.weight,
+        key: x.time
+      };
+    });
+  }
+
+  render() { // SECOND OPTION
+    const secondOption = this.state.weightData.map(x => {
+      return {
+        time: new Date(x.time).toLocaleDateString(),
+        weight: x.weight,
+        key: x.time
+      };
+    });
+
     return (
-      <View >
-        <SectionList
-          sections={[
-            { title: "D", data: ["Devin"] },
-            {
-              title: "J",
-              data: [
-                "Jackson",
-                "James",
-                "Jillian",
-                "Jimmy",
-                "Joel",
-                "John",
-                "Julie"
-              ]
-            }
-          ]}
-          renderItem={({ item }) => <Text>{item}</Text>}
-          renderSectionHeader={({ section }) => (
-            <Text>{section.title}</Text>
+      <View>
+        <FlatList
+          ItemSeparatorComponent={({ highlighted }) => (
+            <View style={[highlighted && { marginLeft: 0 }]} />
+            )}
+            data={this.constructListData()} // HERE {secondOption}
+          renderItem={({ item }) => (
+            <TouchableHighlight
+              onPress={() => this.onItemPress(item)}
+              // onShowUnderlay={"red"}
+              // onHideUnderlay={"blue"}
+              underlayColor="lightgrey"
+              activeOpacity={0.5}
+            >
+              <View style={styles.row}>
+                <Text style={styles.rowItem}>{item.time}</Text>
+                <Text style={styles.rowItem}>{item.weight}kg</Text>
+              </View>
+            </TouchableHighlight>
           )}
-          keyExtractor={(item, index) => index}
         />
       </View>
     );
@@ -50,9 +84,15 @@ export default class WeightDataList extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  row: {
     flex: 1,
-    paddingTop: 22
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingTop: 3,
+    paddingBottom: 3
+  },
+  rowItem: {
+    fontSize: 15
   },
   sectionHeader: {
     paddingTop: 2,
@@ -69,3 +109,10 @@ const styles = StyleSheet.create({
     height: 44
   }
 });
+
+// constructSections() {
+//     const constructedSections = [];
+//     TESTDATAWEIGHTS.forEach((item, index) => {
+//       const date = new Date(item.time);
+//     })
+//   }
