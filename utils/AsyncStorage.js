@@ -2,18 +2,18 @@ import { AsyncStorage } from "react-native";
 
 export const SaveWeight = async value => {
   // Get data and push new value to end
-  let data = await GetWeightArray();
-  if (data === null) {
-    data = [];
-    data.push(value);
+  let storedData = await GetWeightArray();
+  if (storedData === null) {
+    storedData = [];
+    storedData.push(value);
   } else {
-    data.push(value);
+    storedData.push(value);
   }
-  console.log(data);
+  console.log(storedData);
   // Save updated data to storage
   try {
     // console.log(data);
-    await AsyncStorage.setItem("Weight", JSON.stringify(data));
+    await AsyncStorage.setItem("Weight", JSON.stringify(storedData));
     return true;
   } catch (error) {
     // TODO handeError
@@ -35,3 +35,31 @@ export const ClearAllWeights = async () => {
     await AsyncStorage.removeItem("Weight");
   } catch (error) {}
 };
+
+export const DeleteWeight = async (weight) => {
+  const storedData = await GetWeightArray();
+  const index = storedData.findIndex(x => x.time == weight.key);
+  storedData.splice(index, 1)
+  // Save data back
+  try {
+    await AsyncStorage.setItem("Weight", JSON.stringify(storedData));
+    return true;
+  } catch (error) {
+    // TODO handeError
+  }
+}
+
+// TODO 
+export const EditWeight = async (pressedWeight, newValue) => {
+  const storedData = await GetWeightArray();
+  const foundWeight = storedData.find(x => x.time == pressedWeight.key);
+  // Edit weight!
+  foundWeight.weight = newValue;
+  // Save data back
+  try {
+    await AsyncStorage.setItem("Weight", JSON.stringify(storedData));
+    return true;
+  } catch (error) {
+    // TODO handeError
+  }
+}
