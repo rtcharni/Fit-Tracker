@@ -50,9 +50,9 @@ export const DeleteWeight = async (weight) => {
 }
 
 // TODO 
-export const EditWeight = async (pressedWeight, newValue) => {
+export const EditWeight = async (chosenWeight, newValue) => {
   const storedData = await GetWeightArray();
-  const foundWeight = storedData.find(x => x.time == pressedWeight.time);
+  const foundWeight = storedData.find(x => x.time == chosenWeight.time);
   // Edit weight!
   foundWeight.weight = newValue;
   // Save data back
