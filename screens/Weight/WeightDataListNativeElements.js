@@ -32,7 +32,7 @@ export default class WeightDataListNativeElements extends Component {
       editWeightValue: "",
       editIcon: { editWeightOK: false, success: false, error: true },
       chosenWeightItem: {},
-      refresh: false,
+      refresh: false
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleTextCheck = this.handleTextCheck.bind(this);
@@ -150,8 +150,13 @@ export default class WeightDataListNativeElements extends Component {
     // console.log(foundWeight)
     // console.log(templist)
     // STATE UPDATES BUT LIST NOT!!???
-    this.setState({ showEditWindow: false, weightData: templist, refresh: !this.state.refresh });
-    
+    this.setState({
+      showEditWindow: false,
+      weightData: templist,
+      refresh: !this.state.refresh,
+      editWeightValue: "",
+      editIcon: { editWeightOK: false, success: false, error: true }
+    });
   }
 
   // shouldComponentUpdate(nextProps, nextState) {
@@ -163,16 +168,27 @@ export default class WeightDataListNativeElements extends Component {
   render() {
     return (
       <View>
-        <Modal
+        {/* <Modal
           animationType="slide"
-          transparent={true}
+          transparent={false}
           visible={this.state.showEditWindow}
+          presentationStyle="pageSheet"
           onRequestClose={() => {
             return null;
           }}
+        > */}
+          
+        {/* </Modal> */}
+        <Overlay
+          isVisible={this.state.showEditWindow}
+          height={window.window.height - (window.window.height / 1.6)}
+          onBackdropPress={() => this.setState({showEditWindow: false})}
+          animationType="slide"
+          transparent={true}
+          borderRadius={12}
         >
           <Container>
-            <Header />
+            {/* <Header /> */}
             <Content padder>
               <Card>
                 <CardItem header bordered>
@@ -185,48 +201,51 @@ export default class WeightDataListNativeElements extends Component {
                       success={this.state.editIcon.success}
                     >
                       <Input
-                        placeholder="Weight"
+                        placeholder="Weight..."
                         onChangeText={this.handleChangeText}
                         maxLength={5}
                         keyboardType="decimal-pad"
                       />
                       <NativeBaseIcon name={this.getIconOkOrError()} />
                     </Item>
-                    <NativeBaseText>Here text if needed...</NativeBaseText>
-                    <Grid>
-                      <Row>
-                        <Button
-                          rounded
-                          disabled={this.state.editIcon.error}
-                          onPress={() => this.updateWeight()}
-                        >
-                          <NativeBaseText>Update</NativeBaseText>
-                        </Button>
-                        <Button
-                          onPress={() =>
-                            this.setState({ showEditWindow: false })
-                          }
-                          rounded
-                          bordered
-                          dark
-                        >
-                          <NativeBaseText>Cancel</NativeBaseText>
-                        </Button>
-                      </Row>
-                    </Grid>
+
+                    <View
+                      style={{
+                        flex: 1,
+                        flexDirection: "row",
+                        alignSelf: "center",
+                        marginTop: 12
+                      }}
+                    >
+                      <Button
+                        style={{ marginRight: 20 }}
+                        rounded
+                        disabled={this.state.editIcon.error}
+                        onPress={() => this.updateWeight()}
+                      >
+                        <NativeBaseText>Update</NativeBaseText>
+                      </Button>
+                      <Button
+                        onPress={() =>
+                          this.setState({
+                            showEditWindow: false,
+                            editWeightValue: "",
+                            editIcon: { editWeightOK: false, success: false, error: true }
+                          })
+                        }
+                        rounded
+                        bordered
+                        dark
+                      >
+                        <NativeBaseText>Cancel</NativeBaseText>
+                      </Button>
+                    </View>
                   </Body>
                 </CardItem>
               </Card>
             </Content>
           </Container>
-        </Modal>
-        {/* <Overlay
-          isVisible={this.state.showEditWindow}
-          height={window.window.height - 350}
-          onBackdropPress={() => this.setState({showEditWindow: false})}
-        >
-          <Text>Edit weight data</Text>
-        </Overlay> */}
+        </Overlay>
 
         <FlatList
           keyExtractor={(item, index) => item.time.toString()}
@@ -236,7 +255,7 @@ export default class WeightDataListNativeElements extends Component {
             <ListItem
               key={item.time}
               title={item.weight + "kg"}
-              subtitle={new Date(item.time).toLocaleDateString()}
+              subtitle={`${new Date(item.time).toLocaleDateString()} - ${new Date(item.time).toLocaleTimeString().substr(0, 5)}`}
               bottomDivider={true}
               topDivider={true}
               pad={12}
