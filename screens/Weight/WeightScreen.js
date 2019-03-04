@@ -17,6 +17,7 @@ import {
   ClearAllWeights
 } from "../../utils/AsyncStorage";
 import WeightDataList from "./WeightDataList";
+import WeightDataListNativeElements from "./WeightDataListNativeElements";
 
 export default class WeightScreen extends React.Component {
   static navigationOptions = {
@@ -40,12 +41,23 @@ export default class WeightScreen extends React.Component {
     this.setState({ enteredText: value }, this.handleTextCheck);
   }
 
-  handleTextCheck() { // TODO regex would be better & cleaner
+  handleTextCheck() {
+    // TODO regex would be better & cleaner
+    const regex1 = new RegExp('[1-9][0-9]{0,2}\.?[0-9]{0,2}');
+    const regex = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
+    const a = 'fsadasds';
+    
+
+
+
     const indexOfDot1 = this.state.enteredText.indexOf(".");
     if (!this.state.enteredText.length || this.state.enteredText == 0) {
       this.setState({ numberOK: false });
       return;
     } else if (this.state.enteredText.includes("-")) {
+      this.setState({ numberOK: false });
+      return;
+    } else if (this.state.enteredText[0] == ".") {
       this.setState({ numberOK: false });
       return;
     } else if (indexOfDot1 !== -1) {
@@ -62,7 +74,10 @@ export default class WeightScreen extends React.Component {
     const time = new Date().getTime();
     const weight = parseFloat(this.state.enteredText);
     const success = await SaveWeight({ time, weight });
-    this.setState({ enteredText: "", numberOK: false });
+    // Update state
+    const templist = this.state.weightData;
+    templist.unshift({ time, weight });
+    this.setState({ enteredText: "", numberOK: false, weightData: templist });
   }
 
   async handleGetWeightsButton() {
@@ -98,7 +113,8 @@ export default class WeightScreen extends React.Component {
           {/* FOR TESTING */}
         </View>
 
-        <WeightDataList weightData={this.state.weightData} />
+        {/* <WeightDataList weightData={this.state.weightData} /> */}
+        <WeightDataListNativeElements weightData={this.state.weightData} />
       </View>
     );
   }
