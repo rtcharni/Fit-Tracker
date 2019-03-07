@@ -22,22 +22,24 @@ import {
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { DeleteWeight, EditWeight } from "../../utils/AsyncStorage";
 import window from "../../constants/Layout";
+import AddOrModifyWeight from "./AddOrModifyWeight";
 
 export default class WeightDataListNativeElements extends Component {
   constructor(props) {
     super(props);
     this.state = {
       weightData: this.props.weightData,
-      showEditWindow: false,
+      showEnterWeightComponent: false,
       editWeightValue: "",
       editIcon: { editWeightOK: false, success: false, error: true },
-      chosenWeightItem: {},
+      chosenWeightItem: null,
       refresh: false
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleTextCheck = this.handleTextCheck.bind(this);
-    this.updateWeight = this.updateWeight.bind(this);
     this.editItem = this.editItem.bind(this);
+    this.updateListNewOrModified = this.updateListNewOrModified.bind(this);
+    this.closeEnterWeightWindow = this.closeEnterWeightWindow.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -86,9 +88,9 @@ export default class WeightDataListNativeElements extends Component {
     tempData.splice(index, 1);
     this.setState({ weightData: tempData });
   }
+
   async editItem(item) {
-    // Open other windows to edit!! weight value and/or date/time
-    this.setState({ showEditWindow: true, chosenWeightItem: item });
+    this.setState({ showEnterWeightComponent: true, chosenWeightItem: item });
   }
 
   handleChangeText(value) {
@@ -96,38 +98,17 @@ export default class WeightDataListNativeElements extends Component {
   }
 
   handleTextCheck() {
-    // TODO regex would be better & cleaner
-    const indexOfDot1 = this.state.editWeightValue.indexOf(".");
-    if (!this.state.editWeightValue.length || this.state.editWeightValue == 0) {
+    const regexWeightCheck = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
+    const textCheckResult = this.state.enteredText.match(regexWeightCheck);
+    if (textCheckResult && textCheckResult[0] === textCheckResult.input) {
+      this.setState({
+        editIcon: { editWeightOK: true, success: true, error: false }
+      });
+    } else {
       this.setState({
         editIcon: { editWeightOK: false, success: false, error: true }
       });
-      return;
-    } else if (this.state.editWeightValue.includes("-")) {
-      this.setState({
-        editIcon: { editWeightOK: false, success: false, error: true }
-      });
-      return;
-    } else if (this.state.editWeightValue[0] == ".") {
-      this.setState({
-        editIcon: { editWeightOK: false, success: false, error: true }
-      });
-      return;
-    } else if (indexOfDot1 !== -1) {
-      const indexOfDot2 = this.state.editWeightValue.indexOf(
-        ".",
-        indexOfDot1 + 1
-      );
-      if (indexOfDot2 !== -1) {
-        this.setState({
-          editIcon: { editWeightOK: false, success: false, error: true }
-        });
-        return;
-      }
     }
-    this.setState({
-      editIcon: { editWeightOK: true, success: true, error: false }
-    });
   }
 
   getIconOkOrError() {
@@ -138,124 +119,56 @@ export default class WeightDataListNativeElements extends Component {
     }
   }
 
-  async updateWeight() {
-    const weight = parseFloat(this.state.editWeightValue);
-    const response = await EditWeight(this.state.chosenWeightItem, weight);
-
+  // REFACTOR!! now in two places....
+  updateListNewOrModified(newWeight, editChosenWeight) {
+    const weight = parseFloat(newWeight);
     const templist = this.state.weightData;
-    const foundWeight = templist.find(
-      weight => weight.time == this.state.chosenWeightItem.time
-    );
-    foundWeight.weight = weight;
-    // console.log(foundWeight)
-    // console.log(templist)
-    // STATE UPDATES BUT LIST NOT!!???
+    if (editChosenWeight) {
+      const foundWeight = templist.find(
+        weight => weight.time == editChosenWeight.time
+      );
+      foundWeight.weight = weight;
+    } else {
+      const time = new Date().getTime();
+      templist.unshift({ time, weight });
+    }
     this.setState({
-      showEditWindow: false,
       weightData: templist,
       refresh: !this.state.refresh,
-      editWeightValue: "",
-      editIcon: { editWeightOK: false, success: false, error: true }
+      showEnterWeightComponent: false,
+      chosenWeightItem: null
     });
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextState !== this.state) {
-  //     return true;
-  //   }
-  // }
+  closeEnterWeightWindow() {
+    this.setState({showEnterWeightComponent: false})
+  }
 
   render() {
     return (
       <View>
-        {/* <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.showEditWindow}
-          presentationStyle="pageSheet"
-          onRequestClose={() => {
-            return null;
-          }}
-        > */}
-          
-        {/* </Modal> */}
-        <Overlay
-          isVisible={this.state.showEditWindow}
-          height={window.window.height - (window.window.height / 1.6)}
-          onBackdropPress={() => this.setState({showEditWindow: false})}
-          animationType="slide"
-          transparent={true}
-          borderRadius={12}
-        >
-          <Container>
-            {/* <Header /> */}
-            <Content padder>
-              <Card>
-                <CardItem header bordered>
-                  <NativeBaseText>Enter correct value</NativeBaseText>
-                </CardItem>
-                <CardItem bordered>
-                  <Body>
-                    <Item
-                      error={this.state.editIcon.error}
-                      success={this.state.editIcon.success}
-                    >
-                      <Input
-                        placeholder="Weight..."
-                        onChangeText={this.handleChangeText}
-                        maxLength={5}
-                        keyboardType="decimal-pad"
-                      />
-                      <NativeBaseIcon name={this.getIconOkOrError()} />
-                    </Item>
-
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: "row",
-                        alignSelf: "center",
-                        marginTop: 12
-                      }}
-                    >
-                      <Button
-                        style={{ marginRight: 20 }}
-                        rounded
-                        disabled={this.state.editIcon.error}
-                        onPress={() => this.updateWeight()}
-                      >
-                        <NativeBaseText>Update</NativeBaseText>
-                      </Button>
-                      <Button
-                        onPress={() =>
-                          this.setState({
-                            showEditWindow: false,
-                            editWeightValue: "",
-                            editIcon: { editWeightOK: false, success: false, error: true }
-                          })
-                        }
-                        rounded
-                        bordered
-                        dark
-                      >
-                        <NativeBaseText>Cancel</NativeBaseText>
-                      </Button>
-                    </View>
-                  </Body>
-                </CardItem>
-              </Card>
-            </Content>
-          </Container>
-        </Overlay>
+        
+          <AddOrModifyWeight
+          closeEnterWeightWindow={this.closeEnterWeightWindow}
+          showEnterWeightComponent={this.state.showEnterWeightComponent}
+            updateListNewOrModified={this.updateListNewOrModified}
+            chosenWeightItem={this.state.chosenWeightItem}
+          />
+        
 
         <FlatList
-          keyExtractor={(item, index) => item.time.toString()}
+          keyExtractor={(item, index) => item.time.toString()} // 
           data={this.state.weightData}
           extraData={this.state.refresh}
           renderItem={({ item }) => (
             <ListItem
               key={item.time}
               title={item.weight + "kg"}
-              subtitle={`${new Date(item.time).toLocaleDateString()} - ${new Date(item.time).toLocaleTimeString().substr(0, 5)}`}
+              subtitle={`${new Date(
+                item.time
+              ).toLocaleDateString()} - ${new Date(item.time)
+                .toLocaleTimeString()
+                .substr(0, 5)}`}
               bottomDivider={true}
               topDivider={true}
               pad={12}

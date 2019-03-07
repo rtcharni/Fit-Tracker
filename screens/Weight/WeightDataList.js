@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { WebBrowser } from "expo";
 import { TESTDATAWEIGHTS } from "./TESTDATA";
+import { DeleteWeight } from "../../utils/AsyncStorage";
 
 export default class WeightDataList extends React.Component {
   constructor(props) {
@@ -40,15 +41,42 @@ export default class WeightDataList extends React.Component {
 
   onItemLongPress(item) {
     Alert.alert(
-      'Alert Title',
-      'My Alert Msg',
+      "Item modification",
+      "Do you want to modify this item?",
       [
-        {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {
+          text: "Cancel",
+          onPress: () => {
+            return;
+          },
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: () => this.deleteItem(item),
+          style: "destructive"
+        },
+        {
+          text: "Edit",
+          onPress: () => this.editItem(item),
+          style: "default"
+        }
       ],
       { cancelable: true }
-    )
+    );
+  }
+
+  async deleteItem(item) {
+    console.log("Delete Pressed");
+    console.log(item);
+    const response = await DeleteWeight(item);
+    const index = this.state.weightData.findIndex(x => x.time == item.key);
+    const tempData = this.state.weightData;
+    tempData.splice(index, 1);
+    this.setState({weightData: tempData});
+  }
+  async editItem(item) {
+    // Open other windows to edit!! weight value and/or date/time
   }
 
   constructListData() {

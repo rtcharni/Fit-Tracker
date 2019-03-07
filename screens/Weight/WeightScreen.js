@@ -18,6 +18,7 @@ import {
 } from "../../utils/AsyncStorage";
 import WeightDataList from "./WeightDataList";
 import WeightDataListNativeElements from "./WeightDataListNativeElements";
+import AddOrModifyWeight from "./AddOrModifyWeight";
 
 export default class WeightScreen extends React.Component {
   static navigationOptions = {
@@ -27,93 +28,73 @@ export default class WeightScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      enteredText: "",
-      numberOK: false,
-      weightData: []
+      weightData: [],
+      showEnterWeightComponent: false
     };
-    this.handleChangeText = this.handleChangeText.bind(this);
-    this.handleTextCheck = this.handleTextCheck.bind(this);
     this.handleSaveButton = this.handleSaveButton.bind(this);
-    this.handleGetWeightsButton = this.handleGetWeightsButton.bind(this);
+    this.getAllWeights = this.getAllWeights.bind(this);
+    this.closeEnterWeightWindow = this.closeEnterWeightWindow.bind(this);
+    this.updateListNewOrModified = this.updateListNewOrModified.bind(this);
   }
 
-  handleChangeText(value) {
-    this.setState({ enteredText: value }, this.handleTextCheck);
-  }
-
-  handleTextCheck() {
-    // TODO regex would be better & cleaner
-    const regex1 = new RegExp('[1-9][0-9]{0,2}\.?[0-9]{0,2}');
-    const regex = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
-    const a = 'fsadasds';
-    
-
-
-
-    const indexOfDot1 = this.state.enteredText.indexOf(".");
-    if (!this.state.enteredText.length || this.state.enteredText == 0) {
-      this.setState({ numberOK: false });
-      return;
-    } else if (this.state.enteredText.includes("-")) {
-      this.setState({ numberOK: false });
-      return;
-    } else if (this.state.enteredText[0] == ".") {
-      this.setState({ numberOK: false });
-      return;
-    } else if (indexOfDot1 !== -1) {
-      const indexOfDot2 = this.state.enteredText.indexOf(".", indexOfDot1 + 1);
-      if (indexOfDot2 !== -1) {
-        this.setState({ numberOK: false });
-        return;
-      }
-    }
-    this.setState({ numberOK: true });
+  componentDidMount() {
+    this.getAllWeights();
   }
 
   async handleSaveButton() {
-    const time = new Date().getTime();
-    const weight = parseFloat(this.state.enteredText);
-    const success = await SaveWeight({ time, weight });
-    // Update state
-    const templist = this.state.weightData;
-    templist.unshift({ time, weight });
-    this.setState({ enteredText: "", numberOK: false, weightData: templist });
+    this.setState({ showEnterWeightComponent: true });
   }
 
-  async handleGetWeightsButton() {
+  async getAllWeights() {
     const weightData = (await GetWeightArray()).reverse();
     this.setState({ weightData });
-    // console.log(this.state.weightData)
+  }
+
+  updateListNewOrModified(newWeight, editChosenWeight = null) {
+    const weight = parseFloat(newWeight);
+    const templist = this.state.weightData;
+    if (editChosenWeight) {
+      const foundWeight = templist.find(
+        weight => weight.time == editChosenWeight.time
+      );
+      foundWeight.weight = weight;
+    } else {
+      console.log("IM IN ELSE OK!!!");
+      const time = new Date().getTime();
+      templist.unshift({ time, weight });
+    }
+
+    this.setState({
+      weightData: templist,
+      showEnterWeightComponent: false
+    });
+  }
+
+  closeEnterWeightWindow() {
+    this.setState({ showEnterWeightComponent: false });
   }
 
   render() {
     return (
       <View>
         <View style={styles.container}>
-          <Text>Hello from WeightScreen</Text>
-          <TextInput
-            onChangeText={this.handleChangeText}
-            maxLength={5}
-            keyboardType="decimal-pad"
-            placeholder="Enter weight (kg)"
-            value={this.state.enteredText}
-            caretHidden={true}
+          <AddOrModifyWeight
+            showEnterWeightComponent={this.state.showEnterWeightComponent}
+            closeEnterWeightWindow={this.closeEnterWeightWindow}
+            updateListNewOrModified={this.updateListNewOrModified}
+            chosenWeightItem={this.state.chosenWeightItem}
           />
-          <Text>{this.state.enteredText}</Text>
           <Button
             onPress={this.handleSaveButton}
-            disabled={this.state.numberOK === true ? false : true}
-            title="Save"
+            title="Save value"
             color="#841584"
           />
-          <Text>{this.state.numberOK}</Text>
           {/* FOR TESTING */}
           <Button title="Clear data" onPress={ClearAllWeights} />
-          <Button title="Get Weights" onPress={this.handleGetWeightsButton} />
+          <Button title="Get Weights" onPress={this.getAllWeights} />
           {/* FOR TESTING */}
         </View>
 
-        {/* <WeightDataList weightData={this.state.weightData} /> */}
         <WeightDataListNativeElements weightData={this.state.weightData} />
       </View>
     );
