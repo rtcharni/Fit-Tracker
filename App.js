@@ -2,6 +2,7 @@ import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { AppLoading, Asset, Font, Icon } from "expo";
 import { Ionicons } from "@expo/vector-icons";
+import { Root } from "native-base";
 import AppNavigator from "./navigation/AppNavigator";
 
 export default class App extends React.Component {
@@ -21,8 +22,10 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
+          <Root>
           {Platform.OS === "ios" && <StatusBar barStyle="default" />}
           <AppNavigator />
+          </Root>
         </View>
       );
     }

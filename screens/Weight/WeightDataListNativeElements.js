@@ -17,7 +17,8 @@ import {
   Input,
   Icon as NativeBaseIcon,
   Item,
-  Button
+  Button,
+  Toast
 } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { DeleteWeight, EditWeight } from "../../utils/AsyncStorage";
@@ -33,7 +34,7 @@ export default class WeightDataListNativeElements extends Component {
       editWeightValue: "",
       editIcon: { editWeightOK: false, success: false, error: true },
       chosenWeightItem: null,
-      refresh: false
+      refresh: false,
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleTextCheck = this.handleTextCheck.bind(this);
@@ -87,6 +88,12 @@ export default class WeightDataListNativeElements extends Component {
     const tempData = this.state.weightData;
     tempData.splice(index, 1);
     this.setState({ weightData: tempData });
+    Toast.show({
+      text: "Item deleted!",
+      type: "success",
+      position: "bottom",
+      duration: 2000
+    })
   }
 
   async editItem(item) {
@@ -147,17 +154,17 @@ export default class WeightDataListNativeElements extends Component {
   render() {
     return (
       <View>
-        
+
           <AddOrModifyWeight
           closeEnterWeightWindow={this.closeEnterWeightWindow}
           showEnterWeightComponent={this.state.showEnterWeightComponent}
             updateListNewOrModified={this.updateListNewOrModified}
             chosenWeightItem={this.state.chosenWeightItem}
           />
-        
+
 
         <FlatList
-          keyExtractor={(item, index) => item.time.toString()} // 
+          keyExtractor={(item, index) => item.time.toString()} //
           data={this.state.weightData}
           extraData={this.state.refresh}
           renderItem={({ item }) => (

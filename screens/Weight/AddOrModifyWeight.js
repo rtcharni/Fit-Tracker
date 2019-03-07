@@ -17,7 +17,8 @@ import {
   Input,
   Icon as NativeBaseIcon,
   Item,
-  Button
+  Button,
+  Toast
 } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { DeleteWeight, EditWeight, SaveWeight } from "../../utils/AsyncStorage";
@@ -30,7 +31,7 @@ export default class AddOrModifyWeight extends Component {
       showComponent: this.props.showEnterWeightComponent,
       editWeightValue: "",
       editIcon: { editWeightOK: false, success: false, error: true },
-      chosenWeightItem: null
+      chosenWeightItem: null,
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleTextCheck = this.handleTextCheck.bind(this);
@@ -73,13 +74,22 @@ export default class AddOrModifyWeight extends Component {
 
   async saveWeight() {
     const weight = parseFloat(this.state.editWeightValue);
+    let response;
     if (this.props.chosenWeightItem) {
-      const response = await EditWeight(this.props.chosenWeightItem, weight);
-      // null chosenWeight
+      response = await EditWeight(this.props.chosenWeightItem, weight);
     } else {
       const time = new Date().getTime();
-      const response = await SaveWeight({ time, weight });
+      response = await SaveWeight({ time, weight });
     }
+    const toastType = response === true ? "success" : "danger";
+    const toastText = response === true ? "Weight saved!" : "Couldn't save weight :/";
+    Toast.show({
+      text: toastText,
+      type: toastType,
+      position: "bottom",
+      duration: 2000
+    })
+
     this.setState({
       editWeightValue: "",
       chosenWeightItem: null,
