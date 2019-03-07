@@ -34,7 +34,7 @@ export default class WeightDataListNativeElements extends Component {
       editWeightValue: "",
       editIcon: { editWeightOK: false, success: false, error: true },
       chosenWeightItem: null,
-      refresh: false,
+      refresh: false
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleTextCheck = this.handleTextCheck.bind(this);
@@ -93,7 +93,7 @@ export default class WeightDataListNativeElements extends Component {
       type: "success",
       position: "bottom",
       duration: 2000
-    })
+    });
   }
 
   async editItem(item) {
@@ -148,21 +148,18 @@ export default class WeightDataListNativeElements extends Component {
   }
 
   closeEnterWeightWindow() {
-    this.setState({showEnterWeightComponent: false})
+    this.setState({ showEnterWeightComponent: false });
   }
 
   render() {
     return (
-      <View>
-
-          <AddOrModifyWeight
+      <View style={{}}>
+        <AddOrModifyWeight
           closeEnterWeightWindow={this.closeEnterWeightWindow}
           showEnterWeightComponent={this.state.showEnterWeightComponent}
-            updateListNewOrModified={this.updateListNewOrModified}
-            chosenWeightItem={this.state.chosenWeightItem}
-          />
-
-
+          updateListNewOrModified={this.updateListNewOrModified}
+          chosenWeightItem={this.state.chosenWeightItem}
+        />
         <FlatList
           keyExtractor={(item, index) => item.time.toString()} //
           data={this.state.weightData}

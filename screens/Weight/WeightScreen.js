@@ -10,13 +10,20 @@ import {
   TextInput,
   Button
 } from "react-native";
+import {
+  Container,
+  Button as NativeBaseButton,
+  Icon,
+  Fab,
+  View as NativeBaseView
+} from "native-base";
 import { WebBrowser } from "expo";
 import {
   SaveWeight,
   GetWeightArray,
   ClearAllWeights
 } from "../../utils/AsyncStorage";
-import WeightDataList from "./WeightDataList";
+import window from "../../constants/Layout";
 import WeightDataListNativeElements from "./WeightDataListNativeElements";
 import AddOrModifyWeight from "./AddOrModifyWeight";
 
@@ -29,7 +36,8 @@ export default class WeightScreen extends React.Component {
     super();
     this.state = {
       weightData: [],
-      showEnterWeightComponent: false
+      showEnterWeightComponent: false,
+      fabActive: true
     };
     this.handleSaveButton = this.handleSaveButton.bind(this);
     this.getAllWeights = this.getAllWeights.bind(this);
@@ -64,14 +72,21 @@ export default class WeightScreen extends React.Component {
       templist.unshift({ time, weight });
     }
 
-    this.setState({
-      weightData: templist,
-      showEnterWeightComponent: false
-    });
+    this.setState(
+      {
+        weightData: templist,
+        showEnterWeightComponent: false
+      },
+      this.getAllWeights
+    );
   }
 
   closeEnterWeightWindow() {
     this.setState({ showEnterWeightComponent: false });
+  }
+
+  lol() {
+    console.log('JEEEEE')
   }
 
   render() {
@@ -95,6 +110,22 @@ export default class WeightScreen extends React.Component {
           {/* FOR TESTING */}
         </View>
 
+        {/* NOT WORKING ON PRESS!?  */}
+        <Container>
+          <NativeBaseView style={{ flex: 1 }}>
+            <Fab
+              active={false}
+              direction="up"
+              containerStyle={{}}
+              style={{ backgroundColor: "#5067FF" }}
+              position="bottomRight"
+              onPress={() => this.lol()}
+            >
+              <Icon name="add" />
+            </Fab>
+          </NativeBaseView>
+        </Container>
+
         <WeightDataListNativeElements weightData={this.state.weightData} />
       </View>
     );
@@ -110,4 +141,7 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     alignItems: "center"
   }
+  // fab: {
+  //   marginBottom: (window.window.height - window.window.height / 3.9)
+  // }
 });
