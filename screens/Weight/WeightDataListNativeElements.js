@@ -90,7 +90,7 @@ export default class WeightDataListNativeElements extends Component {
     this.setState({ weightData: tempData });
     Toast.show({
       text: "Item deleted!",
-      type: "success",
+      type: "warning",
       position: "bottom",
       duration: 2000
     });

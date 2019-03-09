@@ -1,4 +1,6 @@
 import React from "react";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Icon } from "react-native-elements";
 import {
   Image,
   Platform,
@@ -13,7 +15,6 @@ import {
 import {
   Container,
   Button as NativeBaseButton,
-  Icon,
   Fab,
   View as NativeBaseView
 } from "native-base";
@@ -37,9 +38,8 @@ export default class WeightScreen extends React.Component {
     this.state = {
       weightData: [],
       showEnterWeightComponent: false,
-      fabActive: true
     };
-    this.handleSaveButton = this.handleSaveButton.bind(this);
+    this.handlePlusIconPress = this.handlePlusIconPress.bind(this);
     this.getAllWeights = this.getAllWeights.bind(this);
     this.closeEnterWeightWindow = this.closeEnterWeightWindow.bind(this);
     this.updateListNewOrModified = this.updateListNewOrModified.bind(this);
@@ -49,8 +49,7 @@ export default class WeightScreen extends React.Component {
     this.getAllWeights();
   }
 
-  async handleSaveButton() {
-    this.setState({ showEnterWeightComponent: true });
+  async handlePlusIconPress() {
   }
 
   async getAllWeights() {
@@ -86,7 +85,7 @@ export default class WeightScreen extends React.Component {
   }
 
   lol() {
-    console.log('JEEEEE')
+    console.log("JEEEEE");
   }
 
   render() {
@@ -99,33 +98,26 @@ export default class WeightScreen extends React.Component {
             updateListNewOrModified={this.updateListNewOrModified}
             chosenWeightItem={this.state.chosenWeightItem}
           />
-          <Button
-            onPress={this.handleSaveButton}
-            title="Save value"
-            color="#841584"
-          />
+         
           {/* FOR TESTING */}
           <Button title="Clear data" onPress={ClearAllWeights} />
           <Button title="Get Weights" onPress={this.getAllWeights} />
           {/* FOR TESTING */}
         </View>
 
-        {/* NOT WORKING ON PRESS!?  */}
-        <Container>
-          <NativeBaseView style={{ flex: 1 }}>
-            <Fab
-              active={false}
-              direction="up"
-              containerStyle={{}}
-              style={{ backgroundColor: "#5067FF" }}
-              position="bottomRight"
-              onPress={() => this.lol()}
-            >
-              <Icon name="add" />
-            </Fab>
-          </NativeBaseView>
-        </Container>
+        <Icon
+        raised
+          name="add-circle-outline"
+          type="MaterialIcons"
+          color="blue"
+          size={28}
+          iconStyle={{}}
+          containerStyle={{alignSelf:"flex-end"}}
+          onPress={() => this.setState({ showEnterWeightComponent: true })}
+    
 
+          
+        />
         <WeightDataListNativeElements weightData={this.state.weightData} />
       </View>
     );
