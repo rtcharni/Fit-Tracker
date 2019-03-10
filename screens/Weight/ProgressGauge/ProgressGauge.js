@@ -25,7 +25,7 @@ export default class ProgressGauge extends Component {
   render() {
     return (
       <AnimatedGaugeProgress
-        style={{ alignItems: "center", marginBottom: -120, marginTop:10 }}
+        style={{ alignItems: "center", marginBottom: -100, marginTop:10 }}
         size={size}
         width={width}
         fill={this.state.progressPercent} // This is percentage of progress rotation={90}
