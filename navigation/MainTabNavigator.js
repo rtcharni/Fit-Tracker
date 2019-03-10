@@ -11,6 +11,7 @@ import LinksScreen from "../screens/Links/LinksScreen";
 import SettingsScreen from "../screens/Settings/SettingsScreen";
 import WeightScreen from "../screens/Weight/WeightScreen";
 import WeightIcon from "../assets/icons/WeightIcon";
+import WeightChart from "../screens/Links/Weightchart/WeightChart";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen
@@ -59,7 +60,8 @@ SettingsStack.navigationOptions = {
 };
 
 const WeightStack = createStackNavigator({
-  Weight: WeightScreen
+  Weight: WeightScreen,
+  Weightchart: WeightChart
 });
 
 WeightStack.navigationOptions = {

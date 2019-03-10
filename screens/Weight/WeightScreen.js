@@ -33,8 +33,8 @@ export default class WeightScreen extends React.Component {
     title: "Weight"
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       weightData: [],
       showEnterWeightComponent: false,
@@ -103,6 +103,7 @@ export default class WeightScreen extends React.Component {
           <Button title="Clear data" onPress={ClearAllWeights} />
           <Button title="Get Weights" onPress={this.getAllWeights} />
           {/* FOR TESTING */}
+          <Button title="Chart" onPress={() => this.props.navigation.navigate('Weightchart')} />
         </View>
 
         <Icon

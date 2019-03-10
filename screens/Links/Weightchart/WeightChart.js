@@ -8,22 +8,26 @@ export default class WeightChart extends React.Component {
     super(props);
     this.state = {
       weightData: [],
-      refresh: false
+      refresh: this.props.refresh
     };
     this.chartData = this.chartData.bind(this);
   }
 
   // TODO
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.showEnterWeightComponent !== prevState.showComponent) {
-      return { showComponent: nextProps.showEnterWeightComponent };
-    }
-    return null;
-  }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.refresh !== prevState.refresh) {
+  //     return { refresh: nextProps.refresh };
+  //   }
+  //   return null;
+  // }
 
   componentDidMount() {
     this.chartData();
   }
+
+  // componentDidUpdate() {
+  //   this.chartData();
+  // }
 
   async chartData() {
     const storageData = (await GetWeightArray()).reverse();
