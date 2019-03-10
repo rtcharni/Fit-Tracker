@@ -5,6 +5,7 @@ import {
   AnimatedGaugeProgress,
   GaugeProgress
 } from "react-native-simple-gauge";
+import window from '../../../constants/Layout';
 
 const size = 180;
 const width = 10;
@@ -24,7 +25,7 @@ export default class ProgressGauge extends Component {
   render() {
     return (
       <AnimatedGaugeProgress
-      style={{alignItems: 'center'}}
+      style={{alignItems: 'center', marginBottom: 0}}
         size={size}
         width={width}
         fill={this.state.progressPercent} // This is percentage of progress rotation={90}
@@ -32,7 +33,7 @@ export default class ProgressGauge extends Component {
         tintColor="#4682b4"
         delay={0}
         backgroundColor="#b0c4de"
-        stroke={[7, 7]} //For a equaly dashed line
+        stroke={[1, 1]} //For a equaly dashed line
         strokeCap="circle"
       >
         <View style={styles.textView}>
