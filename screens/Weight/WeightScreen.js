@@ -27,6 +27,7 @@ import {
 import window from "../../constants/Layout";
 import WeightDataListNativeElements from "./WeightDataListNativeElements";
 import AddOrModifyWeight from "./AddOrModifyWeight";
+import ProgressGauge from "./ProgressGauge/ProgressGauge";
 
 export default class WeightScreen extends React.Component {
   static navigationOptions = {
@@ -96,6 +97,7 @@ export default class WeightScreen extends React.Component {
           updateListNewOrModified={this.updateListNewOrModified}
           chosenWeightItem={this.state.chosenWeightItem}
         />
+        {/* <ProgressGauge/> */}
         {/* FOR TESTING */}
         {/* <Button title="Clear data" onPress={ClearAllWeights} />
           <Button title="Get Weights" onPress={this.getAllWeights} /> */}
