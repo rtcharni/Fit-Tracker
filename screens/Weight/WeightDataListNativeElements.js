@@ -55,7 +55,7 @@ export default class WeightDataListNativeElements extends Component {
   onIconPress(item) {
     console.log(item);
     Alert.alert(
-      "Item modification",
+      `Date: ${new Date(item.time).toLocaleDateString()}. Weight: ${item.weight}kg`,
       "Do you want to modify this item?",
       [
         {
