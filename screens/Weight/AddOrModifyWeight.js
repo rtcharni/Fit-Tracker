@@ -31,7 +31,7 @@ export default class AddOrModifyWeight extends Component {
       showComponent: this.props.showEnterWeightComponent,
       editWeightValue: "",
       editIcon: { editWeightOK: false, success: false, error: true },
-      chosenWeightItem: null,
+      chosenWeightItem: null
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleTextCheck = this.handleTextCheck.bind(this);
@@ -82,20 +82,28 @@ export default class AddOrModifyWeight extends Component {
       response = await SaveWeight({ time, weight });
     }
     const toastType = response === true ? "success" : "danger";
-    const toastText = response === true ? "Weight saved!" : "Couldn't save weight :/";
+    const toastText =
+      response === true ? "Weight saved!" : "Couldn't save weight :/";
     Toast.show({
       text: toastText,
       type: toastType,
       position: "bottom",
       duration: 2000
-    })
+    });
+    this.resetComponent();
+    this.props.updateListNewOrModified(weight, this.props.chosenWeightItem);
+  }
 
+  resetComponent() {
     this.setState({
       editWeightValue: "",
       chosenWeightItem: null,
-      editIcon: { editWeightOK: false, success: false, error: true },
+      editIcon: {
+        editWeightOK: false,
+        success: false,
+        error: true
+      }
     });
-    this.props.updateListNewOrModified(weight, this.props.chosenWeightItem);
   }
 
   render() {
@@ -103,7 +111,10 @@ export default class AddOrModifyWeight extends Component {
       <Overlay
         isVisible={this.state.showComponent}
         height={window.window.height - window.window.height / 1.6}
-        onBackdropPress={() => this.setState({ showComponent: false })}
+        onBackdropPress={() => {
+          this.resetComponent();
+          this.props.closeEnterWeightWindow();
+        }}
         animationType="slide"
         transparent={true}
         borderRadius={12}
@@ -154,16 +165,7 @@ export default class AddOrModifyWeight extends Component {
                     </Button>
                     <Button
                       onPress={() => {
-                        this.setState({
-                          // showComponent: false,
-                          editWeightValue: "",
-                          chosenWeightItem: null,
-                          editIcon: {
-                            editWeightOK: false,
-                            success: false,
-                            error: true
-                          }
-                        });
+                        this.resetComponent();
                         this.props.closeEnterWeightWindow();
                       }}
                       rounded
