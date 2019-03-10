@@ -97,7 +97,7 @@ export default class WeightScreen extends React.Component {
           updateListNewOrModified={this.updateListNewOrModified}
           chosenWeightItem={this.state.chosenWeightItem}
         />
-        {/* <ProgressGauge/> */}
+        <ProgressGauge/>
         {/* FOR TESTING */}
         {/* <Button title="Clear data" onPress={ClearAllWeights} />
           <Button title="Get Weights" onPress={this.getAllWeights} /> */}

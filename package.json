@@ -20,6 +20,7 @@
     "react-native-easy-grid": "^0.2.1",
     "react-native-elements": "^1.1.0",
     "react-native-highcharts": "^1.0.2",
+    "react-native-simple-gauge": "^0.1.11",
     "react-navigation": "^3.0.9"
   },
   "devDependencies": {
