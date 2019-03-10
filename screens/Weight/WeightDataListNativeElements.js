@@ -164,6 +164,19 @@ export default class WeightDataListNativeElements extends Component {
           keyExtractor={(item, index) => item.time.toString()} //
           data={this.state.weightData}
           extraData={this.state.refresh}
+          ListHeaderComponent={() => <ListItem
+            title={"Entries"}
+            bottomDivider={true}
+            topDivider={true}
+            leftIcon={
+              <NativeElementIcon
+                name="weight-kilogram"
+                type="material-community"
+                color="grey"
+                size={24}
+              />
+            }
+          />}
           renderItem={({ item }) => (
             <ListItem
               key={item.time}
