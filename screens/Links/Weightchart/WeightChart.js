@@ -1,11 +1,16 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import ChartView from "react-native-highcharts";
+import { GetWeightArray } from "../../../utils/AsyncStorage";
 
 export default class WeightChart extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = {
+      weightData: [],
+      refresh: false
+    };
+    this.chartData = this.chartData.bind(this);
   }
 
   // TODO
@@ -15,18 +20,28 @@ export default class WeightChart extends React.Component {
     }
     return null;
   }
-  
+
+  componentDidMount() {
+    this.chartData();
+  }
+
+  async chartData() {
+    const storageData = (await GetWeightArray()).reverse();
+    const weightData = storageData.map(weight => ({x: weight.time, y: weight.weight}));
+    this.setState({weightData: weightData});
+  }
+
   render() {
     const Highcharts = "Highcharts";
     const conf = {
       chart: {
-        type: "spline",
+        type: "spline", // spline / line
         animation: Highcharts.svg // don't animate in old IE
         // marginRight: 10,
         // events: { }
       },
       title: {
-        text: "Progress"
+        text: ""
       },
       credits: {
         enabled: false
@@ -36,7 +51,7 @@ export default class WeightChart extends React.Component {
       },
       yAxis: {
         title: {
-          text: "Weight"
+          text: ""
         }
         // labels: {
         //     formatter: function () {
@@ -52,28 +67,31 @@ export default class WeightChart extends React.Component {
         // ]
       },
       tooltip: {
-        crosshairs: true
-        // formatter: function() {
-        //   return (
-        //     "<b>" +
-        //     this.series.name +
-        //     "</b><br/>" +
-        //     Highcharts.dateFormat("%Y-%m-%d %H:%M:%S", this.x) +
-        //     "<br/>" +
-        //     Highcharts.numberFormat(this.y, 2)
-        //   );
-        // }
+        crosshairs: false,
+        formatter: function() {
+          return (
+            `${Highcharts.dateFormat("%d.%m.%Y at %H:%M", this.x)}<br/> Weight:
+            <b> ${Highcharts.numberFormat(this.y, 1)} kg </b>`
+          );
+        }
       },
       legend: {
         enabled: false
       },
-      //   exporting: {
-      //     enabled: false
-      //   },
+      exporting: {
+        enabled: false
+      },
       series: [
         {
-          name: "Random data",
-          data: [{ x: 1552156058188, y: 10 }, { x: 1552156158188, y: 12 }]
+          name: "Your weight",
+          data: this.state.weightData
+          // data: [
+          //   { x: 1551678840363, y: 60 },
+          //   { x: 1551851640363, y: 59.5 },
+          //   { x: 1551938040363, y: 58 },
+          //   { x: 1552024440363, y: 58.8 },
+          //   { x: 1552110840363, y: 58.2 }
+          // ]
         }
       ]
     };
