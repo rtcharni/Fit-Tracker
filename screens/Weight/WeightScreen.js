@@ -37,7 +37,7 @@ export default class WeightScreen extends React.Component {
     super(props);
     this.state = {
       weightData: [],
-      showEnterWeightComponent: false,
+      showEnterWeightComponent: false
     };
     this.handlePlusIconPress = this.handlePlusIconPress.bind(this);
     this.getAllWeights = this.getAllWeights.bind(this);
@@ -49,8 +49,7 @@ export default class WeightScreen extends React.Component {
     this.getAllWeights();
   }
 
-  async handlePlusIconPress() {
-  }
+  async handlePlusIconPress() {}
 
   async getAllWeights() {
     const weightData = (await GetWeightArray()).reverse();
@@ -90,37 +89,50 @@ export default class WeightScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <View style={styles.container}>
-          <AddOrModifyWeight
-            showEnterWeightComponent={this.state.showEnterWeightComponent}
-            closeEnterWeightWindow={this.closeEnterWeightWindow}
-            updateListNewOrModified={this.updateListNewOrModified}
-            chosenWeightItem={this.state.chosenWeightItem}
-          />
-         
-          {/* FOR TESTING */}
-          <Button title="Clear data" onPress={ClearAllWeights} />
-          <Button title="Get Weights" onPress={this.getAllWeights} />
-          {/* FOR TESTING */}
-          <Button title="Chart" onPress={() => this.props.navigation.navigate('Weightchart')} />
-        </View>
-
-        <Icon
-        raised
-          name="add-circle-outline"
-          type="MaterialIcons"
-          color="blue"
-          size={28}
-          iconStyle={{}}
-          containerStyle={{alignSelf:"flex-end"}}
-          onPress={() => this.setState({ showEnterWeightComponent: true })}
-    
-
-          
+      <ScrollView>
+        <AddOrModifyWeight
+          showEnterWeightComponent={this.state.showEnterWeightComponent}
+          closeEnterWeightWindow={this.closeEnterWeightWindow}
+          updateListNewOrModified={this.updateListNewOrModified}
+          chosenWeightItem={this.state.chosenWeightItem}
         />
+        {/* FOR TESTING */}
+        {/* <Button title="Clear data" onPress={ClearAllWeights} />
+          <Button title="Get Weights" onPress={this.getAllWeights} /> */}
+        {/* FOR TESTING */}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            // alignSelf: "auto",
+            marginTop: 1,
+            // alignContent: "space-around",
+            justifyContent: "space-between"
+          }}
+        >
+         <Icon
+            raised
+            name="chart-line"
+            type="material-community"
+            color="blue"
+            size={28}
+            iconStyle={{}}
+            containerStyle={{ }}
+            onPress={() => this.props.navigation.navigate('Weightchart')}
+          />
+          <Icon
+            raised
+            name="add-circle-outline"
+            type="MaterialIcons"
+            color="blue"
+            size={28}
+            iconStyle={{}}
+            containerStyle={{ }} // alignSelf: "flex-end"
+            onPress={() => this.setState({ showEnterWeightComponent: true })}
+          />
+        </View>
         <WeightDataListNativeElements weightData={this.state.weightData} />
-      </View>
+      </ScrollView>
     );
   }
 }

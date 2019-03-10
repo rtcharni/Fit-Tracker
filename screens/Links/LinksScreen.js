@@ -1,7 +1,5 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import ChartView from 'react-native-highcharts';
-import WeightChart from './Weightchart/WeightChart';
 
 export default class LinksScreen extends React.Component {
   static navigationOptions = {
@@ -11,7 +9,7 @@ export default class LinksScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <WeightChart/>
+       
       </ScrollView>
     );
   }

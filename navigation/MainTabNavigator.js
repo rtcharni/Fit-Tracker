@@ -11,7 +11,7 @@ import LinksScreen from "../screens/Links/LinksScreen";
 import SettingsScreen from "../screens/Settings/SettingsScreen";
 import WeightScreen from "../screens/Weight/WeightScreen";
 import WeightIcon from "../assets/icons/WeightIcon";
-import WeightChart from "../screens/Links/Weightchart/WeightChart";
+import WeightChart from "../screens/Weight/Weightchart/WeightChart";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen

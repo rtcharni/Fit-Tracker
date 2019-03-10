@@ -20,7 +20,8 @@
     "react-native-easy-grid": "^0.2.1",
     "react-native-elements": "^1.1.0",
     "react-native-highcharts": "^1.0.2",
-    "react-navigation": "^3.0.9"
+    "react-navigation": "^3.0.9",
+    "svg-gauge": "^1.0.5"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
