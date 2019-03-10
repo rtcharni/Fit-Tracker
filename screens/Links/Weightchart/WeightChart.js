@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import ChartView from "react-native-highcharts";
 import { GetWeightArray } from "../../../utils/AsyncStorage";
 
+// TODO FILTER BY TIME!
 export default class WeightChart extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +14,6 @@ export default class WeightChart extends React.Component {
     this.chartData = this.chartData.bind(this);
   }
 
-  // TODO
   // static getDerivedStateFromProps(nextProps, prevState) {
   //   if (nextProps.refresh !== prevState.refresh) {
   //     return { refresh: nextProps.refresh };
@@ -24,10 +24,6 @@ export default class WeightChart extends React.Component {
   componentDidMount() {
     this.chartData();
   }
-
-  // componentDidUpdate() {
-  //   this.chartData();
-  // }
 
   async chartData() {
     const storageData = (await GetWeightArray()).reverse();
@@ -41,8 +37,6 @@ export default class WeightChart extends React.Component {
       chart: {
         type: "spline", // spline / line
         animation: Highcharts.svg // don't animate in old IE
-        // marginRight: 10,
-        // events: { }
       },
       title: {
         text: ""
@@ -51,24 +45,13 @@ export default class WeightChart extends React.Component {
         enabled: false
       },
       xAxis: {
-        type: "datetime"
+        type: "datetime",
+        tickPixelInterval: 10
       },
       yAxis: {
         title: {
           text: ""
         }
-        // labels: {
-        //     formatter: function () {
-        //         return this.value + '°';
-        //     }
-        // }
-        // plotLines: [
-        //   {
-        //     value: 0,
-        //     width: 1,
-        //     color: "#808080"
-        //   }
-        // ]
       },
       tooltip: {
         crosshairs: false,
