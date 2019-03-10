@@ -67,11 +67,9 @@ export default class WeightScreen extends React.Component {
       );
       foundWeight.weight = weight;
     } else {
-      console.log("IM IN ELSE OK!!!");
       const time = new Date().getTime();
       templist.unshift({ time, weight });
     }
-
     this.setState(
       {
         weightData: templist,
@@ -91,59 +89,51 @@ export default class WeightScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView style={{flex:1}}>
-        <Grid>
-          <Row size={50} style={{ }}>
-            <ProgressGauge />
-          </Row>
+      <ScrollView style={{ flex: 1 }}>
+        <ProgressGauge />
 
-          <Row size={50} style={{}}>
-            <AddOrModifyWeight
-              showEnterWeightComponent={this.state.showEnterWeightComponent}
-              closeEnterWeightWindow={this.closeEnterWeightWindow}
-              updateListNewOrModified={this.updateListNewOrModified}
-              chosenWeightItem={this.state.chosenWeightItem}
-            />
-            {/* FOR TESTING */}
-            {/* <Button title="Clear data" onPress={ClearAllWeights} />
+        <AddOrModifyWeight
+          showEnterWeightComponent={this.state.showEnterWeightComponent}
+          closeEnterWeightWindow={this.closeEnterWeightWindow}
+          updateListNewOrModified={this.updateListNewOrModified}
+          chosenWeightItem={this.state.chosenWeightItem}
+        />
+        {/* FOR TESTING */}
+        {/* <Button title="Clear data" onPress={ClearAllWeights} />
           <Button title="Get Weights" onPress={this.getAllWeights} /> */}
-            {/* FOR TESTING */}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                // alignSelf: "auto",
-                marginTop: 1,
-                // alignContent: "space-around",
-                justifyContent: "space-between"
-              }}
-            >
-              <Icon
-                raised
-                name="chart-line"
-                type="material-community"
-                color="blue"
-                size={28}
-                iconStyle={{}}
-                containerStyle={{}}
-                onPress={() => this.props.navigation.navigate("Weightchart")}
-              />
-              <Icon
-                raised
-                name="add-circle-outline"
-                type="MaterialIcons"
-                color="blue"
-                size={28}
-                iconStyle={{}}
-                containerStyle={{}} // alignSelf: "flex-end"
-                onPress={() =>
-                  this.setState({ showEnterWeightComponent: true })
-                }
-              />
-            </View>
-            <WeightDataListNativeElements weightData={this.state.weightData} />
-          </Row>
-        </Grid>
+        {/* FOR TESTING */}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            // alignSelf: "auto",
+            marginTop: 1,
+            // alignContent: "space-around",
+            justifyContent: "space-between"
+          }}
+        >
+          <Icon
+            raised
+            name="chart-line"
+            type="material-community"
+            color="blue"
+            size={28}
+            iconStyle={{}}
+            containerStyle={{}}
+            onPress={() => this.props.navigation.navigate("Weightchart")}
+          />
+          <Icon
+            raised
+            name="add-circle-outline"
+            type="MaterialIcons"
+            color="blue"
+            size={28}
+            iconStyle={{}}
+            containerStyle={{}} // alignSelf: "flex-end"
+            onPress={() => this.setState({ showEnterWeightComponent: true })}
+          />
+        </View>
+        <WeightDataListNativeElements weightData={this.state.weightData} />
       </ScrollView>
     );
   }
@@ -158,7 +148,4 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center"
   }
-  // fab: {
-  //   marginBottom: (window.window.height - window.window.height / 3.9)
-  // }
 });

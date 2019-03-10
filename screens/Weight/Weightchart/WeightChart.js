@@ -2,6 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import ChartView from "react-native-highcharts";
 import { GetWeightArray } from "../../../utils/AsyncStorage";
+import window from "../../../constants/Layout";
 
 // TODO FILTER BY TIME!
 export default class WeightChart extends React.Component {
@@ -27,8 +28,11 @@ export default class WeightChart extends React.Component {
 
   async chartData() {
     const storageData = (await GetWeightArray()).reverse();
-    const weightData = storageData.map(weight => ({x: weight.time, y: weight.weight}));
-    this.setState({weightData: weightData});
+    const weightData = storageData.map(weight => ({
+      x: weight.time,
+      y: weight.weight
+    }));
+    this.setState({ weightData: weightData });
   }
 
   render() {
@@ -46,7 +50,13 @@ export default class WeightChart extends React.Component {
       },
       xAxis: {
         type: "datetime",
-        tickPixelInterval: 10
+        tickPixelInterval: 10,
+        labels: {
+          formatter: function() {
+            const date = new Date(this.value);
+            return `${date.getDate()}.${date.getMonth() + 1}`
+          }
+        }
       },
       yAxis: {
         title: {
@@ -56,10 +66,11 @@ export default class WeightChart extends React.Component {
       tooltip: {
         crosshairs: false,
         formatter: function() {
-          return (
-            `${Highcharts.dateFormat("%d.%m.%Y at %H:%M", this.x)}<br/> Weight:
-            <b> ${Highcharts.numberFormat(this.y, 1)} kg </b>`
-          );
+          return `${Highcharts.dateFormat(
+            "%d.%m.%Y at %H:%M",
+            this.x
+          )}<br/> Weight:
+            <b> ${Highcharts.numberFormat(this.y, 1)} kg </b>`;
         }
       },
       legend: {
@@ -72,13 +83,6 @@ export default class WeightChart extends React.Component {
         {
           name: "Your weight",
           data: this.state.weightData
-          // data: [
-          //   { x: 1551678840363, y: 60 },
-          //   { x: 1551851640363, y: 59.5 },
-          //   { x: 1551938040363, y: 58 },
-          //   { x: 1552024440363, y: 58.8 },
-          //   { x: 1552110840363, y: 58.2 }
-          // ]
         }
       ]
     };
@@ -90,11 +94,16 @@ export default class WeightChart extends React.Component {
       lang: {
         decimalPoint: ",",
         thousandsSep: "."
+        // shortMonths: ["Tam", "Hel", "3", "Huhti", "Touko", "Kesä", "Heinä", "Elo", "Syys", "Lok", "Mar", "Jou"]
       }
     };
-
+    const deviceHeight = window.window.height;
     return (
-      <ChartView style={{ height: 300 }} config={conf} options={options} />
+      <ChartView
+        style={{ height: window.window.height / 2 }}
+        config={conf}
+        options={options}
+      />
     );
   }
 }

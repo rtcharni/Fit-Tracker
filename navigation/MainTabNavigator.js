@@ -7,11 +7,12 @@ import {
 
 import TabBarIcon from "../assets/icons/TabBarIcon";
 import HomeScreen from "../screens/Home/HomeScreen";
-import LinksScreen from "../screens/Links/LinksScreen";
+import ProfileScreen from "../screens/Profile/ProfileScreen";
 import SettingsScreen from "../screens/Settings/SettingsScreen";
 import WeightScreen from "../screens/Weight/WeightScreen";
 import WeightIcon from "../assets/icons/WeightIcon";
 import WeightChart from "../screens/Weight/Weightchart/WeightChart";
+import ProfileIcon from "../assets/icons/ProfileIcon";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen
@@ -31,17 +32,14 @@ HomeStack.navigationOptions = {
   )
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: "Links",
+ProfileStack.navigationOptions = {
+  tabBarLabel: "Profile",
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
-    />
+    <ProfileIcon focused={focused} name={Platform.OS === "ios" ? "ios-person" : "md-person"}/>
   )
 };
 
@@ -72,6 +70,6 @@ WeightStack.navigationOptions = {
 export default createBottomTabNavigator({
   WeightStack,
   HomeStack,
-  LinksStack,
+  ProfileStack,
   SettingsStack
 });
