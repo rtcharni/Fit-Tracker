@@ -74,8 +74,15 @@ export const SaveProfile = async (newProfile) => {
 
 export const GetProfile = async () => {
   try {
-    return response = await AsyncStorage.getItem("Profile");
+    const response = await AsyncStorage.getItem("Profile");
+    return response ? JSON.parse(response) : response;
   } catch (error) {
     // TODO handeError
   }
+};
+
+export const ClearProfile = async () => {
+  try {
+    await AsyncStorage.removeItem("Profile");
+  } catch (error) {}
 };
