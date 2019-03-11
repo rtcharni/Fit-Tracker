@@ -17,7 +17,11 @@ import {
   Button,
   Toast
 } from "native-base";
-import { GetProfile } from "../../utils/AsyncStorage";
+import {
+  GetProfile,
+  SaveProfile,
+  ClearProfile
+} from "../../utils/AsyncStorage";
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -27,14 +31,26 @@ export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pickerValue: "male",
+      gender: "male",
       startingWeight: "",
       targetWeight: "",
       height: ""
     };
   }
 
-  handleSaveButton() {
+  async componentDidMount() {
+    const profile = await GetProfile();
+    if (profile) {
+      this.setState({
+        gender: profile.gender,
+        startingWeight: profile.startingWeight,
+        targetWeight: profile.targetWeight,
+        height: profile.height
+      });
+    }
+  }
+
+  async handleSaveButton() {
     const regexWeightCheck = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
     const regexHeightCheck = /[1-9][0-9]{2}/;
     const startingWeightResult = this.state.startingWeight.match(
@@ -57,6 +73,12 @@ export default class ProfileScreen extends React.Component {
         position: "bottom",
         duration: 2000,
         textStyle: { fontSize: 20, textAlign: "center" }
+      });
+      await SaveProfile({
+        startingWeight: this.state.startingWeight,
+        targetWeight: this.state.targetWeight,
+        gender: this.state.gender,
+        height: this.state.height
       });
     } else {
       Toast.show({
@@ -85,6 +107,7 @@ export default class ProfileScreen extends React.Component {
                     <Icon active name="home" />
                     <Label>Starting weight (kg)</Label>
                     <Input
+                      value={this.state.startingWeight}
                       maxLength={5}
                       keyboardType="decimal-pad"
                       returnKeyType="next"
@@ -103,6 +126,7 @@ export default class ProfileScreen extends React.Component {
                     <Icon active name="home" />
                     <Label>Target weight (kg)</Label>
                     <Input
+                      value={this.state.targetWeight}
                       maxLength={5}
                       keyboardType="decimal-pad"
                       returnKeyType="next"
@@ -123,6 +147,7 @@ export default class ProfileScreen extends React.Component {
                   <Item floatingLabel>
                     <Label>Height (cm)</Label>
                     <Input
+                      value={this.state.height}
                       maxLength={3}
                       keyboardType="decimal-pad"
                       returnKeyType="done"
@@ -144,10 +169,8 @@ export default class ProfileScreen extends React.Component {
                       placeholder="Select your SIM"
                       placeholderStyle={{ color: "#bfc6ea" }}
                       placeholderIconColor="#007aff"
-                      selectedValue={this.state.pickerValue}
-                      onValueChange={pickerValue =>
-                        this.setState({ pickerValue })
-                      }
+                      selectedValue={this.state.gender}
+                      onValueChange={gender => this.setState({ gender })}
                     >
                       <Picker.Item label="Male" value="male" />
                       <Picker.Item label="Female" value="female" />
@@ -164,9 +187,18 @@ export default class ProfileScreen extends React.Component {
                   <Text>Save</Text>
                 </Button>
                 <Text>Save</Text>
-                <Button block large iconRight >
+                <Button block large iconRight>
                   <Text>Save</Text>
                   <Icon name="save" />
+                </Button>
+                <Text>Save</Text>
+                <Button
+                  block
+                  small
+                  iconLeft
+                  onPress={async () => await ClearProfile()}
+                >
+                  <Text>Clear profile</Text>
                 </Button>
               </Card>
             </Form>
