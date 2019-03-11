@@ -13,7 +13,8 @@ import {
   Input,
   Label,
   Icon,
-  Picker
+  Picker,
+  Button
 } from "native-base";
 
 export default class ProfileScreen extends React.Component {
@@ -21,22 +22,29 @@ export default class ProfileScreen extends React.Component {
     title: "Profile"
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      pickerValue: "male"
+      pickerValue: "male",
+      startingWeight: "",
+      targetWeight: "",
+      height: ""
     };
   }
 
-  handlePickerChange(item, index) {
-    console.log(item);
+  handlePickerChange(item) {
+    this.setState({ pickerValue: item });
+  }
+
+  handleSaveButton() {
+    console.log(this.state)
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Container>
-          <Header />
+          {/* <Header /> */}
           <Content padder>
             <Form>
               <Card>
@@ -46,21 +54,51 @@ export default class ProfileScreen extends React.Component {
                 <CardItem>
                   <Item floatingLabel>
                     <Icon active name="home" />
-                    <Label>Starting weight</Label>
-                    <Input />
+                    <Label>Starting weight (kg)</Label>
+                    <Input
+                      maxLength={5}
+                      keyboardType="decimal-pad"
+                      returnKeyType="next"
+                      blurOnSubmit={false}
+                      onSubmitEditing={() => {
+                        this.secondInput._root.focus();
+                      }}
+                      onChangeText={(startingWeight) => this.setState({startingWeight})}
+                    />
                   </Item>
                 </CardItem>
                 <CardItem>
                   <Item floatingLabel>
                     <Icon active name="home" />
-                    <Label>Target weight</Label>
-                    <Input />
+                    <Label>Target weight (kg)</Label>
+                    <Input
+                      maxLength={5}
+                      keyboardType="decimal-pad"
+                      returnKeyType="next"
+                      blurOnSubmit={false}
+                      getRef={input => {
+                        this.secondInput = input;
+                      }}
+                      onSubmitEditing={() => {
+                        this.thirdInput._root.focus();
+                      }}
+                      onChangeText={(targetWeight) => this.setState({targetWeight})}
+                    />
                   </Item>
                 </CardItem>
                 <CardItem>
                   <Item floatingLabel>
-                    <Label>Height</Label>
-                    <Input />
+                    <Label>Height (cm)</Label>
+                    <Input
+                      maxLength={3}
+                      keyboardType="decimal-pad"
+                      returnKeyType="done"
+                      blurOnSubmit={true}
+                      getRef={input => {
+                        this.thirdInput = input;
+                      }}
+                      onChangeText={(height) => this.setState({height})}
+                    />
                     <Icon active name="swap" />
                   </Item>
                 </CardItem>
@@ -83,9 +121,18 @@ export default class ProfileScreen extends React.Component {
                   </Item>
                 </CardItem>
 
-                <CardItem footer bordered>
+                {/* <CardItem footer bordered>
                   <Text>Footer if needed</Text>
-                </CardItem>
+                </CardItem> */}
+                <Button block iconLeft onPress={() => this.handleSaveButton()}>
+                  <Icon name="save" />
+                  <Text>Save</Text>
+                </Button>
+                <Text>Save</Text>
+                <Button block large iconRight>
+                  <Text>Save</Text>
+                  <Icon name="save" />
+                </Button>
               </Card>
             </Form>
           </Content>
