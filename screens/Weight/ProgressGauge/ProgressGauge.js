@@ -6,6 +6,7 @@ import {
   GaugeProgress
 } from "react-native-simple-gauge";
 import window from "../../../constants/Layout";
+import { GetProfile } from "../../../utils/AsyncStorage";
 
 const size = 180;
 const width = 10;
@@ -18,17 +19,38 @@ export default class ProgressGauge extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      progressPercent: 50
+      lastWeight: null,
+      profile: null
     };
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.lastWeight !== prevState.lastWeight) {
+      return {
+        lastWeight: nextProps.lastWeight
+      };
+    }
+    return null;
+  }
+
+  async componentDidMount() {
+    const profile = await GetProfile();
+    this.setState({profile: profile});
+  }
+
   render() {
+    let percentage = 0;
+    if (this.state.profile && this.state.lastWeight) {
+      const actualLost = this.state.profile.startingWeight - this.props.lastWeight.weight;
+      const targetLost = this.state.profile.startingWeight - this.state.profile.targetWeight;
+      percentage = parseFloat(((actualLost / targetLost) * 100).toFixed(0));
+    }
     return (
       <AnimatedGaugeProgress
         style={{ alignItems: "center", marginBottom: -100, marginTop:10 }}
         size={size}
         width={width}
-        fill={this.state.progressPercent} // This is percentage of progress rotation={90}
+        fill={percentage} // This is percentage of progress rotation={90}
         cropDegree={cropDegree}
         tintColor="#4682b4"
         delay={0}
@@ -37,7 +59,7 @@ export default class ProgressGauge extends Component {
         strokeCap="circle"
       >
         <View style={styles.textView}>
-          <Text style={styles.text}>{this.state.progressPercent}% Done</Text>
+          <Text style={styles.text}>{percentage}% Done</Text>
         </View>
       </AnimatedGaugeProgress>
     );
