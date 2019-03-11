@@ -63,3 +63,19 @@ export const EditWeight = async (chosenWeight, newValue) => {
     // TODO handeError
   }
 }
+
+export const SaveProfile = async (newProfile) => {
+  try {
+    await AsyncStorage.setItem("Profile", JSON.stringify(newProfile));
+  } catch (error) {
+    // TODO handeError
+  }
+}
+
+export const GetProfile = async () => {
+  try {
+    return response = await AsyncStorage.getItem("Profile");
+  } catch (error) {
+    // TODO handeError
+  }
+};

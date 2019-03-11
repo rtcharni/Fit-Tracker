@@ -14,8 +14,10 @@ import {
   Label,
   Icon,
   Picker,
-  Button
+  Button,
+  Toast
 } from "native-base";
+import { GetProfile } from "../../utils/AsyncStorage";
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -32,12 +34,39 @@ export default class ProfileScreen extends React.Component {
     };
   }
 
-  handlePickerChange(item) {
-    this.setState({ pickerValue: item });
-  }
-
   handleSaveButton() {
-    console.log(this.state)
+    const regexWeightCheck = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
+    const regexHeightCheck = /[1-9][0-9]{2}/;
+    const startingWeightResult = this.state.startingWeight.match(
+      regexWeightCheck
+    );
+    const targetWeightResult = this.state.targetWeight.match(regexWeightCheck);
+    const heightResult = this.state.height.match(regexHeightCheck);
+    if (
+      startingWeightResult &&
+      startingWeightResult[0] === startingWeightResult.input &&
+      targetWeightResult &&
+      targetWeightResult[0] === targetWeightResult.input &&
+      heightResult &&
+      heightResult[0] === heightResult.input
+    ) {
+      // Own showToast function with params...
+      Toast.show({
+        text: "Saved!",
+        type: "success",
+        position: "bottom",
+        duration: 2000,
+        textStyle: { fontSize: 20, textAlign: "center" }
+      });
+    } else {
+      Toast.show({
+        text: "Please correct values..",
+        // type: "danger",
+        position: "bottom",
+        duration: 2000,
+        textStyle: { fontSize: 20, textAlign: "center" }
+      });
+    }
   }
 
   render() {
@@ -63,7 +92,9 @@ export default class ProfileScreen extends React.Component {
                       onSubmitEditing={() => {
                         this.secondInput._root.focus();
                       }}
-                      onChangeText={(startingWeight) => this.setState({startingWeight})}
+                      onChangeText={startingWeight =>
+                        this.setState({ startingWeight })
+                      }
                     />
                   </Item>
                 </CardItem>
@@ -82,7 +113,9 @@ export default class ProfileScreen extends React.Component {
                       onSubmitEditing={() => {
                         this.thirdInput._root.focus();
                       }}
-                      onChangeText={(targetWeight) => this.setState({targetWeight})}
+                      onChangeText={targetWeight =>
+                        this.setState({ targetWeight })
+                      }
                     />
                   </Item>
                 </CardItem>
@@ -97,7 +130,7 @@ export default class ProfileScreen extends React.Component {
                       getRef={input => {
                         this.thirdInput = input;
                       }}
-                      onChangeText={(height) => this.setState({height})}
+                      onChangeText={height => this.setState({ height })}
                     />
                     <Icon active name="swap" />
                   </Item>
@@ -112,7 +145,9 @@ export default class ProfileScreen extends React.Component {
                       placeholderStyle={{ color: "#bfc6ea" }}
                       placeholderIconColor="#007aff"
                       selectedValue={this.state.pickerValue}
-                      onValueChange={this.handlePickerChange.bind(this)}
+                      onValueChange={pickerValue =>
+                        this.setState({ pickerValue })
+                      }
                     >
                       <Picker.Item label="Male" value="male" />
                       <Picker.Item label="Female" value="female" />
@@ -129,7 +164,7 @@ export default class ProfileScreen extends React.Component {
                   <Text>Save</Text>
                 </Button>
                 <Text>Save</Text>
-                <Button block large iconRight>
+                <Button block large iconRight >
                   <Text>Save</Text>
                   <Icon name="save" />
                 </Button>
