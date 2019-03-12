@@ -72,4 +72,4 @@ export default createBottomTabNavigator({
   HomeStack,
   ProfileStack,
   SettingsStack
-});
+}, {initialRouteName: "ProfileStack"});

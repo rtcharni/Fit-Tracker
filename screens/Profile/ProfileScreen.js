@@ -104,7 +104,7 @@ export default class ProfileScreen extends React.Component {
                 </CardItem>
                 <CardItem>
                   <Item floatingLabel>
-                    <Icon active name="home" />
+                    
                     <Label>Starting weight (kg)</Label>
                     <Input
                       value={this.state.startingWeight}
@@ -119,11 +119,12 @@ export default class ProfileScreen extends React.Component {
                         this.setState({ startingWeight })
                       }
                     />
+                    <Icon name="weight-kilogram" type="MaterialCommunityIcons" />
                   </Item>
                 </CardItem>
                 <CardItem>
                   <Item floatingLabel>
-                    <Icon active name="home" />
+                    
                     <Label>Target weight (kg)</Label>
                     <Input
                       value={this.state.targetWeight}
@@ -141,6 +142,7 @@ export default class ProfileScreen extends React.Component {
                         this.setState({ targetWeight })
                       }
                     />
+                    <Icon name="target-two" type="Foundation" />
                   </Item>
                 </CardItem>
                 <CardItem>
@@ -157,7 +159,8 @@ export default class ProfileScreen extends React.Component {
                       }}
                       onChangeText={height => this.setState({ height })}
                     />
-                    <Icon active name="swap" />
+                    <Icon name="arrow-expand-vertical" type="MaterialCommunityIcons" />
+
                   </Item>
                 </CardItem>
                 <CardItem>
@@ -183,8 +186,8 @@ export default class ProfileScreen extends React.Component {
                   <Text>Footer if needed</Text>
                 </CardItem> */}
                 <Button block iconLeft onPress={() => this.handleSaveButton()}>
-                  <Icon name="save" />
                   <Text>Save</Text>
+                  <Icon name="save" />
                 </Button>
                 <Text>Save</Text>
                 <Button block large iconRight>
