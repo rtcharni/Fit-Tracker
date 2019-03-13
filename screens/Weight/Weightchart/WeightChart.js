@@ -3,6 +3,23 @@ import { ScrollView, StyleSheet } from "react-native";
 import ChartView from "react-native-highcharts";
 import { GetWeightArray } from "../../../utils/AsyncStorage";
 import window from "../../../constants/Layout";
+import {
+  Container,
+  Header,
+  Content,
+  Card,
+  CardItem,
+  Text,
+  Body,
+  Form,
+  Item,
+  Input,
+  Label,
+  Icon,
+  Picker,
+  Button,
+  Toast
+} from "native-base";
 
 // TODO FILTER BY TIME!
 export default class WeightChart extends React.Component {
@@ -10,7 +27,7 @@ export default class WeightChart extends React.Component {
     super(props);
     this.state = {
       weightData: [],
-      refresh: this.props.refresh
+      filter_MS: 2592000000
     };
     this.chartData = this.chartData.bind(this);
   }
@@ -28,7 +45,9 @@ export default class WeightChart extends React.Component {
 
   async chartData() {
     const storageData = (await GetWeightArray()).reverse();
-    const weightData = storageData.map(weight => ({
+    const now = new Date();
+    const filtered = storageData.filter(x => (now.getTime() - x.time) <= this.state.filter_MS);
+    const weightData = filtered.map(weight => ({
       x: weight.time,
       y: weight.weight
     }));
@@ -54,7 +73,7 @@ export default class WeightChart extends React.Component {
         labels: {
           formatter: function() {
             const date = new Date(this.value);
-            return `${date.getDate()}.${date.getMonth() + 1}`
+            return `${date.getDate()}.${date.getMonth() + 1}`;
           }
         }
       },
@@ -97,13 +116,33 @@ export default class WeightChart extends React.Component {
         // shortMonths: ["Tam", "Hel", "3", "Huhti", "Touko", "Kesä", "Heinä", "Elo", "Syys", "Lok", "Mar", "Jou"]
       }
     };
-    const deviceHeight = window.window.height;
     return (
-      <ChartView
-        style={{ height: window.window.height / 2 }}
-        config={conf}
-        options={options}
-      />
+      <Container>
+        <Item picker underline style={{ alignSelf: "flex-end", width: window.window.width / 2}}>
+        <Icon name="filter" type="AntDesign" />
+          <Picker
+            mode="dialog"
+            iosIcon={<Icon name="arrow-down" />}
+            style={{  }}
+            // placeholderStyle={{ color: "#bfc6ea" }}
+            // placeholderIconColor="#007aff"
+            prompt="Choose timerange"
+            selectedValue={this.state.filter_MS}
+            onValueChange={filter_MS => this.setState({ filter_MS }, () => this.chartData())}
+          >
+            <Picker.Item label="2 weeks" value={1296000000} />
+            <Picker.Item label="1 month" value={2592000000} />
+            <Picker.Item label="3 months" value={7776000000} />
+            <Picker.Item label="6 months" value={15552000000} />
+
+          </Picker>
+        </Item>
+        <ChartView
+          style={{ height: window.window.height / 2 }}
+          config={conf}
+          options={options}
+        />
+      </Container>
     );
   }
 }
