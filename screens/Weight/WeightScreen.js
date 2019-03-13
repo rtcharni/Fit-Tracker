@@ -41,7 +41,6 @@ export default class WeightScreen extends React.Component {
       weightData: [],
       showEnterWeightComponent: false
     };
-    this.handlePlusIconPress = this.handlePlusIconPress.bind(this);
     this.getAllWeights = this.getAllWeights.bind(this);
     this.closeEnterWeightWindow = this.closeEnterWeightWindow.bind(this);
     this.updateListNewOrModified = this.updateListNewOrModified.bind(this);
@@ -50,8 +49,6 @@ export default class WeightScreen extends React.Component {
   componentDidMount() {
     this.getAllWeights();
   }
-
-  async handlePlusIconPress() {}
 
   async getAllWeights() {
     const weightData = (await GetWeightArray()).reverse();
@@ -81,10 +78,6 @@ export default class WeightScreen extends React.Component {
 
   closeEnterWeightWindow() {
     this.setState({ showEnterWeightComponent: false });
-  }
-
-  lol() {
-    console.log("JEEEEE");
   }
 
   render() {

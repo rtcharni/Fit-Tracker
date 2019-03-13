@@ -169,7 +169,6 @@ export default class ProfileScreen extends React.Component {
                       mode="dropdown"
                       iosIcon={<Icon name="arrow-down" />}
                       style={{ width: undefined }}
-                      placeholder="Select your SIM"
                       placeholderStyle={{ color: "#bfc6ea" }}
                       placeholderIconColor="#007aff"
                       selectedValue={this.state.gender}
