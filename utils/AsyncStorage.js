@@ -84,5 +84,23 @@ export const GetProfile = async () => {
 export const ClearProfile = async () => {
   try {
     await AsyncStorage.removeItem("Profile");
+    await AsyncStorage.removeItem("FirstLaunch"); // for testing ONLY
   } catch (error) {}
+};
+
+export const FirstLaunchCompleted = async () => {
+  try {
+    await AsyncStorage.setItem("FirstLaunch", 'false');
+  } catch (error) {
+    // TODO handeError
+  }
+}
+
+export const GetFirstLaunch = async () => {
+  try {
+    const response = await AsyncStorage.getItem("FirstLaunch");
+    return response;
+  } catch (error) {
+    // TODO handeError
+  }
 };
