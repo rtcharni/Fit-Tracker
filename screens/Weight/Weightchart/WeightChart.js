@@ -21,7 +21,6 @@ import {
   Toast
 } from "native-base";
 
-// TODO FILTER BY TIME!
 export default class WeightChart extends React.Component {
   constructor(props) {
     super(props);
@@ -44,10 +43,12 @@ export default class WeightChart extends React.Component {
   }
 
   async chartData() {
-    const storageData = (await GetWeightArray()).reverse();
+    let storageData = (await GetWeightArray()).reverse();
     const now = new Date();
-    const filtered = storageData.filter(x => (now.getTime() - x.time) <= this.state.filter_MS);
-    const weightData = filtered.map(weight => ({
+    if (this.state.filter_MS !== "whole") {
+      storageData = storageData.filter(x => (now.getTime() - x.time) <= this.state.filter_MS);
+    }
+    const weightData = storageData.map(weight => ({
       x: weight.time,
       y: weight.weight
     }));
@@ -134,6 +135,7 @@ export default class WeightChart extends React.Component {
             <Picker.Item label="1 month" value={2592000000} />
             <Picker.Item label="3 months" value={7776000000} />
             <Picker.Item label="6 months" value={15552000000} />
+            <Picker.Item label="Whole" value={"whole"} />
 
           </Picker>
         </Item>
