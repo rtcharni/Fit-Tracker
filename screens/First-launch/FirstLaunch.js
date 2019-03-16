@@ -24,9 +24,6 @@ import window from "../../constants/Layout";
 import { FirstLaunchCompleted, SaveProfile } from "../../utils/AsyncStorage";
 
 export default class FirstLaunch extends React.Component {
-  //   static navigationOptions = {
-  //     title: "Some text"
-  //   };
 
   constructor(props) {
     super(props);
@@ -54,14 +51,6 @@ export default class FirstLaunch extends React.Component {
       heightResult &&
       heightResult[0] === heightResult.input
     ) {
-      // Own showToast function with params...
-      Toast.show({
-        text: "Saved!",
-        type: "success",
-        position: "bottom",
-        duration: 2000,
-        textStyle: { fontSize: 20, textAlign: "center" }
-      });
       FirstLaunchCompleted();
       SaveProfile({
         startingWeight: this.state.startingWeight,
@@ -97,15 +86,14 @@ export default class FirstLaunch extends React.Component {
                   <Text uppercase ellipsizeMod style={{ fontSize: 25 }}>
                     Welcome to Fit-Tracker!
                   </Text>
-                  <Text note>and Thank You for downloading this app :)</Text>
+                  <Text note>lose weight, get fit, develop muscles</Text>
                 </Body>
               </Left>
             </CardItem>
             <CardItem>
               <Form>
                 <Text>
-                  For tracking your results please fill out some information,
-                  then you can see your progress
+                  For tracking your results and getting best user experience, please fill out some information.
                 </Text>
                 <CardItem>
                   <Item floatingLabel>
@@ -198,7 +186,7 @@ export default class FirstLaunch extends React.Component {
               style={{ alignSelf: "center" }}
               onPress={() => this.handleReadyButton()}
             >
-              <Text>Ready to start</Text>
+              <Text>Ready</Text>
               <Icon name="arrow-forward" />
             </Button>
             <CardItem>

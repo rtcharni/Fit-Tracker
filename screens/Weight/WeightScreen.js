@@ -34,7 +34,7 @@ import FirstLaunch from "../First-launch/FirstLaunch";
 
 export default class WeightScreen extends React.Component {
   static navigationOptions = {
-    title: "Weight"
+    header: null
   };
 
   constructor(props) {

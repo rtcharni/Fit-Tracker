@@ -80,9 +80,9 @@ WeightStack.navigationOptions = {
 export default createBottomTabNavigator(
   {
     WeightStack,
-    HomeStack,
+    ExerciseStack,
     ProfileStack,
-    ExerciseStack
+    HomeStack
   },
   {
     initialRouteName: "WeightStack",
