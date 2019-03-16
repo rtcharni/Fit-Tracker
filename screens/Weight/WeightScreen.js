@@ -23,12 +23,14 @@ import { WebBrowser } from "expo";
 import {
   SaveWeight,
   GetWeightArray,
-  ClearAllWeights
+  ClearAllWeights,
+  GetFirstLaunch
 } from "../../utils/AsyncStorage";
 import window from "../../constants/Layout";
 import WeightDataListNativeElements from "./WeightDataListNativeElements";
 import AddOrModifyWeight from "./AddOrModifyWeight";
 import ProgressGauge from "./ProgressGauge/ProgressGauge";
+import FirstLaunch from "../First-launch/FirstLaunch";
 
 export default class WeightScreen extends React.Component {
   static navigationOptions = {
@@ -39,17 +41,29 @@ export default class WeightScreen extends React.Component {
     super(props);
     this.state = {
       weightData: [],
-      showEnterWeightComponent: false
+      showEnterWeightComponent: false,
+      firstLaunch: false
     };
     this.getAllWeights = this.getAllWeights.bind(this);
     this.closeEnterWeightWindow = this.closeEnterWeightWindow.bind(this);
     this.updateListNewOrModified = this.updateListNewOrModified.bind(this);
+    this.closeFirstLaunch = this.closeFirstLaunch.bind(this);
   }
 
-  componentDidMount() {
-    this.getAllWeights();
+  async componentDidMount() {
+    const result = await GetFirstLaunch();
+    if (!result) {
+      this.setState({ firstLaunch: true });
+    } else {
+      this.getAllWeights();
+    }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.firstLaunch) {
+      this.getAllWeights();
+    }
+  }
   async getAllWeights() {
     const weightData = (await GetWeightArray()).reverse();
     this.setState({ weightData });
@@ -80,10 +94,17 @@ export default class WeightScreen extends React.Component {
     this.setState({ showEnterWeightComponent: false });
   }
 
+  closeFirstLaunch() {
+    this.setState({ firstLaunch: false });
+  }
+
   render() {
+    if (this.state.firstLaunch) {
+      return <FirstLaunch closeFirstLaunch={this.closeFirstLaunch} />;
+    }
     return (
       <ScrollView style={{ flex: 1 }}>
-        <ProgressGauge lastWeight={this.state.weightData[0]}/>
+        <ProgressGauge lastWeight={this.state.weightData[0]} />
 
         <AddOrModifyWeight
           showEnterWeightComponent={this.state.showEnterWeightComponent}
