@@ -8,15 +8,22 @@ import {
 import TabBarIcon from "../assets/icons/TabBarIcon";
 import HomeScreen from "../screens/Home/HomeScreen";
 import ProfileScreen from "../screens/Profile/ProfileScreen";
-import SettingsScreen from "../screens/Settings/SettingsScreen";
+import ExerciseScreen from "../screens/Exercise/ExerciseScreen";
 import WeightScreen from "../screens/Weight/WeightScreen";
 import WeightIcon from "../assets/icons/WeightIcon";
 import WeightChart from "../screens/Weight/Weightchart/WeightChart";
 import ProfileIcon from "../assets/icons/ProfileIcon";
+import ExerciseIcon from "../assets/icons/ExerciseIcon";
+
+const stackNavigatorConfig = {
+  headerBackTitleVisible: true,
+  headerLayoutPreset: "center",
+  // headerMode: "none"
+};
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen
-});
+}, stackNavigatorConfig);
 
 HomeStack.navigationOptions = {
   tabBarLabel: "Home",
@@ -34,25 +41,28 @@ HomeStack.navigationOptions = {
 
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen
-});
+}, stackNavigatorConfig);
 
 ProfileStack.navigationOptions = {
   tabBarLabel: "Profile",
   tabBarIcon: ({ focused }) => (
-    <ProfileIcon focused={focused} name={Platform.OS === "ios" ? "ios-person" : "md-person"}/>
+    <ProfileIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-person" : "md-person"}
+    />
   )
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
-});
+const ExerciseStack = createStackNavigator({
+  Exercise: ExerciseScreen
+}, stackNavigatorConfig);
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Settings",
+ExerciseStack.navigationOptions = {
+  tabBarLabel: "Exercise",
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
+    <ExerciseIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+      name={"run-fast"}
     />
   )
 };
@@ -60,16 +70,24 @@ SettingsStack.navigationOptions = {
 const WeightStack = createStackNavigator({
   Weight: WeightScreen,
   Weightchart: WeightChart
-});
+}, stackNavigatorConfig);
 
 WeightStack.navigationOptions = {
   tabBarLabel: "Weight",
   tabBarIcon: ({ focused }) => <WeightIcon focused={focused} />
 };
 
-export default createBottomTabNavigator({
-  WeightStack,
-  HomeStack,
-  ProfileStack,
-  SettingsStack
-}, {initialRouteName: "WeightStack"});
+export default createBottomTabNavigator(
+  {
+    WeightStack,
+    HomeStack,
+    ProfileStack,
+    ExerciseStack
+  },
+  {
+    initialRouteName: "WeightStack",
+    animationEnabled: true,
+    tabBarOptions: { showLabel: true },
+  }
+);
+// , swipeEnabled: true
