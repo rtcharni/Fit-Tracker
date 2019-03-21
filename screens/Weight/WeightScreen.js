@@ -65,26 +65,28 @@ export default class WeightScreen extends React.Component {
       this.getAllWeights();
     }
   }
+
   async getAllWeights() {
     const weightData = (await GetWeightArray()).reverse();
     this.setState({ weightData });
+    // this.forceUpdate();
   }
 
   updateListNewOrModified(newWeight, editChosenWeight = null) {
-    const weight = parseFloat(newWeight);
-    const templist = this.state.weightData;
-    if (editChosenWeight) {
-      const foundWeight = templist.find(
-        weight => weight.time == editChosenWeight.time
-      );
-      foundWeight.weight = weight;
-    } else {
-      const time = new Date().getTime();
-      templist.unshift({ time, weight });
-    }
+    // const weight = parseFloat(newWeight);
+    // const templist = this.state.weightData;
+    // if (editChosenWeight) {
+    //   const foundWeight = templist.find(
+    //     weight => weight.time == editChosenWeight.time
+    //   );
+    //   foundWeight.weight = weight;
+    // } else {
+    //   const time = new Date().getTime();
+    //   templist.unshift({ time, weight });
+    // }
     this.setState(
       {
-        weightData: templist,
+        // weightData: templist,
         showEnterWeightComponent: false
       },
       this.getAllWeights
@@ -108,6 +110,7 @@ export default class WeightScreen extends React.Component {
         <ProgressGauge lastWeight={this.state.weightData[0]} />
 
         <AddOrModifyWeight
+        getAllWeights={this.getAllWeights}
           showEnterWeightComponent={this.state.showEnterWeightComponent}
           closeEnterWeightWindow={this.closeEnterWeightWindow}
           updateListNewOrModified={this.updateListNewOrModified}
@@ -148,7 +151,7 @@ export default class WeightScreen extends React.Component {
             onPress={() => this.setState({ showEnterWeightComponent: true })}
           />
         </View>
-        <WeightDataListNativeElements weightData={this.state.weightData} />
+        <WeightDataListNativeElements weightData={this.state.weightData} getAllWeights={this.getAllWeights} />
       </ScrollView>
     );
   }

@@ -92,6 +92,7 @@ export default class AddOrModifyWeight extends Component {
     });
     this.resetComponent();
     this.props.updateListNewOrModified(weight, this.props.chosenWeightItem);
+    this.props.getAllWeights();
   }
 
   resetComponent() {

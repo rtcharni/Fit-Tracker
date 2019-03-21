@@ -24,6 +24,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import { DeleteWeight, EditWeight } from "../../utils/AsyncStorage";
 import window from "../../constants/Layout";
 import AddOrModifyWeight from "./AddOrModifyWeight";
+import Colors from "../../constants/Colors";
 
 export default class WeightDataListNativeElements extends Component {
   constructor(props) {
@@ -52,7 +53,7 @@ export default class WeightDataListNativeElements extends Component {
     return null;
   }
 
-  onIconPress(item) {
+  handleDotOptionsIconPress(item) {
     console.log(item);
     Alert.alert(
       `Date: ${new Date(item.time).toLocaleDateString()}. Weight: ${item.weight}kg`,
@@ -81,19 +82,18 @@ export default class WeightDataListNativeElements extends Component {
   }
 
   async deleteItem(item) {
-    console.log("Delete Pressed");
-    console.log(item);
     const response = await DeleteWeight(item);
-    const index = this.state.weightData.findIndex(x => x.time == item.time);
-    const tempData = this.state.weightData;
-    tempData.splice(index, 1);
-    this.setState({ weightData: tempData });
+    // const index = this.state.weightData.findIndex(x => x.time == item.time);
+    // const tempData = this.state.weightData;
+    // tempData.splice(index, 1);
+    // this.setState({ weightData: tempData });
     Toast.show({
       text: "Item deleted!",
       type: "warning",
       position: "bottom",
       duration: 2000
     });
+    this.props.getAllWeights();
   }
 
   async editItem(item) {
@@ -155,6 +155,7 @@ export default class WeightDataListNativeElements extends Component {
     return (
       <View style={{}}>
         <AddOrModifyWeight
+        getAllWeights={this.props.getAllWeights}
           closeEnterWeightWindow={this.closeEnterWeightWindow}
           showEnterWeightComponent={this.state.showEnterWeightComponent}
           updateListNewOrModified={this.updateListNewOrModified}
@@ -202,9 +203,9 @@ export default class WeightDataListNativeElements extends Component {
                   raised
                   name="dots-three-vertical"
                   type="entypo"
-                  color="green"
+                  color={Colors.tintColor}
                   size={15}
-                  onPress={() => this.onIconPress(item)}
+                  onPress={() => this.handleDotOptionsIconPress(item)}
                 />
               }
             />
