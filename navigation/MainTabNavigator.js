@@ -17,15 +17,19 @@ import ExerciseIcon from "../assets/icons/ExerciseIcon";
 
 const stackNavigatorConfig = {
   headerBackTitleVisible: true,
-  headerLayoutPreset: "center",
+  headerLayoutPreset: "center"
   // headerMode: "none"
 };
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen
-}, stackNavigatorConfig);
+const HomeStack = createStackNavigator(
+  {
+    Home: HomeScreen
+  },
+  stackNavigatorConfig
+);
 
 HomeStack.navigationOptions = {
+  gesturesEnabled: true,
   tabBarLabel: "Home",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -39,11 +43,15 @@ HomeStack.navigationOptions = {
   )
 };
 
-const ProfileStack = createStackNavigator({
-  Profile: ProfileScreen
-}, stackNavigatorConfig);
+const ProfileStack = createStackNavigator(
+  {
+    Profile: ProfileScreen
+  },
+  stackNavigatorConfig
+);
 
 ProfileStack.navigationOptions = {
+  gesturesEnabled: true,
   tabBarLabel: "Profile",
   tabBarIcon: ({ focused }) => (
     <ProfileIcon
@@ -53,26 +61,31 @@ ProfileStack.navigationOptions = {
   )
 };
 
-const ExerciseStack = createStackNavigator({
-  Exercise: ExerciseScreen
-}, stackNavigatorConfig);
+const ExerciseStack = createStackNavigator(
+  {
+    Exercise: ExerciseScreen
+  },
+  stackNavigatorConfig
+);
 
 ExerciseStack.navigationOptions = {
+  gesturesEnabled: true,
   tabBarLabel: "Exercise",
   tabBarIcon: ({ focused }) => (
-    <ExerciseIcon
-      focused={focused}
-      name={"run-fast"}
-    />
+    <ExerciseIcon focused={focused} name={"run-fast"} />
   )
 };
 
-const WeightStack = createStackNavigator({
-  Weight: WeightScreen,
-  Weightchart: WeightChart
-}, stackNavigatorConfig);
+const WeightStack = createStackNavigator(
+  {
+    Weight: WeightScreen,
+    Weightchart: WeightChart
+  },
+  stackNavigatorConfig
+);
 
 WeightStack.navigationOptions = {
+  gesturesEnabled: true,
   tabBarLabel: "Weight",
   tabBarIcon: ({ focused }) => <WeightIcon focused={focused} />
 };
@@ -88,6 +101,11 @@ export default createBottomTabNavigator(
     initialRouteName: "WeightStack",
     animationEnabled: true,
     tabBarOptions: { showLabel: true },
+    swipeEnabled: true,
+    resetOnBlur: true,
+    tabBarOptions: { showLabel: false }
+    // animationEnabled: true
+    // defaultNavigationOptions: {}
   }
 );
-// , swipeEnabled: true
+

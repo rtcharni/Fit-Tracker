@@ -45,7 +45,7 @@ export default class WeightChart extends React.Component {
   async chartData() {
     let storageData = (await GetWeightArray()).reverse();
     const now = new Date();
-    if (this.state.filter_MS !== "whole") {
+    if (this.state.filter_MS !== "all") {
       storageData = storageData.filter(x => (now.getTime() - x.time) <= this.state.filter_MS);
     }
     const weightData = storageData.map(weight => ({
@@ -135,7 +135,7 @@ export default class WeightChart extends React.Component {
             <Picker.Item label="1 month" value={2592000000} />
             <Picker.Item label="3 months" value={7776000000} />
             <Picker.Item label="6 months" value={15552000000} />
-            <Picker.Item label="Whole" value={"whole"} />
+            <Picker.Item label="All" value={"all"} />
 
           </Picker>
         </Item>

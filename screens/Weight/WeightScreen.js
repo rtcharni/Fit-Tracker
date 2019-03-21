@@ -27,6 +27,7 @@ import {
   GetFirstLaunch
 } from "../../utils/AsyncStorage";
 import window from "../../constants/Layout";
+import tintColor from '../../constants/Colors';
 import WeightDataListNativeElements from "./WeightDataListNativeElements";
 import AddOrModifyWeight from "./AddOrModifyWeight";
 import ProgressGauge from "./ProgressGauge/ProgressGauge";
@@ -34,7 +35,7 @@ import FirstLaunch from "../First-launch/FirstLaunch";
 
 export default class WeightScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    title: 'Weight'
   };
 
   constructor(props) {
@@ -130,7 +131,7 @@ export default class WeightScreen extends React.Component {
             raised
             name="chart-line"
             type="material-community"
-            color="blue"
+            color={tintColor.tintColor}
             size={28}
             iconStyle={{}}
             containerStyle={{}}
@@ -140,7 +141,7 @@ export default class WeightScreen extends React.Component {
             raised
             name="add-circle-outline"
             type="MaterialIcons"
-            color="blue"
+            color={tintColor.tintColor}
             size={28}
             iconStyle={{}}
             containerStyle={{}} // alignSelf: "flex-end"
