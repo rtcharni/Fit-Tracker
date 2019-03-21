@@ -98,7 +98,7 @@ export default createBottomTabNavigator(
     HomeStack
   },
   {
-    initialRouteName: "WeightStack",
+    initialRouteName: "ProfileStack",
     animationEnabled: true,
     tabBarOptions: { showLabel: true },
     swipeEnabled: true,

@@ -1,5 +1,6 @@
 import React from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
+import { Icon as NativeElementsIcon } from "react-native-elements";
 import {
   Container,
   Header,
@@ -15,8 +16,10 @@ import {
   Icon,
   Picker,
   Button,
-  Toast
+  Toast,
+  ActionSheet
 } from "native-base";
+import tintColor from "../../constants/Colors";
 import {
   GetProfile,
   SaveProfile,
@@ -91,6 +94,45 @@ export default class ProfileScreen extends React.Component {
     }
   }
 
+  showDeleteActionSheet() {
+    const buttons = [
+      "Delete all weights",
+      "Delete whole profile and weight",
+      "Cancel"
+    ];
+    ActionSheet.show(
+      {
+        options: buttons,
+        cancelButtonIndex: 2,
+        destructiveButtonIndex: 1,
+        title: "Want to start over?"
+      },
+      async index => {
+        if (index === 1) {
+          await ClearProfile();
+        } else if (index === 0) {
+          // TODO Delete all weight data!
+        }
+      }
+    );
+  }
+
+  showUpdateActionSheet() {
+    const buttons = ["Yes!", "Cancel"];
+    ActionSheet.show(
+      {
+        options: buttons,
+        cancelButtonIndex: 1,
+        title: "Update profile?"
+      },
+      async index => {
+        if (index === 0) {
+          await this.handleSaveButton();
+        }
+      }
+    );
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -100,11 +142,10 @@ export default class ProfileScreen extends React.Component {
             <Form>
               <Card>
                 <CardItem header bordered>
-                  <Text>Your profile</Text>
+                  <Text>Here you can update your specs</Text>
                 </CardItem>
                 <CardItem>
                   <Item floatingLabel>
-                    
                     <Label>Starting weight (kg)</Label>
                     <Input
                       value={this.state.startingWeight}
@@ -119,12 +160,14 @@ export default class ProfileScreen extends React.Component {
                         this.setState({ startingWeight })
                       }
                     />
-                    <Icon name="weight-kilogram" type="MaterialCommunityIcons" />
+                    <Icon
+                      name="weight-kilogram"
+                      type="MaterialCommunityIcons"
+                    />
                   </Item>
                 </CardItem>
                 <CardItem>
                   <Item floatingLabel>
-                    
                     <Label>Target weight (kg)</Label>
                     <Input
                       value={this.state.targetWeight}
@@ -159,8 +202,10 @@ export default class ProfileScreen extends React.Component {
                       }}
                       onChangeText={height => this.setState({ height })}
                     />
-                    <Icon name="arrow-expand-vertical" type="MaterialCommunityIcons" />
-
+                    <Icon
+                      name="arrow-expand-vertical"
+                      type="MaterialCommunityIcons"
+                    />
                   </Item>
                 </CardItem>
                 <CardItem>
@@ -184,24 +229,43 @@ export default class ProfileScreen extends React.Component {
                 {/* <CardItem footer bordered>
                   <Text>Footer if needed</Text>
                 </CardItem> */}
-                <Button block iconLeft onPress={() => this.handleSaveButton()}>
-                  <Text>Save</Text>
-                  <Icon name="save" />
-                </Button>
-                <Text>Save</Text>
-                <Button block large iconRight>
-                  <Text>Save</Text>
-                  <Icon name="save" />
-                </Button>
-                <Text>Save</Text>
-                <Button
-                  block
-                  small
-                  iconLeft
-                  onPress={async () => await ClearProfile()}
+
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    // alignSelf: "auto",
+                    // marginTop: 1,
+                    alignItems: "center",
+                    alignContent: "center",
+                    justifyContent: "space-evenly"
+                  }}
                 >
-                  <Text>Clear profile</Text>
-                </Button>
+                  <Button
+                    style={{
+                      backgroundColor: tintColor.tintColor,
+                      width: "70%"
+                    }}
+                    block
+                    iconRight
+                    onPress={() => this.showUpdateActionSheet()}
+                  >
+                    <Text>Update</Text>
+                    <Icon name="save" />
+                  </Button>
+                  <NativeElementsIcon
+                    // reverse
+                    // raised
+                    name="delete-sweep"
+                    type="material-community"
+                    color={"black"}
+                    size={45}
+                    iconStyle={{}}
+                    containerStyle={{}}
+                    onPress={() => this.showDeleteActionSheet()}
+                  />
+                </View>
+                <Text>TODO best place for button and visual editing</Text>
               </Card>
             </Form>
           </Content>
