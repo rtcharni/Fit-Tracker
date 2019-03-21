@@ -25,6 +25,7 @@ import {
   SaveProfile,
   ClearProfile
 } from "../../utils/AsyncStorage";
+import Colors from "../../constants/Colors";
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -142,7 +143,7 @@ export default class ProfileScreen extends React.Component {
             <Form>
               <Card>
                 <CardItem header bordered>
-                  <Text>Here you can update your specs</Text>
+                  <Text style={{color: Colors.tintColor}}>Here you can update your info</Text>
                 </CardItem>
                 <CardItem>
                   <Item floatingLabel>
@@ -238,7 +239,8 @@ export default class ProfileScreen extends React.Component {
                     // marginTop: 1,
                     alignItems: "center",
                     alignContent: "center",
-                    justifyContent: "space-evenly"
+                    justifyContent: "space-evenly",
+                    marginBottom: 25
                   }}
                 >
                   <Button
@@ -265,7 +267,6 @@ export default class ProfileScreen extends React.Component {
                     onPress={() => this.showDeleteActionSheet()}
                   />
                 </View>
-                <Text>TODO best place for button and visual editing</Text>
               </Card>
             </Form>
           </Content>
