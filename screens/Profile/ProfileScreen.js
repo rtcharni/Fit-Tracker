@@ -240,7 +240,8 @@ export default class ProfileScreen extends React.Component {
                     alignItems: "center",
                     alignContent: "center",
                     justifyContent: "space-evenly",
-                    marginBottom: 25
+                    marginBottom: 25,
+                    marginTop: 15
                   }}
                 >
                   <Button

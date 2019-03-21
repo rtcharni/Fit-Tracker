@@ -135,17 +135,17 @@ export default class WeightScreen extends React.Component {
             name="chart-line"
             type="material-community"
             color={tintColor.tintColor}
-            size={28}
+            size={24}
             iconStyle={{}}
             containerStyle={{}}
             onPress={() => this.props.navigation.navigate("Weightchart")}
           />
           <Icon
-            raised
+            reverse
             name="add-circle-outline"
             type="MaterialIcons"
             color={tintColor.tintColor}
-            size={28}
+            size={24}
             iconStyle={{}}
             containerStyle={{}} // alignSelf: "flex-end"
             onPress={() => this.setState({ showEnterWeightComponent: true })}

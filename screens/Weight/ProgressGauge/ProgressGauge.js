@@ -7,6 +7,7 @@ import {
 } from "react-native-simple-gauge";
 import window from "../../../constants/Layout";
 import { GetProfile } from "../../../utils/AsyncStorage";
+import Colors from '../../../constants/Colors';
 
 const size = 180;
 const width = 10;
@@ -47,12 +48,12 @@ export default class ProgressGauge extends Component {
     }
     return (
       <AnimatedGaugeProgress
-        style={{ alignItems: "center", marginBottom: -100, marginTop:10 }}
+        style={{ alignItems: "center", marginBottom: -100, marginTop:15 }}
         size={size}
         width={width}
         fill={percentage} // This is percentage of progress rotation={90}
         cropDegree={cropDegree}
-        tintColor="#4682b4"
+        tintColor={Colors.tintColor}
         delay={0}
         backgroundColor="#b0c4de"
         stroke={[1, 1]} //For a equaly dashed line
@@ -74,9 +75,11 @@ const styles = StyleSheet.create({
     width: textWidth,
     height: textHeight,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    // alignContent: "center"
   },
   text: {
-    fontSize: 14
+    fontSize: 17,
+    fontWeight: "400"
   }
 });
