@@ -97,7 +97,7 @@ export default class WeightScreen extends React.Component {
   render() {
     return (
       <ScrollView style={{ flex: 1 }}>
-        <ProgressGauge lastWeight={this.state.weightData[0]} />
+        <ProgressGauge lastWeight={this.state.weightData[0] || null} />
 
         <AddOrModifyWeight
           getAllWeights={this.getAllWeights}

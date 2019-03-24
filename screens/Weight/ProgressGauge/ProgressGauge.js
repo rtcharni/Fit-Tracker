@@ -37,6 +37,8 @@ export default class ProgressGauge extends Component {
   async componentDidMount() {
     const profile = await GetProfile();
     this.setState({profile: profile});
+    console.log('HELLO!')
+    console.log(this.props)
   }
 
   render() {

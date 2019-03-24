@@ -23,7 +23,8 @@ import tintColor from "../../constants/Colors";
 import {
   GetProfile,
   SaveProfile,
-  ClearProfile
+  ClearProfile,
+  ClearAllWeights
 } from "../../utils/AsyncStorage";
 import Colors from "../../constants/Colors";
 
@@ -97,7 +98,7 @@ export default class ProfileScreen extends React.Component {
 
   showDeleteActionSheet() {
     const buttons = [
-      "Delete all weights",
+      "Delete all entered weights",
       "Delete whole profile and weight",
       "Cancel"
     ];
@@ -112,7 +113,7 @@ export default class ProfileScreen extends React.Component {
         if (index === 1) {
           await ClearProfile();
         } else if (index === 0) {
-          // TODO Delete all weight data!
+          await ClearAllWeights();
         }
       }
     );
