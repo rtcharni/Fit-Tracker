@@ -12,7 +12,7 @@ export default class ExerciseScreen extends React.Component {
      * content, we just wanted to give you a quick view of your config */
     return (
       <View style={{ flex: 1, alignSelf: "center", justifyContent: "center" }}>
-        <Text style={{ fontSize: 26 }}>Will be in next release!</Text>
+        <Text style={{ fontSize: 20 }}>Exercise tracking will be in next release!</Text>
       </View>
     );
   }

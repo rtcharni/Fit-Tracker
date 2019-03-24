@@ -119,7 +119,7 @@ export default class WeightChart extends React.Component {
     };
     return (
       <Container>
-        <Item picker underline style={{ alignSelf: "center", width: window.window.width / 2}}>
+        <Item picker underline style={{ alignSelf: "flex-end", width: window.window.width / 2}}>
         <Icon name="filter" type="AntDesign" />
           <Picker
             mode="dialog"
