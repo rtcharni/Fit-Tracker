@@ -41,10 +41,17 @@ export default class ProgressGauge extends Component {
 
   render() {
     let percentage = 0;
-    if (this.state.profile && this.state.lastWeight) {
-      const actualLost = this.state.profile.startingWeight - this.props.lastWeight.weight;
-      const targetLost = this.state.profile.startingWeight - this.state.profile.targetWeight;
-      percentage = parseFloat(((actualLost / targetLost) * 100).toFixed(0));
+    try {
+      if (this.state.profile && this.state.lastWeight) {
+        const actualLost = this.state.profile.startingWeight - this.props.lastWeight.weight;
+        const targetLost = this.state.profile.startingWeight - this.state.profile.targetWeight;
+        percentage = parseFloat(((actualLost / targetLost) * 100).toFixed(0));
+        if (!isFinite(percentage)) {
+          percentage = 0
+        }
+      }
+    } catch (error) {
+      percentage = 0;
     }
     return (
       <AnimatedGaugeProgress
