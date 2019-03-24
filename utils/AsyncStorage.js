@@ -9,10 +9,8 @@ export const SaveWeight = async value => {
   } else {
     storedData.push(value);
   }
-  console.log(storedData);
   // Save updated data to storage
   try {
-    // console.log(data);
     await AsyncStorage.setItem("Weight", JSON.stringify(storedData));
     return true;
   } catch (error) {

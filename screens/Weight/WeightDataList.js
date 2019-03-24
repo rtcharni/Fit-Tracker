@@ -52,7 +52,6 @@ export default class WeightDataList extends Component {
   }
 
   handleDotOptionsIconPress(item) {
-    console.log(item);
     Alert.alert(
       `Date: ${new Date(item.time).toLocaleDateString()}. Weight: ${item.weight}kg`,
       "Do you want to modify this item?",

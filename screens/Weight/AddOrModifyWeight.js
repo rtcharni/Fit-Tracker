@@ -39,7 +39,6 @@ export default class AddOrModifyWeight extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps);
     if (nextProps.showEnterWeightComponent !== prevState.showComponent) {
       return { showComponent: nextProps.showEnterWeightComponent };
     }
