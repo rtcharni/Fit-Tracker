@@ -22,8 +22,12 @@ import {
 } from "native-base";
 import window from "../../constants/Layout";
 import { FirstLaunchCompleted, SaveProfile } from "../../utils/AsyncStorage";
+import Colors from "../../constants/Colors";
 
 export default class FirstLaunch extends React.Component {
+  static navigationOptions = {
+    title: 'First launch',
+  };
 
   constructor(props) {
     super(props);
@@ -58,7 +62,8 @@ export default class FirstLaunch extends React.Component {
         height: this.state.height,
         gender: this.state.gender
       });
-      this.props.closeFirstLaunch();
+      this.props.navigation.replace('Weight');
+      // this.props.closeFirstLaunch();
       // this.props.navigation.navigate("Weightchart")
     } else {
       Toast.show({
@@ -83,10 +88,10 @@ export default class FirstLaunch extends React.Component {
                   source={require("../../assets/images/apple.png")}
                 />
                 <Body>
-                  <Text uppercase ellipsizeMod style={{ fontSize: 25 }}>
+                  <Text uppercase ellipsizeMod style={{ fontSize: 25, color: Colors.tintColor }}>
                     Welcome to Fit-Tracker!
                   </Text>
-                  <Text note>lose weight, get fit, develop muscles</Text>
+                  <Text note>lose weight, get fit, be healthy</Text>
                 </Body>
               </Left>
             </CardItem>
@@ -186,17 +191,9 @@ export default class FirstLaunch extends React.Component {
               style={{ alignSelf: "center" }}
               onPress={() => this.handleReadyButton()}
             >
-              <Text>Ready</Text>
+              <Text style={{color: Colors.tintColor}}>Ready</Text>
               <Icon name="arrow-forward" />
             </Button>
-            <CardItem>
-              <Left>
-                <Button transparent textStyle={{ color: "#87838B" }}>
-                  <Icon name="logo-github" />
-                  <Text>1,926 stars</Text>
-                </Button>
-              </Left>
-            </CardItem>
           </Card>
         </Content>
       </Container>
