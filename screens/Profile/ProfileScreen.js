@@ -110,9 +110,10 @@ export default class ProfileScreen extends React.Component {
         title: "Want to start over?"
       },
       async index => {
-        if (index === 1) {
+        if (index === 0) {
+          await ClearAllWeights();
+        } else if (index === 1) {
           await ClearProfile();
-        } else if (index === 0) {
           await ClearAllWeights();
         }
       }
