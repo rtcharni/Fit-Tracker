@@ -17,11 +17,13 @@ import {
   Input,
   Icon as NativeBaseIcon,
   Item,
-  Button
+  Button,
+  Toast
 } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { DeleteWeight, EditWeight, SaveWeight } from "../../utils/AsyncStorage";
 import window from "../../constants/Layout";
+import { ConvertCommaToDot } from "../../utils/utils";
 
 export default class AddOrModifyWeight extends Component {
   constructor(props) {
@@ -38,7 +40,6 @@ export default class AddOrModifyWeight extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps);
     if (nextProps.showEnterWeightComponent !== prevState.showComponent) {
       return { showComponent: nextProps.showEnterWeightComponent };
     }
@@ -50,7 +51,7 @@ export default class AddOrModifyWeight extends Component {
   }
 
   handleTextCheck() {
-    const regexWeightCheck = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
+    const regexWeightCheck = /[1-9][0-9]{0,2}[,.]?[0-9]{0,2}/;
     const textCheckResult = this.state.editWeightValue.match(regexWeightCheck);
     if (textCheckResult && textCheckResult[0] === textCheckResult.input) {
       this.setState({
@@ -72,20 +73,40 @@ export default class AddOrModifyWeight extends Component {
   }
 
   async saveWeight() {
-    const weight = parseFloat(this.state.editWeightValue);
+    const convertedWeight = ConvertCommaToDot(this.state.editWeightValue);
+
+    const weight = parseFloat(convertedWeight);
+    let response;
     if (this.props.chosenWeightItem) {
-      const response = await EditWeight(this.props.chosenWeightItem, weight);
-      // null chosenWeight
+      response = await EditWeight(this.props.chosenWeightItem, weight);
     } else {
       const time = new Date().getTime();
-      const response = await SaveWeight({ time, weight });
+      response = await SaveWeight({ time, weight });
     }
+    const toastType = response === true ? "success" : "danger";
+    const toastText =
+      response === true ? "Weight saved!" : "Couldn't save weight :/";
+    Toast.show({
+      text: toastText,
+      type: toastType,
+      position: "bottom",
+      duration: 2000
+    });
+    this.resetComponent();
+    this.props.updateListNewOrModified(weight, this.props.chosenWeightItem);
+    this.props.getAllWeights();
+  }
+
+  resetComponent() {
     this.setState({
       editWeightValue: "",
       chosenWeightItem: null,
-      editIcon: { editWeightOK: false, success: false, error: true },
+      editIcon: {
+        editWeightOK: false,
+        success: false,
+        error: true
+      }
     });
-    this.props.updateListNewOrModified(weight, this.props.chosenWeightItem);
   }
 
   render() {
@@ -93,7 +114,10 @@ export default class AddOrModifyWeight extends Component {
       <Overlay
         isVisible={this.state.showComponent}
         height={window.window.height - window.window.height / 1.6}
-        onBackdropPress={() => this.setState({ showComponent: false })}
+        onBackdropPress={() => {
+          this.resetComponent();
+          this.props.closeEnterWeightWindow();
+        }}
         animationType="slide"
         transparent={true}
         borderRadius={12}
@@ -144,16 +168,7 @@ export default class AddOrModifyWeight extends Component {
                     </Button>
                     <Button
                       onPress={() => {
-                        this.setState({
-                          // showComponent: false,
-                          editWeightValue: "",
-                          chosenWeightItem: null,
-                          editIcon: {
-                            editWeightOK: false,
-                            success: false,
-                            error: true
-                          }
-                        });
+                        this.resetComponent();
                         this.props.closeEnterWeightWindow();
                       }}
                       rounded

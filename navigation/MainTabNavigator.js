@@ -6,70 +6,90 @@ import {
 } from "react-navigation";
 
 import TabBarIcon from "../assets/icons/TabBarIcon";
-import HomeScreen from "../screens/Home/HomeScreen";
-import LinksScreen from "../screens/Links/LinksScreen";
-import SettingsScreen from "../screens/Settings/SettingsScreen";
+import ProfileScreen from "../screens/Profile/ProfileScreen";
+import ExerciseScreen from "../screens/Exercise/ExerciseScreen";
 import WeightScreen from "../screens/Weight/WeightScreen";
 import WeightIcon from "../assets/icons/WeightIcon";
+import WeightChart from "../screens/Weight/Weightchart/WeightChart";
+import ProfileIcon from "../assets/icons/ProfileIcon";
+import ExerciseIcon from "../assets/icons/ExerciseIcon";
+import FirstLaunch from "../screens/First-launch/FirstLaunch";
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen
-});
+const stackNavigatorConfig = {
+  headerBackTitleVisible: true,
+  headerLayoutPreset: "center"
+  // headerMode: "none"
+};
 
-HomeStack.navigationOptions = {
-  tabBarLabel: "Home",
+const ProfileStack = createStackNavigator(
+  {
+    Profile: ProfileScreen
+  },
+  stackNavigatorConfig
+);
+
+ProfileStack.navigationOptions = {
+  gesturesEnabled: true,
+  tabBarLabel: "Profile",
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
+    <ProfileIcon
       focused={focused}
-      name={
-        Platform.OS === "ios"
-          ? `ios-information-circle${focused ? "" : "-outline"}`
-          : "md-information-circle"
-      }
+      name={Platform.OS === "ios" ? "ios-person" : "md-person"}
     />
   )
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen
-});
+const ExerciseStack = createStackNavigator(
+  {
+    Exercise: ExerciseScreen
+  },
+  stackNavigatorConfig
+);
 
-LinksStack.navigationOptions = {
-  tabBarLabel: "Links",
+ExerciseStack.navigationOptions = {
+  gesturesEnabled: true,
+  tabBarLabel: "Exercise",
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
-    />
+    <ExerciseIcon focused={focused} name={"run-fast"} />
   )
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
-});
+const WeightStack = createStackNavigator(
+  {
+    Weight: WeightScreen,
+    Weightchart: WeightChart,
+    FirstLaunch: FirstLaunch
+  },
+  stackNavigatorConfig
+);
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Settings",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
-    />
-  )
+WeightStack.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
+  let navigationOptions = {
+    gesturesEnabled: true,
+    tabBarLabel: "Weight",
+    tabBarIcon: ({ focused }) => <WeightIcon focused={focused} />
+  };
+  if (routeName === 'FirstLaunch') {
+    navigationOptions.tabBarVisible = false;
+  }
+  return navigationOptions;
 };
 
-const WeightStack = createStackNavigator({
-  Weight: WeightScreen
-});
-
-WeightStack.navigationOptions = {
-  tabBarLabel: "Weight",
-  tabBarIcon: ({ focused }) => <WeightIcon focused={focused} />
-};
-
-export default createBottomTabNavigator({
-  WeightStack,
-  HomeStack,
-  LinksStack,
-  SettingsStack
-});
+export default createBottomTabNavigator(
+  {
+    WeightStack,
+    ExerciseStack,
+    ProfileStack
+  },
+  {
+    initialRouteName: "WeightStack",
+    animationEnabled: true,
+    tabBarOptions: { showLabel: true },
+    swipeEnabled: true,
+    resetOnBlur: true,
+    tabBarOptions: { showLabel: false }
+    // animationEnabled: true
+    // defaultNavigationOptions: {}
+  }
+);

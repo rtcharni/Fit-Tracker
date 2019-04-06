@@ -7,7 +7,7 @@ export default class WeightIcon extends React.Component {
     return (
       <Icon.MaterialCommunityIcons
         name='weight'
-        size={26}
+        size={this.props.focused ? 34 : 26}
         style={{ marginBottom: -3 }}
         color={this.props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
       />

@@ -2,28 +2,30 @@
   "expo": {
     "name": "Fit Tracker",
     "slug": "Fit-Tracker",
+    "description": "Nice and simple fitness tracking app, for measuring health or just for fun! Set up your goal and work hard to achieve it!",
     "privacy": "public",
     "sdkVersion": "32.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
+    "primaryColor": "#163dd6",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/fit-tracker-logo_1024x1024.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/fit-tracker-logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#c3c3c3"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.romantcharni.fittracker"
+    },
+    "android": {
+      "package": "com.romantcharni.fittracker",
+      "versionCode": 1
     }
   }
 }

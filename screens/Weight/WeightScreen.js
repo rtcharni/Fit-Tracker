@@ -1,4 +1,7 @@
 import React from "react";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Col, Row, Grid } from "react-native-easy-grid";
+import { Icon } from "react-native-elements";
 import {
   Image,
   Platform,
@@ -10,39 +13,55 @@ import {
   TextInput,
   Button
 } from "react-native";
+import {
+  Container,
+  Button as NativeBaseButton,
+  Fab,
+  View as NativeBaseView
+} from "native-base";
 import { WebBrowser } from "expo";
 import {
   SaveWeight,
   GetWeightArray,
-  ClearAllWeights
+  ClearAllWeights,
+  GetFirstLaunch
 } from "../../utils/AsyncStorage";
+import window from "../../constants/Layout";
+import tintColor from "../../constants/Colors";
 import WeightDataList from "./WeightDataList";
-import WeightDataListNativeElements from "./WeightDataListNativeElements";
 import AddOrModifyWeight from "./AddOrModifyWeight";
+import ProgressGauge from "./ProgressGauge/ProgressGauge";
+import FirstLaunch from "../First-launch/FirstLaunch";
 
 export default class WeightScreen extends React.Component {
   static navigationOptions = {
     title: "Weight"
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       weightData: [],
       showEnterWeightComponent: false
     };
-    this.handleSaveButton = this.handleSaveButton.bind(this);
     this.getAllWeights = this.getAllWeights.bind(this);
     this.closeEnterWeightWindow = this.closeEnterWeightWindow.bind(this);
     this.updateListNewOrModified = this.updateListNewOrModified.bind(this);
   }
 
-  componentDidMount() {
-    this.getAllWeights();
+  async componentDidMount() {
+    const result = await GetFirstLaunch();
+    if (!result) {
+      this.props.navigation.replace("FirstLaunch");
+    } else {
+      this.getAllWeights();
+    }
   }
 
-  async handleSaveButton() {
-    this.setState({ showEnterWeightComponent: true });
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.firstLaunch) {
+      this.getAllWeights();
+    }
   }
 
   async getAllWeights() {
@@ -51,23 +70,24 @@ export default class WeightScreen extends React.Component {
   }
 
   updateListNewOrModified(newWeight, editChosenWeight = null) {
-    const weight = parseFloat(newWeight);
-    const templist = this.state.weightData;
-    if (editChosenWeight) {
-      const foundWeight = templist.find(
-        weight => weight.time == editChosenWeight.time
-      );
-      foundWeight.weight = weight;
-    } else {
-      console.log("IM IN ELSE OK!!!");
-      const time = new Date().getTime();
-      templist.unshift({ time, weight });
-    }
-
-    this.setState({
-      weightData: templist,
-      showEnterWeightComponent: false
-    });
+    // const weight = parseFloat(newWeight);
+    // const templist = this.state.weightData;
+    // if (editChosenWeight) {
+    //   const foundWeight = templist.find(
+    //     weight => weight.time == editChosenWeight.time
+    //   );
+    //   foundWeight.weight = weight;
+    // } else {
+    //   const time = new Date().getTime();
+    //   templist.unshift({ time, weight });
+    // }
+    this.setState(
+      {
+        // weightData: templist,
+        showEnterWeightComponent: false
+      },
+      this.getAllWeights
+    );
   }
 
   closeEnterWeightWindow() {
@@ -76,38 +96,58 @@ export default class WeightScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <View style={styles.container}>
-          <AddOrModifyWeight
-            showEnterWeightComponent={this.state.showEnterWeightComponent}
-            closeEnterWeightWindow={this.closeEnterWeightWindow}
-            updateListNewOrModified={this.updateListNewOrModified}
-            chosenWeightItem={this.state.chosenWeightItem}
-          />
-          <Button
-            onPress={this.handleSaveButton}
-            title="Save value"
-            color="#841584"
-          />
-          {/* FOR TESTING */}
-          <Button title="Clear data" onPress={ClearAllWeights} />
-          <Button title="Get Weights" onPress={this.getAllWeights} />
-          {/* FOR TESTING */}
-        </View>
+      <ScrollView style={{ flex: 1 }}>
+        <ProgressGauge lastWeight={this.state.weightData[0] || null} />
 
-        <WeightDataListNativeElements weightData={this.state.weightData} />
-      </View>
+        <AddOrModifyWeight
+          getAllWeights={this.getAllWeights}
+          showEnterWeightComponent={this.state.showEnterWeightComponent}
+          closeEnterWeightWindow={this.closeEnterWeightWindow}
+          updateListNewOrModified={this.updateListNewOrModified}
+          chosenWeightItem={this.state.chosenWeightItem}
+        />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            // alignSelf: "auto",
+            marginTop: 1,
+            // alignContent: "space-around",
+            justifyContent: "space-between"
+          }}
+        >
+          <Icon
+            raised
+            name="chart-line"
+            type="material-community"
+            color={tintColor.tintColor}
+            size={24}
+            iconStyle={{}}
+            containerStyle={{}}
+            onPress={() => this.props.navigation.navigate("Weightchart")}
+          />
+          <Icon
+            reverse
+            name="add-circle-outline"
+            type="MaterialIcons"
+            color={tintColor.tintColor}
+            size={24}
+            iconStyle={{}}
+            containerStyle={{}} // alignSelf: "flex-end"
+            onPress={() => this.setState({ showEnterWeightComponent: true })}
+          />
+        </View>
+        <WeightDataList
+          weightData={this.state.weightData}
+          getAllWeights={this.getAllWeights}
+        />
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    // flexDirection: 'row',
-    alignItems: "center"
+  page: {
+    flex: 1
   }
 });

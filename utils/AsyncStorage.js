@@ -9,10 +9,8 @@ export const SaveWeight = async value => {
   } else {
     storedData.push(value);
   }
-  console.log(storedData);
   // Save updated data to storage
   try {
-    // console.log(data);
     await AsyncStorage.setItem("Weight", JSON.stringify(storedData));
     return true;
   } catch (error) {
@@ -24,6 +22,9 @@ export const GetWeightArray = async () => {
   try {
     const response = await AsyncStorage.getItem("Weight");
     const weightArray = await JSON.parse(response);
+    if (!weightArray) {
+      return [];
+    }
     return weightArray;
   } catch (error) {
     // TODO handeError
@@ -63,3 +64,44 @@ export const EditWeight = async (chosenWeight, newValue) => {
     // TODO handeError
   }
 }
+
+export const SaveProfile = async (newProfile) => {
+  try {
+    await AsyncStorage.setItem("Profile", JSON.stringify(newProfile));
+  } catch (error) {
+    // TODO handeError
+  }
+}
+
+export const GetProfile = async () => {
+  try {
+    const response = await AsyncStorage.getItem("Profile");
+    return response ? JSON.parse(response) : response;
+  } catch (error) {
+    // TODO handeError
+  }
+};
+
+export const ClearProfile = async () => {
+  try {
+    await AsyncStorage.removeItem("Profile");
+    await AsyncStorage.removeItem("FirstLaunch"); // for testing ONLY
+  } catch (error) {}
+};
+
+export const FirstLaunchCompleted = async () => {
+  try {
+    await AsyncStorage.setItem("FirstLaunch", 'false');
+  } catch (error) {
+    // TODO handeError
+  }
+}
+
+export const GetFirstLaunch = async () => {
+  try {
+    const response = await AsyncStorage.getItem("FirstLaunch");
+    return response;
+  } catch (error) {
+    // TODO handeError
+  }
+};
