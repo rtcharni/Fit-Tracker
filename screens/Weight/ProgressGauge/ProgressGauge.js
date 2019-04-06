@@ -8,7 +8,7 @@ import {
 import window from "../../../constants/Layout";
 import { GetProfile } from "../../../utils/AsyncStorage";
 import Colors from "../../../constants/Colors";
-import { withNavigationFocus, NavigationEvents } from "react-navigation";
+import { NavigationEvents } from "react-navigation";
 
 const size = 180;
 const width = 10;
@@ -17,7 +17,7 @@ const textOffset = width;
 const textWidth = size - textOffset * 2;
 const textHeight = size * (1 - cropDegree / 360) - textOffset * 2;
 
-class ProgressGauge extends Component {
+export default class ProgressGauge extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -82,7 +82,7 @@ class ProgressGauge extends Component {
   }
 }
 
-export default withNavigationFocus(ProgressGauge);
+// export default withNavigationFocus(ProgressGauge);
 
 const styles = StyleSheet.create({
   textView: {
