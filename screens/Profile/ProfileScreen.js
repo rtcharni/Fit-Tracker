@@ -145,18 +145,22 @@ export default class ProfileScreen extends React.Component {
             <Form>
               <Card>
                 <CardItem header bordered>
-                  <Text style={{color: Colors.tintColor}}>Here you can update your info</Text>
+                  <Text style={{ color: Colors.tintColor }}>
+                    Here you can update your info
+                  </Text>
                 </CardItem>
                 <CardItem>
-                  <Item floatingLabel>
-                    <Label>Starting weight (kg)</Label>
+                  <Item >
+                    {/* <Label>Starting weight (kg)</Label> */}
                     <Input
+                    placeholder="Starting weight (kg)"
                       value={this.state.startingWeight}
                       maxLength={5}
                       keyboardType="decimal-pad"
                       returnKeyType="next"
                       blurOnSubmit={false}
                       onSubmitEditing={() => {
+                        // console.log(this.secondInput);
                         this.secondInput._root.focus();
                       }}
                       onChangeText={startingWeight =>
@@ -170,15 +174,16 @@ export default class ProfileScreen extends React.Component {
                   </Item>
                 </CardItem>
                 <CardItem>
-                  <Item floatingLabel>
-                    <Label>Target weight (kg)</Label>
+                  <Item>
+                    {/* <Label>Target weight (kg)</Label> */}
                     <Input
+                    placeholder="Target weight (kg)"
                       value={this.state.targetWeight}
                       maxLength={5}
                       keyboardType="decimal-pad"
                       returnKeyType="next"
                       blurOnSubmit={false}
-                      getRef={input => {
+                      ref={input => {
                         this.secondInput = input;
                       }}
                       onSubmitEditing={() => {
@@ -192,15 +197,16 @@ export default class ProfileScreen extends React.Component {
                   </Item>
                 </CardItem>
                 <CardItem>
-                  <Item floatingLabel>
-                    <Label>Height (cm)</Label>
+                  <Item>
+                    {/* <Label>Height (cm)</Label> */}
                     <Input
+                    placeholder="Height (cm)"
                       value={this.state.height}
                       maxLength={3}
                       keyboardType="decimal-pad"
                       returnKeyType="done"
                       blurOnSubmit={true}
-                      getRef={input => {
+                      ref={input => {
                         this.thirdInput = input;
                       }}
                       onChangeText={height => this.setState({ height })}
