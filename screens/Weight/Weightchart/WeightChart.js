@@ -46,7 +46,9 @@ export default class WeightChart extends React.Component {
     let storageData = (await GetWeightArray()).reverse();
     const now = new Date();
     if (this.state.filter_MS !== "all") {
-      storageData = storageData.filter(x => (now.getTime() - x.time) <= this.state.filter_MS);
+      storageData = storageData.filter(
+        x => now.getTime() - x.time <= this.state.filter_MS
+      );
     }
     const weightData = storageData.map(weight => ({
       x: weight.time,
@@ -56,6 +58,10 @@ export default class WeightChart extends React.Component {
   }
 
   render() {
+    const serie = this.state.weightData.length
+      ? { name: "Your weight", data: this.state.weightData }
+      : { name: "No data yet", data: this.state.weightData };
+    const showLegend = this.state.weightData.length ? false : true;
     const Highcharts = "Highcharts";
     const conf = {
       chart: {
@@ -94,49 +100,44 @@ export default class WeightChart extends React.Component {
         }
       },
       legend: {
-        enabled: false
+        enabled: showLegend
       },
       exporting: {
         enabled: false
       },
-      series: [
-        {
-          name: "Your weight",
-          data: this.state.weightData
-        }
-      ]
+      series: [serie]
     };
 
     const options = {
       global: {
         useUTC: false
-      },
-      lang: {
-        decimalPoint: ",",
-        thousandsSep: "."
-        // shortMonths: ["Tam", "Hel", "3", "Huhti", "Touko", "Kesä", "Heinä", "Elo", "Syys", "Lok", "Mar", "Jou"]
       }
     };
     return (
       <Container>
-        <Item picker underline style={{ alignSelf: "flex-end", width: window.window.width / 2}}>
-        <Icon name="filter" type="AntDesign" />
+        <Item
+          picker
+          underline
+          style={{ alignSelf: "flex-end", width: window.window.width / 2 }}
+        >
+          <Icon name="filter" type="AntDesign" />
           <Picker
             mode="dialog"
             iosIcon={<Icon name="arrow-down" />}
-            style={{  }}
+            style={{}}
             // placeholderStyle={{ color: "#bfc6ea" }}
             // placeholderIconColor="#007aff"
             prompt="Choose timerange"
             selectedValue={this.state.filter_MS}
-            onValueChange={filter_MS => this.setState({ filter_MS }, () => this.chartData())}
+            onValueChange={filter_MS =>
+              this.setState({ filter_MS }, () => this.chartData())
+            }
           >
             <Picker.Item label="2 weeks" value={1296000000} />
             <Picker.Item label="1 month" value={2592000000} />
             <Picker.Item label="3 months" value={7776000000} />
             <Picker.Item label="6 months" value={15552000000} />
             <Picker.Item label="All" value={"all"} />
-
           </Picker>
         </Item>
         <ChartView
