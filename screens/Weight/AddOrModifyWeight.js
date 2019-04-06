@@ -23,6 +23,7 @@ import {
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { DeleteWeight, EditWeight, SaveWeight } from "../../utils/AsyncStorage";
 import window from "../../constants/Layout";
+import { ConvertCommaToDot } from "../../utils/utils";
 
 export default class AddOrModifyWeight extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ export default class AddOrModifyWeight extends Component {
   }
 
   handleTextCheck() {
-    const regexWeightCheck = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
+    const regexWeightCheck = /[1-9][0-9]{0,2}[,.]?[0-9]{0,2}/;
     const textCheckResult = this.state.editWeightValue.match(regexWeightCheck);
     if (textCheckResult && textCheckResult[0] === textCheckResult.input) {
       this.setState({
@@ -72,7 +73,9 @@ export default class AddOrModifyWeight extends Component {
   }
 
   async saveWeight() {
-    const weight = parseFloat(this.state.editWeightValue);
+    const convertedWeight = ConvertCommaToDot(this.state.editWeightValue);
+
+    const weight = parseFloat(convertedWeight);
     let response;
     if (this.props.chosenWeightItem) {
       response = await EditWeight(this.props.chosenWeightItem, weight);

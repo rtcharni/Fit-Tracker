@@ -23,6 +23,7 @@ import {
 import { DeleteWeight, EditWeight } from "../../utils/AsyncStorage";
 import AddOrModifyWeight from "./AddOrModifyWeight";
 import Colors from "../../constants/Colors";
+import { ConvertCommaToDot } from "../../utils/utils";
 
 export default class WeightDataList extends Component {
   constructor(props) {
@@ -102,7 +103,7 @@ export default class WeightDataList extends Component {
   }
 
   handleTextCheck() {
-    const regexWeightCheck = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
+    const regexWeightCheck = /[1-9][0-9]{0,2}[,.]?[0-9]{0,2}/;
     const textCheckResult = this.state.enteredText.match(regexWeightCheck);
     if (textCheckResult && textCheckResult[0] === textCheckResult.input) {
       this.setState({

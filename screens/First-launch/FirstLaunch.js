@@ -23,6 +23,7 @@ import {
 import window from "../../constants/Layout";
 import { FirstLaunchCompleted, SaveProfile } from "../../utils/AsyncStorage";
 import Colors from "../../constants/Colors";
+import { ConvertCommaToDot } from "../../utils/utils";
 
 export default class FirstLaunch extends React.Component {
   static navigationOptions = {
@@ -40,8 +41,8 @@ export default class FirstLaunch extends React.Component {
   }
 
   async handleReadyButton() {
-    const regexWeightCheck = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
-    const regexHeightCheck = /[1-9][0-9]{2}/;
+    const regexWeightCheck = /[1-9][0-9]{0,2}[,.]?[0-9]{0,2}/;
+    const regexHeightCheck = /[1-9][0-9]{1,2}/;
     const startingWeightResult = this.state.startingWeight.match(
       regexWeightCheck
     );
@@ -56,9 +57,11 @@ export default class FirstLaunch extends React.Component {
       heightResult[0] === heightResult.input
     ) {
       FirstLaunchCompleted();
+      const startingWithoutComma = ConvertCommaToDot(this.state.startingWeight);
+      const targetWithoutComma = ConvertCommaToDot(this.state.targetWeight);
       SaveProfile({
-        startingWeight: this.state.startingWeight,
-        targetWeight: this.state.targetWeight,
+        startingWeight: startingWithoutComma,
+        targetWeight: targetWithoutComma,
         height: this.state.height,
         gender: this.state.gender
       });

@@ -26,6 +26,7 @@ import {
   ClearProfile,
   ClearAllWeights
 } from "../../utils/AsyncStorage";
+import { ConvertCommaToDot } from '../../utils/utils'
 import Colors from "../../constants/Colors";
 
 export default class ProfileScreen extends React.Component {
@@ -56,8 +57,8 @@ export default class ProfileScreen extends React.Component {
   }
 
   async handleSaveButton() {
-    const regexWeightCheck = /[1-9][0-9]{0,2}\.?[0-9]{0,2}/;
-    const regexHeightCheck = /[1-9][0-9]{2}/;
+    const regexWeightCheck = /[1-9][0-9]{0,2}[,.]?[0-9]{0,2}/;
+    const regexHeightCheck = /[1-9][0-9]{1,2}/;
     const startingWeightResult = this.state.startingWeight.match(
       regexWeightCheck
     );
@@ -79,9 +80,11 @@ export default class ProfileScreen extends React.Component {
         duration: 2000,
         textStyle: { fontSize: 20, textAlign: "center" }
       });
+      const startingWithoutComma = ConvertCommaToDot(this.state.startingWeight);
+      const targetWithoutComma = ConvertCommaToDot(this.state.targetWeight);
       await SaveProfile({
-        startingWeight: this.state.startingWeight,
-        targetWeight: this.state.targetWeight,
+        startingWeight: startingWithoutComma,
+        targetWeight: targetWithoutComma,
         gender: this.state.gender,
         height: this.state.height
       });
@@ -150,10 +153,11 @@ export default class ProfileScreen extends React.Component {
                   </Text>
                 </CardItem>
                 <CardItem>
-                  <Item >
+                  <Item>
                     {/* <Label>Starting weight (kg)</Label> */}
                     <Input
-                    placeholder="Starting weight (kg)"
+                      // autoCapitalize="words"
+                      placeholder="Starting weight (kg)"
                       value={this.state.startingWeight}
                       maxLength={5}
                       keyboardType="decimal-pad"
@@ -177,7 +181,8 @@ export default class ProfileScreen extends React.Component {
                   <Item>
                     {/* <Label>Target weight (kg)</Label> */}
                     <Input
-                    placeholder="Target weight (kg)"
+                      // autoCapitalize="words"
+                      placeholder="Target weight (kg)"
                       value={this.state.targetWeight}
                       maxLength={5}
                       keyboardType="decimal-pad"
@@ -200,7 +205,8 @@ export default class ProfileScreen extends React.Component {
                   <Item>
                     {/* <Label>Height (cm)</Label> */}
                     <Input
-                    placeholder="Height (cm)"
+                      // autoCapitalize="words"
+                      placeholder="Height (cm)"
                       value={this.state.height}
                       maxLength={3}
                       keyboardType="decimal-pad"
