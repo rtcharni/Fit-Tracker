@@ -22,6 +22,9 @@ export const GetWeightArray = async () => {
   try {
     const response = await AsyncStorage.getItem("Weight");
     const weightArray = await JSON.parse(response);
+    if (!weightArray) {
+      return [];
+    }
     return weightArray;
   } catch (error) {
     // TODO handeError
