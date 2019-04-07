@@ -1,6 +1,9 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, ScrollView } from "react-native";
+import { Icon } from "react-native-elements";
 import { ExpoConfigView } from "@expo/samples";
+import ExerciseDataList from "./ExerciseDataList";
+import Colors from "../../constants/Colors";
 
 export default class ExerciseScreen extends React.Component {
   static navigationOptions = {
@@ -11,9 +14,41 @@ export default class ExerciseScreen extends React.Component {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
     return (
-      <View style={{ flex: 1, alignSelf: "center", justifyContent: "center" }}>
-        <Text style={{ fontSize: 20 }}>Exercise tracking will be in next release!</Text>
-      </View>
+      <ScrollView style={{ flex: 1 }}>
+      <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            // alignSelf: "auto",
+            marginTop: 1,
+            // alignContent: "space-around",
+            justifyContent: "space-between"
+          }}
+        >
+          <Icon
+            raised
+            name="chart-line"
+            type="material-community"
+            color={Colors.tintColor}
+            size={24}
+            iconStyle={{}}
+            containerStyle={{}}
+            onPress={() => null}
+          />
+          <Icon
+            reverse
+            name="add-circle-outline"
+            type="MaterialIcons"
+            color={Colors.tintColor}
+            size={24}
+            iconStyle={{}}
+            containerStyle={{}} // alignSelf: "flex-end"
+            onPress={() => null}
+          />
+        </View>
+        <ExerciseDataList/>
+      </ScrollView>
+      
     );
   }
 }
