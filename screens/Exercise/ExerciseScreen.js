@@ -10,9 +10,13 @@ export default class ExerciseScreen extends React.Component {
     title: "Exercise"
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {showEditModal: false};
+  }
+  // TODO next add AddOrModifyExercise component to this component, and workwork
+
   render() {
-    /* Go ahead and delete ExpoConfigView and replace it with your
-     * content, we just wanted to give you a quick view of your config */
     return (
       <ScrollView style={{ flex: 1 }}>
       <View
