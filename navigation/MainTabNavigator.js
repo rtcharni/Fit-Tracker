@@ -83,7 +83,7 @@ export default createBottomTabNavigator(
     ProfileStack
   },
   {
-    initialRouteName: "WeightStack",
+    initialRouteName: "ExerciseStack",
     animationEnabled: true,
     tabBarOptions: { showLabel: true },
     swipeEnabled: true,
