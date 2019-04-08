@@ -4,6 +4,7 @@ import { Icon } from "react-native-elements";
 import { ExpoConfigView } from "@expo/samples";
 import ExerciseDataList from "./ExerciseDataList";
 import Colors from "../../constants/Colors";
+import AddOrModifyExercise from "./AddOrModifyExercise";
 
 export default class ExerciseScreen extends React.Component {
   static navigationOptions = {
@@ -13,12 +14,17 @@ export default class ExerciseScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {showEditModal: false};
+    this.closeEditModal = this.closeEditModal.bind(this);
   }
   // TODO next add AddOrModifyExercise component to this component, and workwork
+  closeEditModal() {
+    this.setState({showEditModal: false})
+  }
 
   render() {
     return (
       <ScrollView style={{ flex: 1 }}>
+      <AddOrModifyExercise showEditModal={this.state.showEditModal} closeEditModal={this.closeEditModal}/>
       <View
           style={{
             flex: 1,
@@ -47,7 +53,7 @@ export default class ExerciseScreen extends React.Component {
             size={24}
             iconStyle={{}}
             containerStyle={{}} // alignSelf: "flex-end"
-            onPress={() => null}
+            onPress={() => this.setState({showEditModal: true})}
           />
         </View>
         <ExerciseDataList/>
