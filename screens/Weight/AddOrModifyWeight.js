@@ -140,6 +140,7 @@ export default class AddOrModifyWeight extends Component {
                     success={this.state.editIcon.success}
                   >
                     <Input
+                    autoFocus
                       placeholder="Weight..."
                       onChangeText={this.handleChangeText}
                       maxLength={5}
