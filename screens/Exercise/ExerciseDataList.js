@@ -21,6 +21,7 @@ import {
   Toast
 } from "native-base";
 import Colors from "../../constants/Colors";
+import { DeleteExercise } from "../../utils/AsyncStorage";
 
 const TESTDATA = [
   { time: 1554649683901, exercise: "Swim", intensity: "medium", duration: 70 },
@@ -31,11 +32,56 @@ const TESTDATA = [
 export default class ExerciseDataList extends Component {
   constructor(props) {
     super(props);
-    this.state = { refresh: false };
+    this.state = { refresh: false, exercises: this.props.exercises };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.exercises !== prevState.exercises) {
+      return {exercises: nextProps.exercises}
+    }
     return null;
+  }
+
+  handleDotOptionsIconPress(item) {
+    Alert.alert(
+      `Date: ${new Date(item.time).toLocaleDateString()}. Exercise: ${item.exercise}`,
+      "Do you want to modify this item?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            return;
+          },
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: () => this.deleteItem(item),
+          style: "destructive"
+        },
+        {
+          text: "Edit",
+          onPress: () => this.editItem(item),
+          style: "default"
+        }
+      ],
+      { cancelable: true }
+    );
+  }
+
+  async editItem(item) {
+    
+  }
+
+  async deleteItem(item) {
+    const response = await DeleteExercise(item);
+    Toast.show({
+      text: "Exercise deleted!",
+      type: "warning",
+      position: "bottom",
+      duration: 2000
+    });
+    this.props.getAllExercises();
   }
 
   render() {
@@ -43,7 +89,7 @@ export default class ExerciseDataList extends Component {
       <View style={{}}>
         <FlatList
           keyExtractor={(item, index) => item.time.toString()} //
-          data={TESTDATA}
+          data={this.state.exercises}
           extraData={this.state.refresh}
           ListHeaderComponent={() => (
             <ListItem
@@ -91,7 +137,7 @@ export default class ExerciseDataList extends Component {
                   type="entypo"
                   color={Colors.tintColor}
                   size={15}
-                  onPress={() => null}
+                  onPress={() => this.handleDotOptionsIconPress(item)}
                 />
               }
             />
