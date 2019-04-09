@@ -22,6 +22,7 @@ import {
   Picker
 } from "native-base";
 import window from "../../constants/Layout";
+import { SaveExercise } from "../../utils/AsyncStorage";
 
 export default class AddOrModifyExercise extends Component {
   constructor(props) {
@@ -75,6 +76,30 @@ export default class AddOrModifyExercise extends Component {
     } else {
       return "close-circle";
     }
+  }
+
+  async handleSave() {
+    // if chosen jotain update !!! TODO!!
+    const exerciseObject = {
+      time: Date.now(),
+      exercise: this.state.exercise,
+      duration: parseInt(this.state.duration, 10),
+      intensity: this.state.intensity
+    };
+    const response = await SaveExercise(exerciseObject);
+    const toastType = response === true ? "success" : "danger";
+    const toastText =
+      response === true ? "Weight saved!" : "Couldn't save weight :/";
+    Toast.show({
+      text: toastText,
+      type: toastType,
+      position: "bottom",
+      duration: 2000
+    });
+
+    this.resetComponent();
+    this.props.closeEditModal();
+    this.props.getAllExercises();
   }
 
   resetComponent() {
@@ -135,8 +160,8 @@ export default class AddOrModifyExercise extends Component {
                     />
                   </Item>
                   <Item
-                  error={this.state.editIcon.error}
-                  success={this.state.editIcon.success}
+                    error={this.state.editIcon.error}
+                    success={this.state.editIcon.success}
                   >
                     <Input
                       ref={c => (this.durationInput = c)}
@@ -180,7 +205,9 @@ export default class AddOrModifyExercise extends Component {
                       style={{ marginRight: 20 }}
                       rounded
                       disabled={this.state.editIcon.error}
-                      onPress={() => null}
+                      onPress={async () => {
+                        await this.handleSave();
+                      }}
                     >
                       <NativeBaseText>
                         {this.props.chosenExerciseItem ? "Update" : "Save"}
