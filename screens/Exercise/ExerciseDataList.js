@@ -22,6 +22,7 @@ import {
 } from "native-base";
 import Colors from "../../constants/Colors";
 import { DeleteExercise } from "../../utils/AsyncStorage";
+import AddOrModifyExercise from "./AddOrModifyExercise";
 
 const TESTDATA = [
   { time: 1554649683901, exercise: "Swim", intensity: "medium", duration: 70 },
@@ -32,7 +33,8 @@ const TESTDATA = [
 export default class ExerciseDataList extends Component {
   constructor(props) {
     super(props);
-    this.state = { refresh: false, exercises: this.props.exercises };
+    this.state = { refresh: false, exercises: this.props.exercises, showEditModal: false, chosenExercise: null };
+    this.closeEditModal = this.closeEditModal.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -69,8 +71,12 @@ export default class ExerciseDataList extends Component {
     );
   }
 
+  closeEditModal() {
+    this.setState({showEditModal: false})
+  }
+
   async editItem(item) {
-    
+    this.setState({chosenExercise: item, showEditModal: true })
   }
 
   async deleteItem(item) {
@@ -87,6 +93,14 @@ export default class ExerciseDataList extends Component {
   render() {
     return (
       <View style={{}}>
+
+      <AddOrModifyExercise
+          chosenExercise={this.state.chosenExercise}
+          showEditModal={this.state.showEditModal}
+      closeEditModal={this.closeEditModal}
+          getAllExercises={this.props.getAllExercises}
+        />
+
         <FlatList
           keyExtractor={(item, index) => item.time.toString()} //
           data={this.state.exercises}

@@ -71,7 +71,11 @@ export default class ExerciseScreen extends React.Component {
             onPress={() => this.setState({ showEditModal: true })}
           />
         </View>
-        <ExerciseDataList exercises={this.state.exercises} getAllExercises={this.getAllExercises}/>
+        <ExerciseDataList
+          closeEditModal={this.closeEditModal}
+          exercises={this.state.exercises}
+          getAllExercises={this.getAllExercises}
+        />
       </ScrollView>
     );
   }
