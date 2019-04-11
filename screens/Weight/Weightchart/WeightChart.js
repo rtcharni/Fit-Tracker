@@ -76,7 +76,7 @@ export default class WeightChart extends React.Component {
       },
       xAxis: {
         type: "datetime",
-        tickPixelInterval: 10,
+        tickPixelInterval: 30,
         labels: {
           formatter: function() {
             const date = new Date(this.value);
