@@ -22,7 +22,7 @@ import {
   Picker
 } from "native-base";
 import window from "../../constants/Layout";
-import { SaveExercise } from "../../utils/AsyncStorage";
+import { SaveExercise, EditExercise } from "../../utils/AsyncStorage";
 
 export default class AddOrModifyExercise extends Component {
   constructor(props) {
@@ -79,27 +79,38 @@ export default class AddOrModifyExercise extends Component {
   }
 
   async handleSave() {
-    // if chosen jotain update !!! TODO!!
-    const exerciseObject = {
-      time: Date.now(),
-      exercise: this.state.exercise,
-      duration: parseInt(this.state.duration, 10),
-      intensity: this.state.intensity
-    };
-    const response = await SaveExercise(exerciseObject);
-    const toastType = response === true ? "success" : "danger";
-    const toastText =
-      response === true ? "Weight saved!" : "Couldn't save weight :/";
-    Toast.show({
-      text: toastText,
-      type: toastType,
-      position: "bottom",
-      duration: 2000
-    });
-
-    this.resetComponent();
-    this.props.closeEditModal();
-    this.props.getAllExercises();
+    if (this.props.chosenExercise) {
+      console.log(this.props.chosenExercise);
+      const newExercise = {
+        exercise: this.state.exercise,
+        duration: parseInt(this.state.duration, 10),
+        intensity: this.state.intensity
+      };
+      const editedExercise = Object.assign(this.props.chosenExercise, newExercise);
+      await EditExercise(editedExercise);
+      this.props.closeEditModal();
+      console.log(editedExercise)
+    } else {
+      const exerciseObject = {
+        time: Date.now(),
+        exercise: this.state.exercise,
+        duration: parseInt(this.state.duration, 10),
+        intensity: this.state.intensity
+      };
+      const response = await SaveExercise(exerciseObject);
+      const toastType = response === true ? "success" : "danger";
+      const toastText =
+        response === true ? "Weight saved!" : "Couldn't save weight :/";
+      Toast.show({
+        text: toastText,
+        type: toastType,
+        position: "bottom",
+        duration: 2000
+      });
+      this.resetComponent();
+      this.props.closeEditModal();
+      this.props.getAllExercises();
+    }
   }
 
   resetComponent() {
@@ -131,7 +142,7 @@ export default class AddOrModifyExercise extends Component {
             <Card>
               <CardItem header bordered>
                 <NativeBaseText>
-                  {this.state.chosenExerciseItem
+                  {this.props.chosenExercise
                     ? "Edit exercise"
                     : "Enter new exercise"}
                 </NativeBaseText>
