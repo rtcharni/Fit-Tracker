@@ -14,6 +14,7 @@ import WeightChart from "../screens/Weight/Weightchart/WeightChart";
 import ProfileIcon from "../assets/icons/ProfileIcon";
 import ExerciseIcon from "../assets/icons/ExerciseIcon";
 import FirstLaunch from "../screens/First-launch/FirstLaunch";
+import ExerciseChart from "../screens/Exercise/ExerciseChart/ExerciseChart";
 
 const stackNavigatorConfig = {
   headerBackTitleVisible: true,
@@ -41,7 +42,8 @@ ProfileStack.navigationOptions = {
 
 const ExerciseStack = createStackNavigator(
   {
-    Exercise: ExerciseScreen
+    Exercise: ExerciseScreen,
+    ExerciseChart: ExerciseChart
   },
   stackNavigatorConfig
 );
