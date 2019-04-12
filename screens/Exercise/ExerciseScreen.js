@@ -58,7 +58,7 @@ export default class ExerciseScreen extends React.Component {
             size={24}
             iconStyle={{}}
             containerStyle={{}}
-            onPress={() => null}
+            onPress={() => this.props.navigation.navigate("ExerciseChart")}
           />
           <Icon
             reverse
