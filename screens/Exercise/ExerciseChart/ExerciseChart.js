@@ -25,7 +25,8 @@ export default class ExerciseChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      exercises: []
+      exercises: [],
+      filter: "all"
     };
     this.chartData = this.chartData.bind(this);
   }
@@ -43,17 +44,34 @@ export default class ExerciseChart extends React.Component {
 
   async chartData() {
     const storageData = await GetExerciseArray();
-    // const exerciseData = storageData.map(weight => ({
-    //   x: weight.time,
-    //   y: weight.weight
-    // }));
-    // this.setState({ exercises: weightData });
+    let exerciseData = storageData.map(exercise => ({
+      x: exercise.time,
+      y: exercise.duration,
+      intensity: exercise.intensity,
+      exercise: exercise.exercise
+    }));
+    switch (this.state.filter) {
+      case "all":
+        break;
+      case "low":
+      exerciseData = exerciseData.filter(x => x.intensity === "low");
+        break;
+      case "medium":
+      exerciseData = exerciseData.filter(x => x.intensity === "medium");
+        break;
+      case "high":
+      exerciseData = exerciseData.filter(x => x.intensity === "high");
+        break;
+      default:
+        break;
+    }
+    this.setState({ exercises: exerciseData });
   }
 
   render() {
     const serie = this.state.exercises.length
       ? { name: "Your exercises", data: this.state.exercises }
-      : { name: "No data yet", data: this.state.exercises };
+      : { name: "No data..", data: this.state.exercises };
     const showLegend = this.state.exercises.length ? false : true;
     const Highcharts = "Highcharts";
     const conf = {
@@ -69,7 +87,7 @@ export default class ExerciseChart extends React.Component {
       },
       xAxis: {
         type: "datetime",
-        tickPixelInterval: 10,
+        tickPixelInterval: 30,
         labels: {
           formatter: function() {
             const date = new Date(this.value);
@@ -80,16 +98,29 @@ export default class ExerciseChart extends React.Component {
       yAxis: {
         title: {
           text: ""
+        },
+        labels: {
+          format: "{value} min"
         }
       },
       tooltip: {
         crosshairs: false,
         formatter: function() {
-          return `${Highcharts.dateFormat(
-            "%d.%m.%Y at %H:%M",
-            this.x
-          )}<br/> Weight:
-            <b> ${Highcharts.numberFormat(this.y, 1)} kg </b>`;
+          return `${Highcharts.dateFormat("%d.%m.%Y", this.x)}<br/>
+          Exercise: <b>${this.point.exercise}</b> <br/>  
+          Duration:
+            <b> ${Highcharts.numberFormat(
+              this.y,
+              0
+            )} min </b> <br/> Intensity: <b>${this.point.intensity}</b>`;
+        }
+      },
+      plotOptions: {
+        series: {
+          dataLabels: {
+            enabled: true,
+            format: "{point.exercise}"
+          }
         }
       },
       legend: {
@@ -100,7 +131,7 @@ export default class ExerciseChart extends React.Component {
       },
       series: [serie]
     };
-
+    // console.log(conf);
     const options = {
       global: {
         useUTC: false
@@ -120,17 +151,16 @@ export default class ExerciseChart extends React.Component {
             style={{}}
             // placeholderStyle={{ color: "#bfc6ea" }}
             // placeholderIconColor="#007aff"
-            prompt="Choose timerange"
-            // selectedValue={this.state.filter_MS}
-            // onValueChange={filter_MS =>
-            //   this.setState({ filter_MS }, () => this.chartData())
-            // }
+            prompt="Show only with intensity"
+            selectedValue={this.state.filter}
+            onValueChange={filter =>
+              this.setState({ filter }, () => this.chartData())
+            }
           >
-            <Picker.Item label="2 weeks" value={1296000000} />
-            <Picker.Item label="1 month" value={2592000000} />
-            <Picker.Item label="3 months" value={7776000000} />
-            <Picker.Item label="6 months" value={15552000000} />
             <Picker.Item label="All" value={"all"} />
+            <Picker.Item label="Low" value={"low"} />
+            <Picker.Item label="Medium" value={"medium"} />
+            <Picker.Item label="High" value={"high"} />
           </Picker>
         </Item>
         <ChartView
@@ -138,6 +168,24 @@ export default class ExerciseChart extends React.Component {
           config={conf}
           options={options}
         />
+         <Card >
+            <CardItem>
+              {/* <Body> */}
+                <Text>
+                   Total duration {this.state.exercises.reduce((total, current) => total + current.y, 0)} min
+                </Text>
+              {/* </Body> */}
+            </CardItem>
+          </Card>
+          <Card transparent>
+            <CardItem>
+              {/* <Body> */}
+                <Text>
+                   Total exercises {this.state.exercises.length}
+                </Text>
+              {/* </Body> */}
+            </CardItem>
+          </Card>
       </Container>
     );
   }
