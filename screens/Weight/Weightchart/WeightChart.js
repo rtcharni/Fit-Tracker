@@ -60,7 +60,7 @@ export default class WeightChart extends React.Component {
   render() {
     const serie = this.state.weightData.length
       ? { name: "Your weight", data: this.state.weightData }
-      : { name: "No data yet", data: this.state.weightData };
+      : { name: "No data..", data: this.state.weightData };
     const showLegend = this.state.weightData.length ? false : true;
     const Highcharts = "Highcharts";
     const conf = {
