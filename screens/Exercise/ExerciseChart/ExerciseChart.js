@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import ChartView from "react-native-highcharts";
 import { GetWeightArray, GetExerciseArray } from "../../../utils/AsyncStorage";
 import window from "../../../constants/Layout";
+import Colors from "../../../constants/Colors";
 import {
   Container,
   Header,
@@ -18,7 +19,8 @@ import {
   Icon,
   Picker,
   Button,
-  Toast
+  Toast,
+  Badge
 } from "native-base";
 
 export default class ExerciseChart extends React.Component {
@@ -54,13 +56,13 @@ export default class ExerciseChart extends React.Component {
       case "all":
         break;
       case "low":
-      exerciseData = exerciseData.filter(x => x.intensity === "low");
+        exerciseData = exerciseData.filter(x => x.intensity === "low");
         break;
       case "medium":
-      exerciseData = exerciseData.filter(x => x.intensity === "medium");
+        exerciseData = exerciseData.filter(x => x.intensity === "medium");
         break;
       case "high":
-      exerciseData = exerciseData.filter(x => x.intensity === "high");
+        exerciseData = exerciseData.filter(x => x.intensity === "high");
         break;
       default:
         break;
@@ -168,24 +170,36 @@ export default class ExerciseChart extends React.Component {
           config={conf}
           options={options}
         />
-         <Card >
-            <CardItem>
-              {/* <Body> */}
-                <Text>
-                   Total duration {this.state.exercises.reduce((total, current) => total + current.y, 0)} min
-                </Text>
-              {/* </Body> */}
-            </CardItem>
-          </Card>
-          <Card transparent>
-            <CardItem>
-              {/* <Body> */}
-                <Text>
-                   Total exercises {this.state.exercises.length}
-                </Text>
-              {/* </Body> */}
-            </CardItem>
-          </Card>
+        <Card style={{marginTop:8}}>
+          <CardItem>
+            {/* <Body> */}
+            <Text>Total duration</Text>
+            <Badge style={{ backgroundColor: "lightgrey", marginLeft: 15 }}>
+              <Text style={{ color: Colors.tintColor }}>
+                {this.state.exercises.reduce(
+                  (total, current) => total + current.y,
+                  0
+                )}{" "}
+                min
+              </Text>
+            </Badge>
+
+            {/* </Body> */}
+          </CardItem>
+        </Card>
+        <Card>
+          <CardItem>
+            {/* <Body> */}
+            <Text>Total exercises</Text>
+            <Badge style={{ backgroundColor: "lightgrey", marginLeft: 15 }}>
+              <Text style={{ color: Colors.tintColor }}>
+                {this.state.exercises.length}
+              </Text>
+            </Badge>
+
+            {/* </Body> */}
+          </CardItem>
+        </Card>
       </Container>
     );
   }
