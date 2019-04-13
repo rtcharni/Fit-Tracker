@@ -20,7 +20,6 @@ import {
   Button,
   Toast
 } from "native-base";
-import { Col, Row, Grid } from "react-native-easy-grid";
 import { DeleteWeight, EditWeight, SaveWeight } from "../../utils/AsyncStorage";
 import window from "../../constants/Layout";
 import { ConvertCommaToDot } from "../../utils/utils";

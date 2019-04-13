@@ -1,6 +1,5 @@
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Col, Row, Grid } from "react-native-easy-grid";
 import { Icon } from "react-native-elements";
 import {
   Image,
