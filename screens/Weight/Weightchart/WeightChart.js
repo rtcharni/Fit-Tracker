@@ -99,6 +99,9 @@ export default class WeightChart extends React.Component {
       yAxis: {
         title: {
           text: ""
+        },
+        labels: {
+          format: "{value}kg"
         }
       },
       tooltip: {

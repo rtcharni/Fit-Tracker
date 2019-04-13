@@ -86,6 +86,13 @@ export default class ExerciseChart extends React.Component {
     return ConvertMinToDaysHoursMin(totalMIN);
   }
 
+  getWordTimes() {
+    if (this.state.exercises.length === 1) {
+      return 'time';
+    }
+    return 'times'
+  }
+
   render() {
     const serie = this.state.exercises.length
       ? { name: "Your exercises", data: this.state.exercises }
@@ -118,7 +125,7 @@ export default class ExerciseChart extends React.Component {
           text: ""
         },
         labels: {
-          format: "{value} min"
+          format: "{value}min"
         }
       },
       tooltip: {
@@ -250,7 +257,7 @@ export default class ExerciseChart extends React.Component {
             <Text>Total exercises</Text>
             <Badge style={{ backgroundColor: "lightgrey", marginLeft: 15 }}>
               <Text style={{ color: Colors.tintColor }}>
-                {this.state.exercises.length} times
+                {this.state.exercises.length} {this.getWordTimes()}
               </Text>
             </Badge>
 
