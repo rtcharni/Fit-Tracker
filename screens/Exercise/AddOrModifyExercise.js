@@ -80,7 +80,6 @@ export default class AddOrModifyExercise extends Component {
 
   async handleSave() {
     if (this.props.chosenExercise) {
-      console.log(this.props.chosenExercise);
       const newExercise = {
         exercise: this.state.exercise,
         duration: parseInt(this.state.duration, 10),
@@ -89,7 +88,6 @@ export default class AddOrModifyExercise extends Component {
       const editedExercise = Object.assign(this.props.chosenExercise, newExercise);
       await EditExercise(editedExercise);
       this.props.closeEditModal();
-      console.log(editedExercise)
     } else {
       const exerciseObject = {
         time: Date.now(),
@@ -100,7 +98,7 @@ export default class AddOrModifyExercise extends Component {
       const response = await SaveExercise(exerciseObject);
       const toastType = response === true ? "success" : "danger";
       const toastText =
-        response === true ? "Weight saved!" : "Couldn't save weight :/";
+        response === true ? "Exercise saved!" : "Couldn't save exercise :/";
       Toast.show({
         text: toastText,
         type: toastType,

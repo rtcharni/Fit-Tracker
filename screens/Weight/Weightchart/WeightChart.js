@@ -60,13 +60,14 @@ export default class WeightChart extends React.Component {
   }
 
   getWeightChange() {
-    if (!this.state.weightData.length) {
-      return '';
-    } else if (this.state.weightData.length === 1) {
-      return '';
-    } else {
-      return this.state.weightData[0].y - this.state.weightData[this.state.weightData.length - 1].y + "kg";
+    if (!this.state.weightData.length || this.state.weightData.length === 1) {
+      return "0 kg";
     }
+    return (
+      this.state.weightData[0].y -
+      this.state.weightData[this.state.weightData.length - 1].y +
+      " kg"
+    );
   }
 
   render() {
@@ -140,7 +141,7 @@ export default class WeightChart extends React.Component {
           underline
           style={{ alignSelf: "flex-end", width: window.window.width / 2 }}
         >
-         <Icon name="md-time" type="Ionicons" />
+          <Icon name="md-time" type="Ionicons" />
           <Picker
             mode="dialog"
             iosIcon={<Icon name="arrow-down" />}
