@@ -4,6 +4,7 @@ import ChartView from "react-native-highcharts";
 import { GetWeightArray, GetExerciseArray } from "../../../utils/AsyncStorage";
 import window from "../../../constants/Layout";
 import Colors from "../../../constants/Colors";
+import {ConvertMinToDaysHoursMin} from '../../../utils/utils';
 import {
   Container,
   Header,
@@ -69,6 +70,15 @@ export default class ExerciseChart extends React.Component {
     }
     this.setState({ exercises: exerciseData });
   }
+
+  getTotalDuration() {
+    const totalMIN = this.state.exercises.reduce(
+      (total, current) => total + current.y,
+      0
+    );
+    return ConvertMinToDaysHoursMin(totalMIN);
+  }
+
 
   render() {
     const serie = this.state.exercises.length
@@ -170,17 +180,13 @@ export default class ExerciseChart extends React.Component {
           config={conf}
           options={options}
         />
-        <Card style={{marginTop:8}}>
+        <Card style={{ marginTop: 8 }}>
           <CardItem>
             {/* <Body> */}
             <Text>Total duration</Text>
             <Badge style={{ backgroundColor: "lightgrey", marginLeft: 15 }}>
               <Text style={{ color: Colors.tintColor }}>
-                {this.state.exercises.reduce(
-                  (total, current) => total + current.y,
-                  0
-                )}{" "}
-                min
+                {this.getTotalDuration()}
               </Text>
             </Badge>
 
@@ -193,7 +199,7 @@ export default class ExerciseChart extends React.Component {
             <Text>Total exercises</Text>
             <Badge style={{ backgroundColor: "lightgrey", marginLeft: 15 }}>
               <Text style={{ color: Colors.tintColor }}>
-                {this.state.exercises.length}
+                {this.state.exercises.length} times
               </Text>
             </Badge>
 
