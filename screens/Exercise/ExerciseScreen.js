@@ -6,6 +6,7 @@ import ExerciseDataList from "./ExerciseDataList";
 import Colors from "../../constants/Colors";
 import AddOrModifyExercise from "./AddOrModifyExercise";
 import { GetExerciseArray } from "../../utils/AsyncStorage";
+import ProgressBars from "./ProgressBars/ProgressBars";
 
 export default class ExerciseScreen extends React.Component {
   static navigationOptions = {
@@ -35,6 +36,7 @@ export default class ExerciseScreen extends React.Component {
   render() {
     return (
       <ScrollView style={{ flex: 1 }}>
+        <ProgressBars exercises={this.state.exercises}/>
         <AddOrModifyExercise
           showEditModal={this.state.showEditModal}
           closeEditModal={this.closeEditModal}
