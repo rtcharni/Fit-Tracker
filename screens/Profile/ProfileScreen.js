@@ -37,7 +37,6 @@ export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // gender: "male",
       startingWeight: "",
       targetWeight: "",
       exerciseDuration: "",
@@ -49,7 +48,6 @@ export default class ProfileScreen extends React.Component {
     const profile = await GetProfile();
     if (profile) {
       this.setState({
-        // gender: profile.gender,
         startingWeight: profile.startingWeight,
         targetWeight: profile.targetWeight,
         exerciseDuration: profile.exerciseDuration,
@@ -223,8 +221,8 @@ export default class ProfileScreen extends React.Component {
                       onChangeText={exerciseDuration => this.setState({ exerciseDuration })}
                     />
                     <Icon
-                      name="arrow-expand-vertical"
-                      type="MaterialCommunityIcons"
+                      name="timelapse"
+                      type="MaterialIcons"
                     />
                   </Item>
                 </CardItem>
@@ -244,7 +242,7 @@ export default class ProfileScreen extends React.Component {
                       onChangeText={exerciseCount => this.setState({ exerciseCount })}
                     />
                     <Icon
-                      name="arrow-expand-vertical"
+                      name="counter"
                       type="MaterialCommunityIcons"
                     />
                   </Item>
