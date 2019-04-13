@@ -111,6 +111,11 @@ export default class WeightChart extends React.Component {
             <b> ${Highcharts.numberFormat(this.y, 1)} kg </b>`;
         }
       },
+      plotOptions: {
+        series: {
+          color: Colors.tintColor
+        }
+      },
       legend: {
         enabled: showLegend
       },

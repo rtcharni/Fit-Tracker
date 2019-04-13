@@ -135,6 +135,7 @@ export default class ExerciseChart extends React.Component {
       },
       plotOptions: {
         series: {
+          color: Colors.tintColor,
           dataLabels: {
             enabled: true,
             format: "{point.exercise}"
