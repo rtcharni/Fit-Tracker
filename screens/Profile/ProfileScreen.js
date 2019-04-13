@@ -24,9 +24,10 @@ import {
   GetProfile,
   SaveProfile,
   ClearProfile,
-  ClearAllWeights
+  ClearAllWeights,
+  ClearAllExercises
 } from "../../utils/AsyncStorage";
-import { ConvertCommaToDot } from '../../utils/utils'
+import { ConvertCommaToDot } from "../../utils/utils";
 import Colors from "../../constants/Colors";
 
 export default class ProfileScreen extends React.Component {
@@ -64,8 +65,12 @@ export default class ProfileScreen extends React.Component {
       regexWeightCheck
     );
     const targetWeightResult = this.state.targetWeight.match(regexWeightCheck);
-    const exerciseDurationResult = this.state.exerciseDuration.match(regexExerciseDurationCheck);
-    const exerciseCountResult = this.state.exerciseCount.match(regexExerciseCountCheck);
+    const exerciseDurationResult = this.state.exerciseDuration.match(
+      regexExerciseDurationCheck
+    );
+    const exerciseCountResult = this.state.exerciseCount.match(
+      regexExerciseCountCheck
+    );
     if (
       startingWeightResult &&
       startingWeightResult[0] === startingWeightResult.input &&
@@ -106,22 +111,26 @@ export default class ProfileScreen extends React.Component {
   showDeleteActionSheet() {
     const buttons = [
       "Delete all entered weights",
-      "Delete whole profile and weight",
+      "Delete all entered exercises",
+      "Delete profile and all data",
       "Cancel"
     ];
     ActionSheet.show(
       {
         options: buttons,
-        cancelButtonIndex: 2,
-        destructiveButtonIndex: 1,
+        cancelButtonIndex: 3,
+        destructiveButtonIndex: 2,
         title: "Want to start over?"
       },
       async index => {
         if (index === 0) {
           await ClearAllWeights();
         } else if (index === 1) {
+          await ClearAllExercises();
+        } else if (index === 2) {
           await ClearProfile();
           await ClearAllWeights();
+          await ClearAllExercises();
         }
       }
     );
@@ -153,7 +162,7 @@ export default class ProfileScreen extends React.Component {
               <Card>
                 <CardItem header bordered>
                   <Text style={{ color: Colors.tintColor }}>
-                    Here you can update your info
+                    Here you can update your goal
                   </Text>
                 </CardItem>
                 <CardItem>
@@ -218,12 +227,11 @@ export default class ProfileScreen extends React.Component {
                       onSubmitEditing={() => {
                         this.fourthInput._root.focus();
                       }}
-                      onChangeText={exerciseDuration => this.setState({ exerciseDuration })}
+                      onChangeText={exerciseDuration =>
+                        this.setState({ exerciseDuration })
+                      }
                     />
-                    <Icon
-                      name="timelapse"
-                      type="MaterialIcons"
-                    />
+                    <Icon name="timelapse" type="MaterialIcons" />
                   </Item>
                 </CardItem>
                 <CardItem>
@@ -239,12 +247,11 @@ export default class ProfileScreen extends React.Component {
                       ref={input => {
                         this.fourthInput = input;
                       }}
-                      onChangeText={exerciseCount => this.setState({ exerciseCount })}
+                      onChangeText={exerciseCount =>
+                        this.setState({ exerciseCount })
+                      }
                     />
-                    <Icon
-                      name="counter"
-                      type="MaterialCommunityIcons"
-                    />
+                    <Icon name="counter" type="MaterialCommunityIcons" />
                   </Item>
                 </CardItem>
                 <View
