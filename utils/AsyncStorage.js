@@ -88,6 +88,12 @@ export const EditExercise = async (newExerciseObject) => {
   }
 }
 
+export const ClearAllExercises = async () => {
+  try {
+    await AsyncStorage.removeItem("Exercise");
+  } catch (error) {}
+}
+
 export const ClearAllWeights = async () => {
   try {
     await AsyncStorage.removeItem("Weight");
