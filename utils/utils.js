@@ -3,6 +3,12 @@ export const ConvertCommaToDot = value => {
   return newStringValue;
 };
 
+export const ConvertDateToMonday = date => {
+  const diff = date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1);
+  date.setHours(0, 0, 0, 0);
+  return new Date(date.setDate(diff));
+};
+
 export const ConvertMinToDaysHoursMin = valueMIN => {
   const num = valueMIN;
   //   const days = num / 24 / 60;
