@@ -27,7 +27,7 @@ import { ConvertCommaToDot } from "../../utils/utils";
 
 export default class FirstLaunch extends React.Component {
   static navigationOptions = {
-    title: 'First launch',
+    title: "First launch"
   };
 
   constructor(props) {
@@ -35,26 +35,34 @@ export default class FirstLaunch extends React.Component {
     this.state = {
       startingWeight: "",
       targetWeight: "",
-      height: "",
-      gender: "male"
+      exerciseDuration: "",
+      exerciseCount: ""
     };
   }
 
   async handleReadyButton() {
     const regexWeightCheck = /[1-9][0-9]{0,2}[,.]?[0-9]{0,2}/;
-    const regexHeightCheck = /[1-9][0-9]{1,2}/;
+    const regexExerciseDurationCheck = /[1-9][0-9]{0,3}/;
+    const regexExerciseCountCheck = /[1-9][0-9]{0,1}/;
     const startingWeightResult = this.state.startingWeight.match(
       regexWeightCheck
     );
     const targetWeightResult = this.state.targetWeight.match(regexWeightCheck);
-    const heightResult = this.state.height.match(regexHeightCheck);
+    const exerciseDurationResult = this.state.exerciseDuration.match(
+      regexExerciseDurationCheck
+    );
+    const exerciseCountResult = this.state.exerciseCount.match(
+      regexExerciseCountCheck
+    );
     if (
       startingWeightResult &&
       startingWeightResult[0] === startingWeightResult.input &&
       targetWeightResult &&
       targetWeightResult[0] === targetWeightResult.input &&
-      heightResult &&
-      heightResult[0] === heightResult.input
+      exerciseDurationResult &&
+      exerciseDurationResult[0] === exerciseDurationResult.input &&
+      exerciseCountResult &&
+      exerciseCountResult[0] === exerciseCountResult.input
     ) {
       FirstLaunchCompleted();
       const startingWithoutComma = ConvertCommaToDot(this.state.startingWeight);
@@ -62,10 +70,10 @@ export default class FirstLaunch extends React.Component {
       SaveProfile({
         startingWeight: startingWithoutComma,
         targetWeight: targetWithoutComma,
-        height: this.state.height,
-        gender: this.state.gender
+        exerciseDuration: this.state.exerciseDuration,
+        exerciseCount: this.state.exerciseCount
       });
-      this.props.navigation.replace('Weight');
+      this.props.navigation.replace("Weight");
       // this.props.closeFirstLaunch();
       // this.props.navigation.navigate("Weightchart")
     } else {
@@ -91,7 +99,11 @@ export default class FirstLaunch extends React.Component {
                   source={require("../../assets/images/apple.png")}
                 />
                 <Body>
-                  <Text uppercase ellipsizeMod style={{ fontSize: 25, color: Colors.tintColor }}>
+                  <Text
+                    uppercase
+                    ellipsizeMod
+                    style={{ fontSize: 25, color: Colors.tintColor }}
+                  >
                     Welcome to Fit-Tracker!
                   </Text>
                   <Text note>lose weight, get fit, be healthy</Text>
@@ -101,7 +113,8 @@ export default class FirstLaunch extends React.Component {
             <CardItem>
               <Form>
                 <Text>
-                  For tracking your results and getting best user experience, please fill out some information.
+                  For tracking your results and getting best user experience,
+                  please fill out some information.
                 </Text>
                 <CardItem>
                   <Item floatingLabel>
@@ -149,39 +162,45 @@ export default class FirstLaunch extends React.Component {
                 </CardItem>
                 <CardItem>
                   <Item floatingLabel>
-                    <Label>Height (cm)</Label>
+                    <Label>Week goal exercise amount (min)</Label>
                     <Input
-                      value={this.state.height}
-                      maxLength={3}
+                      // placeholder="Week goal exercise amount (min)"
+                      value={this.state.exerciseDuration}
+                      maxLength={4}
+                      keyboardType="decimal-pad"
+                      returnKeyType="next"
+                      blurOnSubmit={false}
+                      getRef={input => {
+                        this.thirdInput = input;
+                      }}
+                      onSubmitEditing={() => {
+                        this.fourthInput._root.focus();
+                      }}
+                      onChangeText={exerciseDuration =>
+                        this.setState({ exerciseDuration })
+                      }
+                    />
+                    <Icon name="timelapse" type="MaterialIcons" />
+                  </Item>
+                </CardItem>
+                <CardItem>
+                  <Item floatingLabel>
+                  <Label>Week goal exercise count</Label>
+                    <Input
+                      // placeholder="Week goal exercise count"
+                      value={this.state.exerciseCount}
+                      maxLength={2}
                       keyboardType="decimal-pad"
                       returnKeyType="done"
                       blurOnSubmit={true}
                       getRef={input => {
-                        this.thirdInput = input;
+                        this.fourthInput = input;
                       }}
-                      onChangeText={height => this.setState({ height })}
+                      onChangeText={exerciseCount =>
+                        this.setState({ exerciseCount })
+                      }
                     />
-                    <Icon
-                      name="arrow-expand-vertical"
-                      type="MaterialCommunityIcons"
-                    />
-                  </Item>
-                </CardItem>
-                <CardItem>
-                  <Item picker>
-                    <Picker
-                      mode="dropdown"
-                      iosIcon={<Icon name="arrow-down" />}
-                      style={{ width: undefined }}
-                      placeholderStyle={{ color: "#bfc6ea" }}
-                      placeholderIconColor="#007aff"
-                      selectedValue={this.state.gender}
-                      onValueChange={gender => this.setState({ gender })}
-                    >
-                      <Picker.Item label="Male" value="male" />
-                      <Picker.Item label="Female" value="female" />
-                      <Picker.Item label="Doesn't matter" value="unknown" />
-                    </Picker>
+                    <Icon name="counter" type="MaterialCommunityIcons" />
                   </Item>
                 </CardItem>
               </Form>
@@ -194,7 +213,7 @@ export default class FirstLaunch extends React.Component {
               style={{ alignSelf: "center" }}
               onPress={() => this.handleReadyButton()}
             >
-              <Text style={{color: Colors.tintColor}}>Ready</Text>
+              <Text style={{ color: Colors.tintColor }}>Ready</Text>
               <Icon name="arrow-forward" />
             </Button>
           </Card>
