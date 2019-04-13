@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import ChartView from "react-native-highcharts";
 import { GetWeightArray } from "../../../utils/AsyncStorage";
 import window from "../../../constants/Layout";
+import Colors from "../../../constants/Colors";
 import {
   Container,
   Header,
@@ -18,7 +19,8 @@ import {
   Icon,
   Picker,
   Button,
-  Toast
+  Toast,
+  Badge
 } from "native-base";
 
 export default class WeightChart extends React.Component {
@@ -55,6 +57,16 @@ export default class WeightChart extends React.Component {
       y: weight.weight
     }));
     this.setState({ weightData: weightData });
+  }
+
+  getWeightChange() {
+    if (!this.state.weightData.length) {
+      return '';
+    } else if (this.state.weightData.length === 1) {
+      return '';
+    } else {
+      return this.state.weightData[0].y - this.state.weightData[this.state.weightData.length - 1].y + "kg";
+    }
   }
 
   render() {
@@ -120,7 +132,7 @@ export default class WeightChart extends React.Component {
           underline
           style={{ alignSelf: "flex-end", width: window.window.width / 2 }}
         >
-          <Icon name="filter" type="AntDesign" />
+         <Icon name="md-time" type="Ionicons" />
           <Picker
             mode="dialog"
             iosIcon={<Icon name="arrow-down" />}
@@ -133,7 +145,8 @@ export default class WeightChart extends React.Component {
               this.setState({ filter_MS }, () => this.chartData())
             }
           >
-            <Picker.Item label="2 weeks" value={1296000000} />
+            <Picker.Item label="1 week" value={604800000} />
+            <Picker.Item label="2 weeks" value={1209600000} />
             <Picker.Item label="1 month" value={2592000000} />
             <Picker.Item label="3 months" value={7776000000} />
             <Picker.Item label="6 months" value={15552000000} />
@@ -145,6 +158,19 @@ export default class WeightChart extends React.Component {
           config={conf}
           options={options}
         />
+        <Card style={{ marginTop: 8 }}>
+          <CardItem>
+            {/* <Body> */}
+            <Text>Timerange weight change</Text>
+            <Badge style={{ backgroundColor: "lightgrey", marginLeft: 15 }}>
+              <Text style={{ color: Colors.tintColor }}>
+                {this.getWeightChange()}
+              </Text>
+            </Badge>
+
+            {/* </Body> */}
+          </CardItem>
+        </Card>
       </Container>
     );
   }
