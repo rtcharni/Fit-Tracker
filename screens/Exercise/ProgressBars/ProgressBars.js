@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { Constants, Svg } from "expo";
-import { View, StyleSheet, Text, ProgressBarAndroid } from "react-native";
-import {
-  AnimatedGaugeProgress,
-  GaugeProgress
-} from "react-native-simple-gauge";
+import { View, StyleSheet, Text } from "react-native";
 import window from "../../../constants/Layout";
 import { GetProfile } from "../../../utils/AsyncStorage";
 import Colors from "../../../constants/Colors";
 import { NavigationEvents } from "react-navigation";
 import { ConvertDateToMonday } from "../../../utils/utils";
+import ProgressBar from "react-native-progress/Bar";
+// import * as Progress from 'react-native-progress-fixed';
 
 export default class ProgressBars extends Component {
   constructor(props) {
@@ -18,7 +16,9 @@ export default class ProgressBars extends Component {
       exercises: [],
       exerciseDuration: null,
       exerciseCount: null,
-      monday: null
+      monday: null,
+      durationProgress: 0,
+      countProgress: 0.2
     };
   }
 
@@ -42,21 +42,73 @@ export default class ProgressBars extends Component {
     });
   }
 
+  componentDidMount() {
+    this.getProgress();
+  }
+
+  getProgress() {
+    setInterval(() => {
+      if (this.state.durationProgress === 1) {
+        this.setState({ durationProgress: 0 });
+      }
+      this.setState({ durationProgress: this.state.durationProgress + 0.1 });
+    }, 1000);
+  }
+
   render() {
     try {
     } catch (error) {
       percentage = 0;
     }
     return (
-      <View>
+      <View style={{ flex: 1 }}>
+        <Text
+          style={{ fontSize: 18, alignSelf: "center", fontStyle: "italic" }}
+        >
+          Goals
+        </Text>
         {/* <NavigationEvents
           onWillFocus={() => this.handleWillFocus()}
         /> */}
-        <ProgressBarAndroid
-          styleAttr="Horizontal"
-          indeterminate={false}
-          progress={0.5}
-        />
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{}}>Duration</Text>
+
+          <ProgressBar
+            progress={this.state.durationProgress}
+            color={Colors.tintColor}
+            unfilledColor={"#b0c4de"}
+            borderWidth={0}
+            style={{ marginTop: 3.5, marginLeft: 10 }}
+            //   borderColor={}
+            width={window.window.width / 1.5}
+            height={15}
+            borderRadius={15}
+            useNativeDriver={true}
+            animationConfig={{ bounciness: 0 }}
+          />
+          <Text>{this.state.durationProgress * 100}%</Text>
+        </View>
+
+        <View style={{ flex: 1, flexDirection: "row", marginTop: 10 }}>
+          <Text style={{}}>Count</Text>
+
+          <ProgressBar
+            progress={this.state.countProgress}
+            color={Colors.tintColor}
+            unfilledColor={"#b0c4de"}
+            borderWidth={0}
+            style={{ marginTop: 3.5, marginLeft: 10 }}
+            //   borderColor={}
+            width={window.window.width / 1.5}
+            height={15}
+            borderRadius={15}
+            useNativeDriver={true}
+            animationConfig={{ bounciness: 0 }}
+          />
+          <Text>{this.state.countProgress * 100}%</Text>
+        </View>
+
+        <Text>100%</Text>
       </View>
     );
   }
