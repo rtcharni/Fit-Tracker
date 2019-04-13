@@ -159,7 +159,7 @@ export default class ExerciseChart extends React.Component {
               this.setState({ filter }, () => this.chartData())
             }
           >
-            <Picker.Item label="All" value={"all"} />
+            <Picker.Item label="Show all" value={"all"} />
             <Picker.Item label="Low" value={"low"} />
             <Picker.Item label="Medium" value={"medium"} />
             <Picker.Item label="High" value={"high"} />
