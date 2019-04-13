@@ -15,13 +15,25 @@ export const ConvertMinToDaysHoursMin = valueMIN => {
   //     rhours = rhours - rdays * 24;
   //   }
   if (rhours === 0) {
-    return rminutes + " minute(s)";
+    if (rminutes !== 1) {
+      return rminutes + " minutes";
+    }
+    return rminutes + " minute";
   }
-  return (
-    // num +
-    // " minutes = " +
-    // rdays +
-    // " day(s) " +
-    rhours + " hour(s) " + rminutes + " minute(s)"
-  );
+  if (rhours === 1) {
+    if (rminutes === 0) {
+      return rhours + " hour ";
+    } else if (rminutes === 1) {
+      return rhours + " hour " + rminutes + " minute";
+    }
+    return rhours + " hour " + rminutes + " minutes";
+  }
+  if (rhours > 1) {
+    if (rminutes === 0) {
+      return rhours + " hours";
+    } else if (rminutes === 1) {
+      return rhours + " hours " + rminutes + " minute";
+    }
+    return rhours + " hours " + rminutes + " minutes";
+  }
 };
