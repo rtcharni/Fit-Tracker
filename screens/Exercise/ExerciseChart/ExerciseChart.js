@@ -1,10 +1,10 @@
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import ChartView from "react-native-highcharts";
 import { GetWeightArray, GetExerciseArray } from "../../../utils/AsyncStorage";
 import window from "../../../constants/Layout";
 import Colors from "../../../constants/Colors";
-import {ConvertMinToDaysHoursMin} from '../../../utils/utils';
+import { ConvertMinToDaysHoursMin } from "../../../utils/utils";
 import {
   Container,
   Header,
@@ -29,7 +29,8 @@ export default class ExerciseChart extends React.Component {
     super(props);
     this.state = {
       exercises: [],
-      filter: "all"
+      filter: "all",
+      filter_MS: 2592000000
     };
     this.chartData = this.chartData.bind(this);
   }
@@ -46,7 +47,13 @@ export default class ExerciseChart extends React.Component {
   }
 
   async chartData() {
-    const storageData = await GetExerciseArray();
+    let storageData = await GetExerciseArray();
+    const now = new Date();
+    if (this.state.filter_MS !== "all") {
+      storageData = storageData.filter(
+        x => now.getTime() - x.time <= this.state.filter_MS
+      );
+    }
     let exerciseData = storageData.map(exercise => ({
       x: exercise.time,
       y: exercise.duration,
@@ -78,7 +85,6 @@ export default class ExerciseChart extends React.Component {
     );
     return ConvertMinToDaysHoursMin(totalMIN);
   }
-
 
   render() {
     const serie = this.state.exercises.length
@@ -151,30 +157,74 @@ export default class ExerciseChart extends React.Component {
     };
     return (
       <Container>
-        <Item
-          picker
-          underline
-          style={{ alignSelf: "flex-end", width: window.window.width / 2 }}
-        >
-          <Icon name="filter" type="AntDesign" />
-          <Picker
-            mode="dialog"
-            iosIcon={<Icon name="arrow-down" />}
-            style={{}}
-            // placeholderStyle={{ color: "#bfc6ea" }}
-            // placeholderIconColor="#007aff"
-            prompt="Show only with intensity"
-            selectedValue={this.state.filter}
-            onValueChange={filter =>
-              this.setState({ filter }, () => this.chartData())
-            }
+        <View style={{ flexDirection: "row", alignSelf: "center" }}>
+          <Item
+            picker
+            style={{
+              width: window.window.width / 2.2,
+              // alignContent: "center",
+              // alignItems: "center",
+              // alignSelf: "center",
+              // flex: 0.5
+            }}
           >
-            <Picker.Item label="Show all" value={"all"} />
-            <Picker.Item label="Low" value={"low"} />
-            <Picker.Item label="Medium" value={"medium"} />
-            <Picker.Item label="High" value={"high"} />
-          </Picker>
-        </Item>
+            <Icon name="filter" type="AntDesign" />
+            <Picker
+              mode="dialog"
+              style={{
+                // marginLeft: -8,
+                // marginTop: 2,
+                // backgroundColor: "transparent"
+                // alignContent:"flex-end",
+                // alignItems: "flex-end",
+                // alignSelf:"flex-end",
+              }}
+              prompt="Show only with intensity"
+              selectedValue={this.state.filter}
+              onValueChange={filter =>
+                this.setState({ filter }, () => this.chartData())
+              }
+            >
+              <Picker.Item label="Show all" value={"all"} />
+              <Picker.Item label="Low" value={"low"} />
+              <Picker.Item label="Medium" value={"medium"} />
+              <Picker.Item label="High" value={"high"} />
+            </Picker>
+            {/* <Icon name="filter" type="AntDesign" /> */}
+          </Item>
+          <Item
+            picker
+            style={{
+              width: window.window.width / 2.2,
+              // alignContent: "center",
+              // alignItems: "center",
+              // alignSelf: "center",
+              // flex: 0.5
+            }}
+          >
+            <Icon name="md-time" type="Ionicons" />
+            <Picker
+              mode="dialog"
+              style={{
+                // marginLeft: 0,
+                // marginTop: 0,
+                // backgroundColor: "transparent"
+              }}
+              prompt="Choose timerange"
+              selectedValue={this.state.filter_MS}
+              onValueChange={filter_MS =>
+                this.setState({ filter_MS }, () => this.chartData())
+              }
+            >
+              <Picker.Item label="1 week" value={604800000} />
+              <Picker.Item label="2 weeks" value={1209600000} />
+              <Picker.Item label="1 month" value={2592000000} />
+              <Picker.Item label="3 months" value={7776000000} />
+              <Picker.Item label="6 months" value={15552000000} />
+              <Picker.Item label="All" value={"all"} />
+            </Picker>
+          </Item>
+        </View>
         <ChartView
           style={{ height: window.window.height / 2 }}
           config={conf}
@@ -193,7 +243,7 @@ export default class ExerciseChart extends React.Component {
             {/* </Body> */}
           </CardItem>
         </Card>
-        <Card>
+        <Card style={{ marginTop: 0 }}>
           <CardItem>
             {/* <Body> */}
             <Text>Total exercises</Text>
