@@ -13,9 +13,7 @@ export default class ProgressBars extends Component {
     this.state = {
       exercises: [],
       exerciseDuration: 0,
-      exerciseCount: 0,
-      thisWeekExerciseDuration: 0,
-      thisWeekExerciseCount: 0
+      exerciseCount: 0
     };
   }
 
@@ -29,13 +27,18 @@ export default class ProgressBars extends Component {
   }
 
   async handleWillFocus() {
-    const { exerciseDuration, exerciseCount } = await GetProfile();
-    if (!exerciseDuration || !exerciseCount) {
+    const profile = await GetProfile();
+    console.log(profile);
+    if (!profile.exerciseDuration || !profile.exerciseCount) {
       // navigate to profile and tell to insert goals! TODO!
+      this.props.navigation.replace("Profile", {
+        message: "New features available! Please update goals",
+        goBack: true
+      });
     } else {
       this.setState({
-        exerciseDuration,
-        exerciseCount
+        exerciseDuration: profile.exerciseDuration,
+        exerciseCount: profile.exerciseCount
       });
     }
   }
@@ -69,7 +72,7 @@ export default class ProgressBars extends Component {
             marginBottom: 2,
             fontSize: 18,
             alignSelf: "center",
-            fontStyle: "italic"
+            fontStyle: "normal"
           }}
         >
           Week goals
@@ -78,17 +81,17 @@ export default class ProgressBars extends Component {
           style={{
             flex: 1,
             flexDirection: "row",
-            justifyContent: "space-around"
+            justifyContent: "center"
           }}
         >
-          <Text style={{ marginRight: 0 }}>Duration</Text>
-          <Text style={{ marginRight: 0 }}>Count</Text>
+          <Text style={{ right: window.window.width / 6.4 }}>Duration</Text>
+          <Text style={{ left: window.window.width / 8 }}>Count</Text>
         </View>
         <View
           style={{
             flex: 1,
             flexDirection: "row",
-            justifyContent: "space-around"
+            justifyContent: "space-evenly"
           }}
         >
           <ProgressCircle
