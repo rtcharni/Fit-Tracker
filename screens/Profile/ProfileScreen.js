@@ -97,6 +97,10 @@ export default class ProfileScreen extends React.Component {
         exerciseDuration: this.state.exerciseDuration,
         exerciseCount: this.state.exerciseCount
       });
+      const goBack = this.props.navigation.getParam("goBack", false);
+      if (goBack) {
+        this.props.navigation.replace("Exercise");
+      }
     } else {
       Toast.show({
         text: "Please correct values..",
@@ -153,6 +157,10 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
+    const message = this.props.navigation.getParam(
+      "message",
+      "Here you can update your goals"
+    );
     return (
       <View style={styles.container}>
         <Container>
@@ -161,9 +169,7 @@ export default class ProfileScreen extends React.Component {
             <Form>
               <Card>
                 <CardItem header bordered>
-                  <Text style={{ color: Colors.tintColor }}>
-                    Here you can update your goal
-                  </Text>
+                  <Text style={{ color: Colors.tintColor }}>{message}</Text>
                 </CardItem>
                 <CardItem>
                   <Item>
