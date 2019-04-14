@@ -126,7 +126,7 @@ export default class AddOrModifyExercise extends Component {
     return (
       <Overlay
         isVisible={this.state.showEditModal}
-        height={window.window.height - window.window.height / 2.1}
+        height={window.window.height - window.window.height / 2.3} // 2.1
         onBackdropPress={() => {
           this.resetComponent();
           this.props.closeEditModal();

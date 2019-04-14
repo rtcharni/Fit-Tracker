@@ -112,7 +112,7 @@ export default class AddOrModifyWeight extends Component {
     return (
       <Overlay
         isVisible={this.state.showComponent}
-        height={window.window.height - window.window.height / 1.6}
+        height={window.window.height - window.window.height / 1.7} //1.6
         onBackdropPress={() => {
           this.resetComponent();
           this.props.closeEnterWeightWindow();
