@@ -8,6 +8,7 @@ import { NavigationEvents } from "react-navigation";
 import { ConvertDateToMonday } from "../../../utils/utils";
 import ProgressBar from "react-native-progress/Bar";
 // import * as Progress from 'react-native-progress-fixed';
+import ProgressCircle from "react-native-progress/Circle";
 
 export default class ProgressBars extends Component {
   constructor(props) {
@@ -56,6 +57,11 @@ export default class ProgressBars extends Component {
   }
 
   render() {
+    {
+      /* <NavigationEvents
+      onWillFocus={() => this.handleWillFocus()}
+    /> */
+    }
     try {
     } catch (error) {
       percentage = 0;
@@ -63,13 +69,84 @@ export default class ProgressBars extends Component {
     return (
       <View style={{ flex: 1 }}>
         <Text
-          style={{ fontSize: 18, alignSelf: "center", fontStyle: "italic" }}
+          style={{
+            marginTop: 5,
+            marginBottom: 5,
+            fontSize: 18,
+            alignSelf: "center",
+            fontStyle: "italic"
+          }}
+        >
+          Week goals
+        </Text>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-around"
+          }}
+        >
+          <Text style={{ marginRight: 0 }}>Duration</Text>
+          <Text style={{ marginRight: 0 }}>Count</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-around"
+          }}
+        >
+          <ProgressCircle
+            size={80}
+            progress={this.state.durationProgress}
+            color={Colors.tintColor}
+            unfilledColor={"#b0c4de"}
+            borderWidth={0}
+            thickness={8}
+            showsText={true}
+            strokeCap="butt"
+            // formatText={}
+            // style={{ marginTop: 3.5, marginLeft: 10 }}
+            useNativeDriver={true}
+          />
+          <ProgressCircle
+            size={80}
+            progress={this.state.durationProgress}
+            color={Colors.tintColor}
+            unfilledColor={"#b0c4de"}
+            borderWidth={0}
+            thickness={8}
+            showsText={true}
+            strokeCap="butt"
+            // formatText={}
+            // style={{ marginTop: 3.5, marginLeft: 10 }}
+            useNativeDriver={true}
+          />
+        </View>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 17,
+    fontWeight: "400"
+  }
+});
+
+{
+  /* <Text
+          style={{
+            marginTop: 8,
+            marginBottom: 5,
+            fontSize: 18,
+            alignSelf: "center",
+            fontStyle: "italic"
+          }}
         >
           Goals
         </Text>
-        {/* <NavigationEvents
-          onWillFocus={() => this.handleWillFocus()}
-        /> */}
         <View style={{ flexDirection: "row" }}>
           <Text style={{}}>Duration</Text>
 
@@ -108,15 +185,5 @@ export default class ProgressBars extends Component {
           <Text>{this.state.countProgress * 100}%</Text>
         </View>
 
-        <Text>100%</Text>
-      </View>
-    );
-  }
+        <Text>100%</Text> */
 }
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 17,
-    fontWeight: "400"
-  }
-});
