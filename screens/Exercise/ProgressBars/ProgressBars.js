@@ -1,13 +1,10 @@
 import React, { Component } from "react";
-import { Constants, Svg } from "expo";
 import { View, StyleSheet, Text } from "react-native";
 import window from "../../../constants/Layout";
 import { GetProfile } from "../../../utils/AsyncStorage";
 import Colors from "../../../constants/Colors";
 import { NavigationEvents } from "react-navigation";
 import { ConvertDateToMonday } from "../../../utils/utils";
-import ProgressBar from "react-native-progress/Bar";
-// import * as Progress from 'react-native-progress-fixed';
 import ProgressCircle from "react-native-progress/Circle";
 
 export default class ProgressBars extends Component {
@@ -15,11 +12,10 @@ export default class ProgressBars extends Component {
     super(props);
     this.state = {
       exercises: [],
-      exerciseDuration: null,
-      exerciseCount: null,
-      monday: null,
-      durationProgress: 0,
-      countProgress: 0.2
+      exerciseDuration: 0,
+      exerciseCount: 0,
+      thisWeekExerciseDuration: 0,
+      thisWeekExerciseCount: 0
     };
   }
 
@@ -33,45 +29,44 @@ export default class ProgressBars extends Component {
   }
 
   async handleWillFocus() {
-    const now = new Date();
-    const monday = ConvertDateToMonday(now);
-    const profile = await GetProfile();
-    this.setState({
-      exerciseDuration: profile.exerciseDuration,
-      exerciseCount: profile.exerciseCount,
-      monday: monday
-    });
-  }
-
-  componentDidMount() {
-    this.getProgress();
-  }
-
-  getProgress() {
-    setInterval(() => {
-      if (this.state.durationProgress === 1) {
-        this.setState({ durationProgress: 0 });
-      }
-      this.setState({ durationProgress: this.state.durationProgress + 0.1 });
-    }, 1000);
+    const { exerciseDuration, exerciseCount } = await GetProfile();
+    if (!exerciseDuration || !exerciseCount) {
+      // navigate to profile and tell to insert goals! TODO!
+    } else {
+      this.setState({
+        exerciseDuration,
+        exerciseCount
+      });
+    }
   }
 
   render() {
-    {
-      /* <NavigationEvents
-      onWillFocus={() => this.handleWillFocus()}
-    /> */
-    }
-    try {
-    } catch (error) {
-      percentage = 0;
-    }
+    const monday = ConvertDateToMonday(new Date());
+    const thisWeekExerciseDuration = this.state.exercises
+      .filter(x => new Date(x.time) >= monday)
+      .reduce((total, current) => total + current.duration, 0);
+    const thisWeekExerciseCount = this.state.exercises.filter(
+      x => new Date(x.time) >= monday
+    ).length;
+
+    const durationProgress =
+      this.state.exerciseDuration === 0
+        ? 0
+        : thisWeekExerciseDuration / this.state.exerciseDuration;
+    const countProgress =
+      this.state.exerciseCount === 0
+        ? 0
+        : thisWeekExerciseCount / this.state.exerciseCount;
+
+    const getStrokeCapDuration = durationProgress === 0 ? "butt" : "round";
+    const getStrokeCapCount = countProgress === 0 ? "butt" : "round";
     return (
       <View style={{ flex: 1 }}>
+        <NavigationEvents onWillFocus={() => this.handleWillFocus()} />
         <Text
           style={{
             marginTop: 5,
-            marginBottom: 5,
+            marginBottom: 2,
             fontSize: 18,
             alignSelf: "center",
             fontStyle: "italic"
@@ -98,26 +93,26 @@ export default class ProgressBars extends Component {
         >
           <ProgressCircle
             size={80}
-            progress={this.state.durationProgress}
+            progress={durationProgress}
             color={Colors.tintColor}
             unfilledColor={"#b0c4de"}
             borderWidth={0}
             thickness={8}
             showsText={true}
-            strokeCap="butt"
+            strokeCap={getStrokeCapDuration}
             // formatText={}
             // style={{ marginTop: 3.5, marginLeft: 10 }}
             useNativeDriver={true}
           />
           <ProgressCircle
             size={80}
-            progress={this.state.durationProgress}
+            progress={countProgress}
             color={Colors.tintColor}
             unfilledColor={"#b0c4de"}
             borderWidth={0}
             thickness={8}
             showsText={true}
-            strokeCap="butt"
+            strokeCap={getStrokeCapCount}
             // formatText={}
             // style={{ marginTop: 3.5, marginLeft: 10 }}
             useNativeDriver={true}
