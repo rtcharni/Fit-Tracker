@@ -20,7 +20,6 @@
     "react-native-elements": "^1.1.0",
     "react-native-highcharts": "^1.0.2",
     "react-native-progress": "^3.6.0",
-    "react-native-progress-fixed": "^3.4.1",
     "react-native-simple-gauge": "^0.1.11",
     "react-navigation": "^3.0.9"
   },
