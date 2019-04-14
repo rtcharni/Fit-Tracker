@@ -43,7 +43,8 @@ ProfileStack.navigationOptions = {
 const ExerciseStack = createStackNavigator(
   {
     Exercise: ExerciseScreen,
-    ExerciseChart: ExerciseChart
+    ExerciseChart: ExerciseChart,
+    Profile: ProfileScreen
   },
   stackNavigatorConfig
 );
@@ -85,7 +86,7 @@ export default createBottomTabNavigator(
     ProfileStack
   },
   {
-    initialRouteName: "ExerciseStack",
+    initialRouteName: "WeightStack",
     animationEnabled: true,
     tabBarOptions: { showLabel: true },
     swipeEnabled: true,

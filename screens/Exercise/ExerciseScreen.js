@@ -22,6 +22,7 @@ export default class ExerciseScreen extends React.Component {
 
   componentDidMount() {
     this.getAllExercises();
+    console.log()
   }
   // TODO next add AddOrModifyExercise component to this component, and workwork
   closeEditModal() {
@@ -36,7 +37,7 @@ export default class ExerciseScreen extends React.Component {
   render() {
     return (
       <ScrollView style={{ flex: 1 }}>
-        <ProgressBars exercises={this.state.exercises}/>
+        <ProgressBars exercises={this.state.exercises} navigation={this.props.navigation}/>
         <AddOrModifyExercise
           showEditModal={this.state.showEditModal}
           closeEditModal={this.closeEditModal}
@@ -46,9 +47,6 @@ export default class ExerciseScreen extends React.Component {
           style={{
             flex: 1,
             flexDirection: "row",
-            // alignSelf: "auto",
-            marginTop: 1,
-            // alignContent: "space-around",
             justifyContent: "space-between"
           }}
         >
