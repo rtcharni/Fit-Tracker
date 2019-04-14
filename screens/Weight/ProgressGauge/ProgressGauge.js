@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { Constants, Svg } from "expo";
 import { View, StyleSheet, Text } from "react-native";
-import {
-  AnimatedGaugeProgress,
-  GaugeProgress
-} from "react-native-simple-gauge";
+import { AnimatedGaugeProgress } from "react-native-simple-gauge";
 import window from "../../../constants/Layout";
 import { GetProfile } from "../../../utils/AsyncStorage";
 import Colors from "../../../constants/Colors";
@@ -58,9 +55,7 @@ export default class ProgressGauge extends Component {
     }
     return (
       <View>
-        <NavigationEvents
-          onWillFocus={() => this.handleWillFocus()}
-        />
+        <NavigationEvents onWillFocus={() => this.handleWillFocus()} />
         <AnimatedGaugeProgress
           style={{ alignItems: "center", marginBottom: -100, marginTop: 15 }}
           size={size}

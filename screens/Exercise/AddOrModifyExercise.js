@@ -88,6 +88,7 @@ export default class AddOrModifyExercise extends Component {
       const editedExercise = Object.assign(this.props.chosenExercise, newExercise);
       await EditExercise(editedExercise);
       this.props.closeEditModal();
+      this.props.getAllExercises();
     } else {
       const exerciseObject = {
         time: Date.now(),
