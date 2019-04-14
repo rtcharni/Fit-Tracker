@@ -63,11 +63,20 @@ export default class WeightChart extends React.Component {
     if (!this.state.weightData.length || this.state.weightData.length === 1) {
       return "0 kg";
     }
-    return (
+    const weightDiff = (
       this.state.weightData[0].y -
-      this.state.weightData[this.state.weightData.length - 1].y +
-      " kg"
-    );
+      this.state.weightData[this.state.weightData.length - 1].y
+    ).toPrecision(2);
+    if (weightDiff.split(".")[1] == "0") {
+      return eightDiff.split(".")[0] + " kg";
+    }
+    return weightDiff + " kg";
+    // return (
+    //   (
+    //     this.state.weightData[0].y -
+    //     this.state.weightData[this.state.weightData.length - 1].y
+    //   ).toPrecision(2) + " kg"
+    // );
   }
 
   render() {
@@ -108,11 +117,17 @@ export default class WeightChart extends React.Component {
       tooltip: {
         crosshairs: false,
         formatter: function() {
-          return `${Highcharts.dateFormat(
-            "%d.%m.%Y at %H:%M",
-            this.x
-          )}<br/> Weight:
-            <b> ${Highcharts.numberFormat(this.y, 1)} kg </b>`;
+          const date = new Date(this.x);
+          const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+          return `${date.getDate()}.${date.getMonth() +
+            1}.${date.getFullYear()} at ${date.getHours()}:${minutes} <br/>Weight: <b>${
+            this.y
+          } kg </b>`;
+          // return `${Highcharts.dateFormat(
+          //   "%d.%m.%Y at %H:%M",
+          //   this.x
+          // )}<br/> Weight:
+          //   <b> ${Highcharts.numberFormat(this.y, 1)} kg </b>`;
         }
       },
       plotOptions: {

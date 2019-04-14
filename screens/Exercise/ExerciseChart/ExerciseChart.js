@@ -88,9 +88,9 @@ export default class ExerciseChart extends React.Component {
 
   getWordTimes() {
     if (this.state.exercises.length === 1) {
-      return 'time';
+      return "time";
     }
-    return 'times'
+    return "times";
   }
 
   render() {
@@ -131,13 +131,24 @@ export default class ExerciseChart extends React.Component {
       tooltip: {
         crosshairs: false,
         formatter: function() {
-          return `${Highcharts.dateFormat("%d.%m.%Y", this.x)}<br/>
-          Exercise: <b>${this.point.exercise}</b> <br/>  
-          Duration:
-            <b> ${Highcharts.numberFormat(
-              this.y,
-              0
-            )} min </b> <br/> Intensity: <b>${this.point.intensity}</b>`;
+          const date = new Date(this.x);
+          const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+          return `${date.getDate()}.${date.getMonth() +
+            1}.${date.getFullYear()} at ${date.getHours()}:${minutes} <br/>Exercise: <b>${
+            this.point.exercise
+          }</b> <br/>  
+            Duration:
+              <b> ${this.y} min </b> <br/> Intensity: <b>${
+            this.point.intensity
+          }</b>`;
+
+          // return `${Highcharts.dateFormat("%d.%m.%Y", this.x)}<br/>
+          // Exercise: <b>${this.point.exercise}</b> <br/>
+          // Duration:
+          //   <b> ${Highcharts.numberFormat(
+          //     this.y,
+          //     0
+          //   )} min </b> <br/> Intensity: <b>${this.point.intensity}</b>`;
         }
       },
       plotOptions: {
@@ -169,7 +180,7 @@ export default class ExerciseChart extends React.Component {
           <Item
             picker
             style={{
-              width: window.window.width / 2.2,
+              width: window.window.width / 2.2
               // alignContent: "center",
               // alignItems: "center",
               // alignSelf: "center",
@@ -179,14 +190,16 @@ export default class ExerciseChart extends React.Component {
             <Icon name="filter" type="AntDesign" />
             <Picker
               mode="dialog"
-              style={{
-                // marginLeft: -8,
-                // marginTop: 2,
-                // backgroundColor: "transparent"
-                // alignContent:"flex-end",
-                // alignItems: "flex-end",
-                // alignSelf:"flex-end",
-              }}
+              style={
+                {
+                  // marginLeft: -8,
+                  // marginTop: 2,
+                  // backgroundColor: "transparent"
+                  // alignContent:"flex-end",
+                  // alignItems: "flex-end",
+                  // alignSelf:"flex-end",
+                }
+              }
               prompt="Show only with intensity"
               selectedValue={this.state.filter}
               onValueChange={filter =>
@@ -203,7 +216,7 @@ export default class ExerciseChart extends React.Component {
           <Item
             picker
             style={{
-              width: window.window.width / 2.2,
+              width: window.window.width / 2.2
               // alignContent: "center",
               // alignItems: "center",
               // alignSelf: "center",
@@ -213,11 +226,13 @@ export default class ExerciseChart extends React.Component {
             <Icon name="md-time" type="Ionicons" />
             <Picker
               mode="dialog"
-              style={{
-                // marginLeft: 0,
-                // marginTop: 0,
-                // backgroundColor: "transparent"
-              }}
+              style={
+                {
+                  // marginLeft: 0,
+                  // marginTop: 0,
+                  // backgroundColor: "transparent"
+                }
+              }
               prompt="Choose timerange"
               selectedValue={this.state.filter_MS}
               onValueChange={filter_MS =>
