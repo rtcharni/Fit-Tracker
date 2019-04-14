@@ -22,9 +22,8 @@ export default class ExerciseScreen extends React.Component {
 
   componentDidMount() {
     this.getAllExercises();
-    console.log()
   }
-  // TODO next add AddOrModifyExercise component to this component, and workwork
+  
   closeEditModal() {
     this.setState({ showEditModal: false });
   }

@@ -28,9 +28,8 @@ export default class ProgressBars extends Component {
 
   async handleWillFocus() {
     const profile = await GetProfile();
-    console.log(profile);
+    // console.log(profile);
     if (!profile.exerciseDuration || !profile.exerciseCount) {
-      // navigate to profile and tell to insert goals! TODO!
       this.props.navigation.replace("Profile", {
         message: "New features available! Please update goals",
         goBack: true
