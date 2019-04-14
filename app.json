@@ -6,7 +6,7 @@
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.0",
+    "version": "2.0.1",
     "primaryColor": "#163dd6",
     "orientation": "portrait",
     "icon": "./assets/images/fit-tracker-logo_1024x1024.png",
