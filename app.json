@@ -26,6 +26,9 @@
     "android": {
       "package": "com.romantcharni.fittracker",
       "versionCode": 1
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content"
     }
   }
 }

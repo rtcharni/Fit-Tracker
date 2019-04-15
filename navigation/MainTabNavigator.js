@@ -18,8 +18,15 @@ import ExerciseChart from "../screens/Exercise/ExerciseChart/ExerciseChart";
 
 const stackNavigatorConfig = {
   headerBackTitleVisible: true,
-  headerLayoutPreset: "center"
-  // headerMode: "none"
+  headerLayoutPreset: "center",
+  defaultNavigationOptions: {
+    headerStyle: {
+      height: 30
+    },
+    headerTitleStyle: {
+      marginBottom: 22
+    }
+  }
 };
 
 const ProfileStack = createStackNavigator(
@@ -73,7 +80,7 @@ WeightStack.navigationOptions = ({ navigation }) => {
     tabBarLabel: "Weight",
     tabBarIcon: ({ focused }) => <WeightIcon focused={focused} />
   };
-  if (routeName === 'FirstLaunch') {
+  if (routeName === "FirstLaunch") {
     navigationOptions.tabBarVisible = false;
   }
   return navigationOptions;
