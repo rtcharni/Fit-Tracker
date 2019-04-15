@@ -23,7 +23,6 @@ import {
 import { DeleteWeight, EditWeight } from "../../utils/AsyncStorage";
 import AddOrModifyWeight from "./AddOrModifyWeight";
 import Colors from "../../constants/Colors";
-import { ConvertCommaToDot } from "../../utils/utils";
 
 export default class WeightDataList extends Component {
   constructor(props) {

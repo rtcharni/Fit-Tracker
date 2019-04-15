@@ -24,9 +24,10 @@ import {
   GetProfile,
   SaveProfile,
   ClearProfile,
-  ClearAllWeights
+  ClearAllWeights,
+  ClearAllExercises
 } from "../../utils/AsyncStorage";
-import { ConvertCommaToDot } from '../../utils/utils'
+import { ConvertCommaToDot } from "../../utils/utils";
 import Colors from "../../constants/Colors";
 
 export default class ProfileScreen extends React.Component {
@@ -37,10 +38,10 @@ export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gender: "male",
       startingWeight: "",
       targetWeight: "",
-      height: ""
+      exerciseDuration: "",
+      exerciseCount: ""
     };
   }
 
@@ -48,29 +49,37 @@ export default class ProfileScreen extends React.Component {
     const profile = await GetProfile();
     if (profile) {
       this.setState({
-        gender: profile.gender,
         startingWeight: profile.startingWeight,
         targetWeight: profile.targetWeight,
-        height: profile.height
+        exerciseDuration: profile.exerciseDuration,
+        exerciseCount: profile.exerciseCount
       });
     }
   }
 
   async handleSaveButton() {
     const regexWeightCheck = /[1-9][0-9]{0,2}[,.]?[0-9]{0,2}/;
-    const regexHeightCheck = /[1-9][0-9]{1,2}/;
+    const regexExerciseDurationCheck = /[1-9][0-9]{0,3}/;
+    const regexExerciseCountCheck = /[1-9][0-9]{0,1}/;
     const startingWeightResult = this.state.startingWeight.match(
       regexWeightCheck
     );
     const targetWeightResult = this.state.targetWeight.match(regexWeightCheck);
-    const heightResult = this.state.height.match(regexHeightCheck);
+    const exerciseDurationResult = this.state.exerciseDuration.match(
+      regexExerciseDurationCheck
+    );
+    const exerciseCountResult = this.state.exerciseCount.match(
+      regexExerciseCountCheck
+    );
     if (
       startingWeightResult &&
       startingWeightResult[0] === startingWeightResult.input &&
       targetWeightResult &&
       targetWeightResult[0] === targetWeightResult.input &&
-      heightResult &&
-      heightResult[0] === heightResult.input
+      exerciseDurationResult &&
+      exerciseDurationResult[0] === exerciseDurationResult.input &&
+      exerciseCountResult &&
+      exerciseCountResult[0] === exerciseCountResult.input
     ) {
       // Own showToast function with params...
       Toast.show({
@@ -85,9 +94,13 @@ export default class ProfileScreen extends React.Component {
       await SaveProfile({
         startingWeight: startingWithoutComma,
         targetWeight: targetWithoutComma,
-        gender: this.state.gender,
-        height: this.state.height
+        exerciseDuration: this.state.exerciseDuration,
+        exerciseCount: this.state.exerciseCount
       });
+      const goBack = this.props.navigation.getParam("goBack", false);
+      if (goBack) {
+        this.props.navigation.replace("Exercise");
+      }
     } else {
       Toast.show({
         text: "Please correct values..",
@@ -102,22 +115,26 @@ export default class ProfileScreen extends React.Component {
   showDeleteActionSheet() {
     const buttons = [
       "Delete all entered weights",
-      "Delete whole profile and weight",
+      "Delete all entered exercises",
+      "Delete profile and all data",
       "Cancel"
     ];
     ActionSheet.show(
       {
         options: buttons,
-        cancelButtonIndex: 2,
-        destructiveButtonIndex: 1,
+        cancelButtonIndex: 3,
+        destructiveButtonIndex: 2,
         title: "Want to start over?"
       },
       async index => {
         if (index === 0) {
           await ClearAllWeights();
         } else if (index === 1) {
+          await ClearAllExercises();
+        } else if (index === 2) {
           await ClearProfile();
           await ClearAllWeights();
+          await ClearAllExercises();
         }
       }
     );
@@ -140,6 +157,10 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
+    const message = this.props.navigation.getParam(
+      "message",
+      "Here you can update your goals"
+    );
     return (
       <View style={styles.container}>
         <Container>
@@ -148,15 +169,12 @@ export default class ProfileScreen extends React.Component {
             <Form>
               <Card>
                 <CardItem header bordered>
-                  <Text style={{ color: Colors.tintColor }}>
-                    Here you can update your info
-                  </Text>
+                  <Text style={{ color: Colors.tintColor }}>{message}</Text>
                 </CardItem>
                 <CardItem>
                   <Item>
                     {/* <Label>Starting weight (kg)</Label> */}
                     <Input
-                      // autoCapitalize="words"
                       placeholder="Starting weight (kg)"
                       value={this.state.startingWeight}
                       maxLength={5}
@@ -164,7 +182,6 @@ export default class ProfileScreen extends React.Component {
                       returnKeyType="next"
                       blurOnSubmit={false}
                       onSubmitEditing={() => {
-                        // console.log(this.secondInput);
                         this.secondInput._root.focus();
                       }}
                       onChangeText={startingWeight =>
@@ -181,7 +198,6 @@ export default class ProfileScreen extends React.Component {
                   <Item>
                     {/* <Label>Target weight (kg)</Label> */}
                     <Input
-                      // autoCapitalize="words"
                       placeholder="Target weight (kg)"
                       value={this.state.targetWeight}
                       maxLength={5}
@@ -205,46 +221,45 @@ export default class ProfileScreen extends React.Component {
                   <Item>
                     {/* <Label>Height (cm)</Label> */}
                     <Input
-                      // autoCapitalize="words"
-                      placeholder="Height (cm)"
-                      value={this.state.height}
-                      maxLength={3}
+                      placeholder="Week goal exercise amount (min)"
+                      value={this.state.exerciseDuration}
+                      maxLength={4}
+                      keyboardType="decimal-pad"
+                      returnKeyType="next"
+                      blurOnSubmit={false}
+                      ref={input => {
+                        this.thirdInput = input;
+                      }}
+                      onSubmitEditing={() => {
+                        this.fourthInput._root.focus();
+                      }}
+                      onChangeText={exerciseDuration =>
+                        this.setState({ exerciseDuration })
+                      }
+                    />
+                    <Icon name="timelapse" type="MaterialIcons" />
+                  </Item>
+                </CardItem>
+                <CardItem>
+                  <Item>
+                    {/* <Label>Height (cm)</Label> */}
+                    <Input
+                      placeholder="Week goal exercise count"
+                      value={this.state.exerciseCount}
+                      maxLength={2}
                       keyboardType="decimal-pad"
                       returnKeyType="done"
                       blurOnSubmit={true}
                       ref={input => {
-                        this.thirdInput = input;
+                        this.fourthInput = input;
                       }}
-                      onChangeText={height => this.setState({ height })}
+                      onChangeText={exerciseCount =>
+                        this.setState({ exerciseCount })
+                      }
                     />
-                    <Icon
-                      name="arrow-expand-vertical"
-                      type="MaterialCommunityIcons"
-                    />
+                    <Icon name="counter" type="MaterialCommunityIcons" />
                   </Item>
                 </CardItem>
-                <CardItem>
-                  <Item picker>
-                    <Picker
-                      mode="dropdown"
-                      iosIcon={<Icon name="arrow-down" />}
-                      style={{ width: undefined }}
-                      placeholderStyle={{ color: "#bfc6ea" }}
-                      placeholderIconColor="#007aff"
-                      selectedValue={this.state.gender}
-                      onValueChange={gender => this.setState({ gender })}
-                    >
-                      <Picker.Item label="Male" value="male" />
-                      <Picker.Item label="Female" value="female" />
-                      <Picker.Item label="Doesn't matter" value="unknown" />
-                    </Picker>
-                  </Item>
-                </CardItem>
-
-                {/* <CardItem footer bordered>
-                  <Text>Footer if needed</Text>
-                </CardItem> */}
-
                 <View
                   style={{
                     flex: 1,

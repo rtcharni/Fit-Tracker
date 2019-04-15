@@ -20,7 +20,6 @@ import {
   Button,
   Toast
 } from "native-base";
-import { Col, Row, Grid } from "react-native-easy-grid";
 import { DeleteWeight, EditWeight, SaveWeight } from "../../utils/AsyncStorage";
 import window from "../../constants/Layout";
 import { ConvertCommaToDot } from "../../utils/utils";
@@ -113,7 +112,7 @@ export default class AddOrModifyWeight extends Component {
     return (
       <Overlay
         isVisible={this.state.showComponent}
-        height={window.window.height - window.window.height / 1.6}
+        height={window.window.height - window.window.height / 1.7} //1.6
         onBackdropPress={() => {
           this.resetComponent();
           this.props.closeEnterWeightWindow();
@@ -140,6 +139,7 @@ export default class AddOrModifyWeight extends Component {
                     success={this.state.editIcon.success}
                   >
                     <Input
+                    autoFocus
                       placeholder="Weight..."
                       onChangeText={this.handleChangeText}
                       maxLength={5}
