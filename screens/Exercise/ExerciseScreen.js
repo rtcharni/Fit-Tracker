@@ -35,7 +35,7 @@ export default class ExerciseScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView keyboardShouldPersistTaps="always" style={{ flex: 1 }}>
         <ProgressBars exercises={this.state.exercises} navigation={this.props.navigation}/>
         <AddOrModifyExercise
           showEditModal={this.state.showEditModal}
