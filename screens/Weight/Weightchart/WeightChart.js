@@ -68,15 +68,9 @@ export default class WeightChart extends React.Component {
       this.state.weightData[this.state.weightData.length - 1].y
     ).toPrecision(2);
     if (weightDiff.split(".")[1] == "0") {
-      return eightDiff.split(".")[0] + " kg";
+      return weightDiff.split(".")[0] + " kg";
     }
     return weightDiff + " kg";
-    // return (
-    //   (
-    //     this.state.weightData[0].y -
-    //     this.state.weightData[this.state.weightData.length - 1].y
-    //   ).toPrecision(2) + " kg"
-    // );
   }
 
   render() {
