@@ -45,20 +45,16 @@ export default class ProgressBars extends Component {
   calculateDurationProgressAndColors(totalDuration) {
     if (totalDuration < 1.005) {
       return {durationProgress: totalDuration, filled: Colors.tintColor, unfilled: Colors.unfilledBlue};
-    } else if (totalDuration < 2.005) {
-      return {durationProgress: totalDuration - 1, filled: Colors.filledGreen, unfilled: Colors.unfilledGreen};
     } else {
-      return {durationProgress: totalDuration - 2, filled: Colors.filledRed, unfilled: Colors.unfilledRed};
+      return {durationProgress: (totalDuration % 1), filled: Colors.filledRed, unfilled: Colors.unfilledRed};
     }
   }
 
   calculateCountProgressAndColors(totalCount) {
     if (totalCount < 1.005) {
       return {countProgress: totalCount, filled: Colors.tintColor, unfilled: Colors.unfilledBlue};
-    } else if (totalCount < 2.005) {
-      return {countProgress: totalCount - 1, filled: Colors.filledGreen, unfilled: Colors.unfilledGreen};
     } else {
-      return {countProgress: totalCount - 2, filled: Colors.filledRed, unfilled: Colors.unfilledRed};
+      return {countProgress: (totalCount % 1), filled: Colors.filledRed, unfilled: Colors.unfilledRed};
     }
   }
 

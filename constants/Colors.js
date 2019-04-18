@@ -12,9 +12,6 @@ export default {
   noticeBackground: tintColor,
   noticeText: '#fff',
   unfilledBlue: '#b0c4de',
-  unfilledGreen: '#c1e3b0',
   unfilledRed: '#eab0b5',
-  filledGreen: '#147c33',
   filledRed: '#bb0000'
-
 };

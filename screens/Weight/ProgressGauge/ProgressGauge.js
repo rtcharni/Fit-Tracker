@@ -39,6 +39,8 @@ export default class ProgressGauge extends Component {
 
   render() {
     let percentage = 0;
+    let filled = Colors.tintColor;
+    let unfilled = Colors.unfilledBlue;
     try {
       if (this.state.profile && this.state.lastWeight) {
         const actualLost =
@@ -48,6 +50,10 @@ export default class ProgressGauge extends Component {
         percentage = parseFloat(((actualLost / targetLost) * 100).toFixed(0));
         if (!isFinite(percentage)) {
           percentage = 0;
+        }
+        if (percentage > 100) {
+          filled = Colors.filledRed;
+          unfilled = Colors.unfilledRed;
         }
       }
     } catch (error) {
@@ -62,9 +68,9 @@ export default class ProgressGauge extends Component {
           width={width}
           fill={percentage} // This is percentage of progress rotation={90}
           cropDegree={cropDegree}
-          tintColor={Colors.tintColor}
+          tintColor={filled}
           delay={0}
-          backgroundColor="#b0c4de"
+          backgroundColor={unfilled}
           stroke={[1, 1]} //For a equaly dashed line
           strokeCap="circle"
         >
