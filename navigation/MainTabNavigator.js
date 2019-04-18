@@ -24,7 +24,9 @@ const stackNavigatorConfig = {
       height: 30
     },
     headerTitleStyle: {
-      marginBottom: 22
+      marginBottom: 22,
+      fontFamily: 'Roboto_bold',
+      fontWeight: undefined,
     }
   }
 };

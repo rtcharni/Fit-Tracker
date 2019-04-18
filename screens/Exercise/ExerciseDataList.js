@@ -110,6 +110,7 @@ export default class ExerciseDataList extends Component {
               title={"Exercises"}
               bottomDivider={true}
               topDivider={true}
+              titleStyle={{fontFamily: 'Roboto'}}
               leftIcon={
                 <NativeElementIcon
                   name="run"
@@ -129,6 +130,8 @@ export default class ExerciseDataList extends Component {
               }`}
               bottomDivider={true}
               topDivider={true}
+              titleStyle={{fontFamily: 'Roboto'}}
+              subtitleStyle={{fontFamily: 'Roboto'}}
               pad={12}
               badge={{
                 value: `${item.duration}min`,

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { Text, View, ScrollView, StyleSheet } from "react-native";
 import { Icon as NativeElementsIcon } from "react-native-elements";
 import {
   Container,
@@ -7,7 +7,7 @@ import {
   Content,
   Card,
   CardItem,
-  Text,
+  Text as TextNativeBase,
   Body,
   Form,
   Item,
@@ -169,7 +169,7 @@ export default class ProfileScreen extends React.Component {
             <Form>
               <Card>
                 <CardItem header bordered>
-                  <Text style={{ color: Colors.tintColor }}>{message}</Text>
+                  <Text style={{ color: Colors.tintColor, fontFamily: 'Roboto_bold', fontSize: 16 }}>{message}</Text>
                 </CardItem>
                 <CardItem>
                   <Item>
@@ -282,7 +282,7 @@ export default class ProfileScreen extends React.Component {
                     iconRight
                     onPress={() => this.showUpdateActionSheet()}
                   >
-                    <Text>Update</Text>
+                    <TextNativeBase style={{fontFamily: 'Roboto'}}>Update</TextNativeBase>
                     <Icon name="save" />
                   </Button>
                   <NativeElementsIcon
@@ -309,7 +309,6 @@ export default class ProfileScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
     backgroundColor: "#fff"
   }
 });
