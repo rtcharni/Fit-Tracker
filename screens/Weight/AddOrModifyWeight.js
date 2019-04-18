@@ -20,7 +20,7 @@ import {
   Button,
   Toast
 } from "native-base";
-import { DeleteWeight, EditWeight, SaveWeight } from "../../utils/AsyncStorage";
+import { EditWeight, SaveWeight } from "../../utils/AsyncStorage";
 import window from "../../constants/Layout";
 import { ConvertCommaToDot } from "../../utils/utils";
 
@@ -39,8 +39,22 @@ export default class AddOrModifyWeight extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.showEnterWeightComponent !== prevState.showComponent) {
-      return { showComponent: nextProps.showEnterWeightComponent };
+    if (
+      nextProps.showEnterWeightComponent !== prevState.showComponent ||
+      nextProps.chosenWeightItem !== prevState.chosenWeightItem
+    ) {
+      if (nextProps.chosenWeightItem) {
+        return {
+          showComponent: nextProps.showEnterWeightComponent,
+          chosenWeightItem: nextProps.chosenWeightItem,
+          editWeightValue: nextProps.chosenWeightItem.weight.toString(),
+          editIcon: { editWeightOK: true, success: true, error: false }
+        };
+      }
+      return {
+        showComponent: nextProps.showEnterWeightComponent,
+        chosenWeightItem: nextProps.chosenWeightItem
+      };
     }
     return null;
   }
@@ -139,7 +153,8 @@ export default class AddOrModifyWeight extends Component {
                     success={this.state.editIcon.success}
                   >
                     <Input
-                    autoFocus
+                      autoFocus
+                      value={this.state.editWeightValue}
                       placeholder="Weight..."
                       onChangeText={this.handleChangeText}
                       maxLength={5}
