@@ -32,11 +32,25 @@ export default class AddOrModifyExercise extends Component {
       editIcon: { editExerciseOK: false, success: false, error: true },
       exercise: "",
       duration: "",
-      intensity: "medium"
+      intensity: "medium",
+      chosenExercise: null
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    if (
+      nextProps.chosenExercise &&
+      nextProps.chosenExercise !== prevState.chosenExercise
+    ) {
+      return {
+        showEditModal: nextProps.showEditModal,
+        exercise: nextProps.chosenExercise.exercise,
+        duration: nextProps.chosenExercise.duration.toString(),
+        intensity: nextProps.chosenExercise.intensity,
+        chosenExercise: nextProps.chosenExercise,
+        editIcon: { editExerciseOK: true, success: true, error: false }
+      };
+    }
     if (nextProps.showEditModal !== prevState.showEditModal) {
       return {
         showEditModal: nextProps.showEditModal
@@ -50,7 +64,6 @@ export default class AddOrModifyExercise extends Component {
       this.setState({ exercise: textValue }, this.handleTextCheck);
     if (target == "duration")
       this.setState({ duration: textValue }, this.handleTextCheck);
-    // this.setState({ editWeightValue: value }, this.handleTextCheck);
   }
 
   handleTextCheck() {
@@ -85,8 +98,12 @@ export default class AddOrModifyExercise extends Component {
         duration: parseInt(this.state.duration, 10),
         intensity: this.state.intensity
       };
-      const editedExercise = Object.assign(this.props.chosenExercise, newExercise);
+      const editedExercise = Object.assign(
+        this.props.chosenExercise,
+        newExercise
+      );
       await EditExercise(editedExercise);
+      this.resetComponent();
       this.props.closeEditModal();
       this.props.getAllExercises();
     } else {
@@ -117,7 +134,7 @@ export default class AddOrModifyExercise extends Component {
       exercise: "",
       duration: "",
       intensity: "medium",
-      // chosenWeightItem: null,
+      chosenExercise: null,
       editIcon: { editExerciseOK: false, success: false, error: true }
     });
   }
@@ -154,6 +171,7 @@ export default class AddOrModifyExercise extends Component {
                   >
                     <Input
                       autoFocus
+                      value={this.state.exercise}
                       ref={c => (this.exerciseInput = c)}
                       placeholder="Exercise name..."
                       onChange={e =>
@@ -174,6 +192,7 @@ export default class AddOrModifyExercise extends Component {
                     success={this.state.editIcon.success}
                   >
                     <Input
+                      value={this.state.duration}
                       ref={c => (this.durationInput = c)}
                       placeholder="Duration (min)..."
                       nativeID="durationField"
