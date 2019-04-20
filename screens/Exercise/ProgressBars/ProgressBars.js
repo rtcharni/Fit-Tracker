@@ -71,7 +71,6 @@ export default class ProgressBars extends Component {
             marginBottom: 2,
             fontSize: 18,
             alignSelf: "center",
-            fontStyle: "normal"
           }}
         >
           Week goals

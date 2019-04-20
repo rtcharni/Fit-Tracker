@@ -2,11 +2,11 @@
   "expo": {
     "name": "Fit Tracker",
     "slug": "Fit-Tracker",
-    "description": "Nice and simple fitness tracking app, for measuring health or just for fun! Set up your goal and work hard to achieve it!",
+    "description": "Nice and simple fitness tracking app, for measuring health, getting fitter or just for fun! Set up your goals and targets and work hard to achieve them!",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": ["ios", "android"],
-    "version": "2.0.1",
+    "version": "2.0.2",
     "primaryColor": "#163dd6",
     "orientation": "portrait",
     "icon": "./assets/images/fit-tracker-logo_1024x1024.png",
@@ -25,7 +25,11 @@
     },
     "android": {
       "package": "com.romantcharni.fittracker",
-      "versionCode": 1
+      "versionCode": 2,
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.romantcharni.fittracker"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content"
     }
   }
 }

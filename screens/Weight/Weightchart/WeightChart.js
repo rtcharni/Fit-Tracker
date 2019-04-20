@@ -179,9 +179,9 @@ export default class WeightChart extends React.Component {
         <Card style={{ marginTop: 8 }}>
           <CardItem>
             {/* <Body> */}
-            <Text>Timerange weight change</Text>
+            <Text style={{fontFamily: 'Roboto'}}>Timerange weight change</Text>
             <Badge style={{ backgroundColor: "lightgrey", marginLeft: 15 }}>
-              <Text style={{ color: Colors.tintColor }}>
+              <Text style={{ color: Colors.tintColor, fontFamily: 'Roboto' }}>
                 {this.getWeightChange()}
               </Text>
             </Badge>
@@ -193,11 +193,3 @@ export default class WeightChart extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#fff"
-  }
-});

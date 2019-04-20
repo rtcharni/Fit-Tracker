@@ -1,3 +1,6 @@
+import { Updates } from 'expo';
+import { Notifications } from 'expo';
+
 export const ConvertCommaToDot = value => {
   const newStringValue = value.replace(",", ".");
   return newStringValue;
@@ -43,3 +46,17 @@ export const ConvertMinToDaysHoursMin = valueMIN => {
     return rhours + " hours " + rminutes + " minutes";
   }
 };
+
+export const CheckForUpdatesAndUpdate = async () => {
+  try {
+    const update = await Updates.checkForUpdateAsync();
+    if (update.isAvailable) {
+      // ... notify user of update ...
+      Notifications.presentLocalNotificationAsync({title: 'Update available!', body: 'Downloading Fit-Tracker update now ...'})
+      await Updates.fetchUpdateAsync();
+      Updates.reloadFromCache();
+    }
+  } catch (e) {
+    // handle or log error
+  }
+}

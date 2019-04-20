@@ -166,6 +166,7 @@ export default class WeightDataList extends Component {
             title={"Entries"}
             bottomDivider={true}
             topDivider={true}
+            titleStyle={{fontFamily: 'Roboto'}}
             leftIcon={
               <NativeElementIcon
                 name="weight-kilogram"
@@ -187,6 +188,8 @@ export default class WeightDataList extends Component {
               bottomDivider={true}
               topDivider={true}
               pad={12}
+              titleStyle={{fontFamily: 'Roboto'}}
+              subtitleStyle={{fontFamily: 'Roboto'}}
               leftIcon={
                 <NativeElementIcon
                   name="dot-single"

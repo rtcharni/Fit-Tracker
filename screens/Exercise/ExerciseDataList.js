@@ -27,26 +27,33 @@ import AddOrModifyExercise from "./AddOrModifyExercise";
 const TESTDATA = [
   { time: 1554649683901, exercise: "Swim", intensity: "medium", duration: 70 },
   { time: 1554641683901, exercise: "Running", intensity: "low", duration: 55 },
-  { time: 1554635683901, exercise: "Football", intensity: "high", duration: 90 },
+  { time: 1554635683901, exercise: "Football", intensity: "high", duration: 90 }
 ];
 
 export default class ExerciseDataList extends Component {
   constructor(props) {
     super(props);
-    this.state = { refresh: false, exercises: this.props.exercises, showEditModal: false, chosenExercise: null };
+    this.state = {
+      refresh: false,
+      exercises: this.props.exercises,
+      showEditModal: false,
+      chosenExercise: null
+    };
     this.closeEditModal = this.closeEditModal.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.exercises !== prevState.exercises) {
-      return {exercises: nextProps.exercises}
+      return { exercises: nextProps.exercises };
     }
     return null;
   }
 
   handleDotOptionsIconPress(item) {
     Alert.alert(
-      `Date: ${new Date(item.time).toLocaleDateString()}. Exercise: ${item.exercise}`,
+      `Date: ${new Date(item.time).toLocaleDateString()}. Exercise: ${
+        item.exercise
+      }`,
       "Do you want to modify this item?",
       [
         {
@@ -72,11 +79,11 @@ export default class ExerciseDataList extends Component {
   }
 
   closeEditModal() {
-    this.setState({showEditModal: false})
+    this.setState({ showEditModal: false, chosenExercise: null });
   }
 
   async editItem(item) {
-    this.setState({chosenExercise: item, showEditModal: true })
+    this.setState({ chosenExercise: item, showEditModal: true });
   }
 
   async deleteItem(item) {
@@ -93,14 +100,12 @@ export default class ExerciseDataList extends Component {
   render() {
     return (
       <View style={{}}>
-
-      <AddOrModifyExercise
+        <AddOrModifyExercise
           chosenExercise={this.state.chosenExercise}
           showEditModal={this.state.showEditModal}
-      closeEditModal={this.closeEditModal}
+          closeEditModal={this.closeEditModal}
           getAllExercises={this.props.getAllExercises}
         />
-
         <FlatList
           keyExtractor={(item, index) => item.time.toString()} //
           data={this.state.exercises}
@@ -110,6 +115,7 @@ export default class ExerciseDataList extends Component {
               title={"Exercises"}
               bottomDivider={true}
               topDivider={true}
+              titleStyle={{ fontFamily: "Roboto" }}
               leftIcon={
                 <NativeElementIcon
                   name="run"
@@ -129,6 +135,8 @@ export default class ExerciseDataList extends Component {
               }`}
               bottomDivider={true}
               topDivider={true}
+              titleStyle={{ fontFamily: "Roboto" }}
+              subtitleStyle={{ fontFamily: "Roboto" }}
               pad={12}
               badge={{
                 value: `${item.duration}min`,

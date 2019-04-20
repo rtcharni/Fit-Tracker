@@ -4,6 +4,13 @@ import { AppLoading, Asset, Font, Icon } from "expo";
 import { Ionicons } from "@expo/vector-icons";
 import { Root } from "native-base";
 import AppNavigator from "./navigation/AppNavigator";
+import {
+  setCustomView,
+  setCustomTextInput,
+  setCustomText,
+  setCustomImage,
+  setCustomTouchableOpacity
+} from 'react-native-global-props';
 
 export default class App extends React.Component {
   state = {
@@ -43,9 +50,17 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
+        // SpaceMono: require('./assets/fonts/SpaceMono-Regular.ttf'),
+        // SpaceMono_bold: require('./assets/fonts/SpaceMono-Bold.ttf'),
+        // SpaceMono_italic: require('./assets/fonts/SpaceMono-Italic.ttf'),
+        // SpaceMono_boldItalic: require('./assets/fonts/SpaceMono-BoldItalic.ttf'),
+        Roboto: require('./assets/fonts/Roboto-Regular.ttf'),
+        Roboto_bold: require('./assets/fonts/Roboto-Bold.ttf'),
+        Roboto_italic: require('./assets/fonts/Roboto-Italic.ttf'),
+        Roboto_medium: require('./assets/fonts/Roboto-Medium.ttf'),
         // ADDED FROM NATIVE-BASE DOCS!
-        Roboto: require("native-base/Fonts/Roboto.ttf"),
-        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+        // Roboto: require("native-base/Fonts/Roboto.ttf"),
+        // Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
         ...Ionicons.font
       })
     ]);
@@ -58,8 +73,18 @@ export default class App extends React.Component {
   };
 
   _handleFinishLoading = () => {
+    this.setDefaultFont();
     this.setState({ isLoadingComplete: true });
   };
+
+  setDefaultFont() {
+    const customTextProps = {
+      style: {
+        fontFamily: 'Roboto'
+      }
+    };
+    setCustomText(customTextProps);
+  }
 }
 
 const styles = StyleSheet.create({

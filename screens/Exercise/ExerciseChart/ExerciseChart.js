@@ -256,9 +256,9 @@ export default class ExerciseChart extends React.Component {
         <Card style={{ marginTop: 8 }}>
           <CardItem>
             {/* <Body> */}
-            <Text>Total duration</Text>
+            <Text style={{fontFamily: 'Roboto'}}>Total duration</Text>
             <Badge style={{ backgroundColor: "lightgrey", marginLeft: 15 }}>
-              <Text style={{ color: Colors.tintColor }}>
+              <Text style={{ color: Colors.tintColor, fontFamily: 'Roboto' }}>
                 {this.getTotalDuration()}
               </Text>
             </Badge>
@@ -269,9 +269,9 @@ export default class ExerciseChart extends React.Component {
         <Card style={{ marginTop: 0 }}>
           <CardItem>
             {/* <Body> */}
-            <Text>Total exercises</Text>
+            <Text style={{fontFamily: 'Roboto'}}>Total exercises</Text>
             <Badge style={{ backgroundColor: "lightgrey", marginLeft: 15 }}>
-              <Text style={{ color: Colors.tintColor }}>
+              <Text style={{ color: Colors.tintColor, fontFamily: 'Roboto' }}>
                 {this.state.exercises.length} {this.getWordTimes()}
               </Text>
             </Badge>
@@ -283,11 +283,3 @@ export default class ExerciseChart extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#fff"
-  }
-});
