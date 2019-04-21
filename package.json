@@ -22,6 +22,7 @@
     "react-native-highcharts": "^1.0.2",
     "react-native-progress": "^3.6.0",
     "react-native-simple-gauge": "^0.1.11",
+    "react-native-walkthrough-tooltip": "^0.5.3",
     "react-navigation": "^3.0.9"
   },
   "devDependencies": {

@@ -42,6 +42,22 @@ export default class ProgressBars extends Component {
     }
   }
 
+  calculateDurationProgressAndColors(totalDuration) {
+    if (totalDuration < 1.005) {
+      return {durationProgress: totalDuration, filled: Colors.tintColor, unfilled: Colors.unfilledBlue};
+    } else {
+      return {durationProgress: (totalDuration % 1), filled: Colors.filledRed, unfilled: Colors.unfilledRed};
+    }
+  }
+
+  calculateCountProgressAndColors(totalCount) {
+    if (totalCount < 1.005) {
+      return {countProgress: totalCount, filled: Colors.tintColor, unfilled: Colors.unfilledBlue};
+    } else {
+      return {countProgress: (totalCount % 1), filled: Colors.filledRed, unfilled: Colors.unfilledRed};
+    }
+  }
+
   render() {
     const monday = ConvertDateToMonday(new Date());
     const thisWeekExerciseDuration = this.state.exercises
@@ -51,17 +67,21 @@ export default class ProgressBars extends Component {
       x => new Date(x.time) >= monday
     ).length;
 
-    const durationProgress =
+    const totalDurationProgress =
       this.state.exerciseDuration === 0
         ? 0
         : thisWeekExerciseDuration / this.state.exerciseDuration;
-    const countProgress =
+    const totalCountProgress =
       this.state.exerciseCount === 0
         ? 0
         : thisWeekExerciseCount / this.state.exerciseCount;
 
-    const getStrokeCapDuration = durationProgress === 0 ? "butt" : "round";
-    const getStrokeCapCount = countProgress === 0 ? "butt" : "round";
+    
+      const durationValues = this.calculateDurationProgressAndColors(totalDurationProgress);
+      const countValues = this.calculateCountProgressAndColors(totalCountProgress);
+
+    const getStrokeCapDuration = totalDurationProgress === 0 ? "butt" : "round";
+    const getStrokeCapCount = totalCountProgress === 0 ? "butt" : "round";
     return (
       <View style={{ flex: 1 }}>
         <NavigationEvents onWillFocus={() => this.handleWillFocus()} />
@@ -70,7 +90,7 @@ export default class ProgressBars extends Component {
             marginTop: 5,
             marginBottom: 2,
             fontSize: 18,
-            alignSelf: "center",
+            alignSelf: "center"
           }}
         >
           Week goals
@@ -94,27 +114,31 @@ export default class ProgressBars extends Component {
         >
           <ProgressCircle
             size={80}
-            progress={durationProgress}
-            color={Colors.tintColor}
-            unfilledColor={"#b0c4de"}
+            progress={durationValues.durationProgress}
+            color={durationValues.filled}
+            unfilledColor={durationValues.unfilled}
             borderWidth={0}
             thickness={8}
             showsText={true}
             strokeCap={getStrokeCapDuration}
-            // formatText={}
+            formatText={progress =>
+              Math.round(totalDurationProgress * 100) + "%"
+            }
             // style={{ marginTop: 3.5, marginLeft: 10 }}
             useNativeDriver={true}
           />
           <ProgressCircle
             size={80}
-            progress={countProgress}
-            color={Colors.tintColor}
-            unfilledColor={"#b0c4de"}
+            progress={countValues.countProgress}
+            color={countValues.filled}
+            unfilledColor={countValues.unfilled}
             borderWidth={0}
             thickness={8}
             showsText={true}
             strokeCap={getStrokeCapCount}
-            // formatText={}
+            formatText={progress =>
+              Math.round(totalCountProgress * 100) + "%"
+            }
             // style={{ marginTop: 3.5, marginLeft: 10 }}
             useNativeDriver={true}
           />
