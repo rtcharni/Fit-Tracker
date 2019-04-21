@@ -73,7 +73,7 @@ export default class FirstLaunch extends React.Component {
         exerciseDuration: this.state.exerciseDuration,
         exerciseCount: this.state.exerciseCount
       });
-      this.props.navigation.replace("Weight");
+      this.props.navigation.replace("Weight", {showWalkthrough: true});
       // this.props.closeFirstLaunch();
       // this.props.navigation.navigate("Weightchart")
     } else {
@@ -185,7 +185,7 @@ export default class FirstLaunch extends React.Component {
                 </CardItem>
                 <CardItem>
                   <Item floatingLabel>
-                  <Label>Week goal exercise count</Label>
+                  <Label>Week goal exercise quantity</Label>
                     <Input
                       // placeholder="Week goal exercise count"
                       value={this.state.exerciseCount}

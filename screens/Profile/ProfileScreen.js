@@ -244,7 +244,7 @@ export default class ProfileScreen extends React.Component {
                   <Item>
                     {/* <Label>Height (cm)</Label> */}
                     <Input
-                      placeholder="Week goal exercise count"
+                      placeholder="Week goal exercise quantity"
                       value={this.state.exerciseCount}
                       maxLength={2}
                       keyboardType="decimal-pad"
